@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/language/controllers/language_controller.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
@@ -18,10 +19,10 @@ class LanguageConfirmView extends GetView<LanguageController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Confirm Language', style: AppTypography.h1),
+              Text(TKeys.confirmLanguage.tr, style: AppTypography.h1),
               const SizedBox(height: 4),
               Text(
-                'You can change this anytime in settings',
+                TKeys.changeLanguageAnytime.tr,
                 style: AppTypography.body.copyWith(color: AppColors.inkMuted),
               ),
               const Spacer(flex: 3),
@@ -69,7 +70,7 @@ class LanguageConfirmView extends GetView<LanguageController> {
                           ),
                           const SizedBox(height: AppSpace.lg),
                           Text(
-                            language.name,
+                            language.nameKey.tr,
                             style: AppTypography.h1.copyWith(
                               color: Colors.white,
                             ),
@@ -96,7 +97,7 @@ class LanguageConfirmView extends GetView<LanguageController> {
                                 ),
                                 const SizedBox(width: 6),
                                 Text(
-                                  'Selected',
+                                  TKeys.selected.tr,
                                   style: AppTypography.bodySmall.copyWith(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w600,
@@ -116,7 +117,7 @@ class LanguageConfirmView extends GetView<LanguageController> {
                 child: TextButton(
                   onPressed: controller.goToLanguageSelect,
                   child: Text(
-                    'Change Language',
+                    TKeys.changeLanguage.tr,
                     style: AppTypography.body.copyWith(
                       color: AppColors.accent,
                       fontWeight: FontWeight.w600,
@@ -135,7 +136,7 @@ class LanguageConfirmView extends GetView<LanguageController> {
                   ),
                   onPressed: controller.confirmAndContinue,
                   child: Text(
-                    'Confirm & Continue',
+                    TKeys.confirmAndContinue.tr,
                     style: AppTypography.button.copyWith(
                       color: Colors.white,
                       fontSize: 16,

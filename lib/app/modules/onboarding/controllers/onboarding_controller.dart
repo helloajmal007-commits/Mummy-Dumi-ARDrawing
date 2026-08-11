@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sketch_flow/app/data/models/onboarding_model.dart';
 import 'package:sketch_flow/app/data/services/storage_service.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/routes/app_routes.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 
@@ -9,29 +10,26 @@ class OnboardingController extends GetxController {
   final PageController pageController = PageController();
   final RxInt currentPage = 0.obs;
 
-  final List<OnboardingSlide> slides = const [
+  List<OnboardingSlide> get slides => [
     OnboardingSlide(
-      title: 'Draw Anything in AR',
-      description:
-          'Turn your imagination into reality by sketching directly onto the real world using your camera',
+      title: TKeys.onboardSlide1Title.tr,
+      description: TKeys.onboardSlide1Desc.tr,
       primaryIcon: Icons.view_in_ar_outlined,
       accentIcon: Icons.edit_outlined,
       background: AppColors.accentSoft,
       accentColor: AppColors.amber,
     ),
     OnboardingSlide(
-      title: 'Trace With Precision',
-      description:
-          'Import any photo and trace over it with adjustable opacity guides for perfect line work',
+      title: TKeys.onboardSlide2Title.tr,
+      description: TKeys.onboardSlide2Desc.tr,
       primaryIcon: Icons.crop_free,
       accentIcon: Icons.edit_outlined,
       background: AppColors.accentSoft,
       accentColor: AppColors.accent,
     ),
     OnboardingSlide(
-      title: 'Save & Share Your Art',
-      description:
-          'Export finished sketches to your gallery and share your creative process with the world',
+      title: TKeys.onboardSlide3Title.tr,
+      description: TKeys.onboardSlide3Desc.tr,
       primaryIcon: Icons.photo_library_outlined,
       accentIcon: Icons.ios_share,
       background: AppColors.accentSoft,

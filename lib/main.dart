@@ -4,6 +4,8 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:sketch_flow/app/localization/app_translations.dart';
+import 'package:sketch_flow/app/localization/locale_controller.dart';
 import 'package:sketch_flow/app/modules/settings/controllers/settings_controller.dart';
 import 'app/routes/app_pages.dart';
 import 'app/routes/app_routes.dart';
@@ -22,6 +24,7 @@ Future main() async {
 
   await GetStorage.init();
   Get.put(SettingsController(), permanent: true);
+  Get.put(LocaleController(), permanent: true);
   runApp(const SketchFlowApp());
 }
 
@@ -30,10 +33,14 @@ class SketchFlowApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeController = Get.find<LocaleController>();
     return GetMaterialApp(
       title: 'SketchFlow',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
+      translations: AppTranslations(),
+      locale: localeController.currentLocale.value,
+      fallbackLocale: const Locale('en', 'US'),
       initialRoute: Routes.splash,
       getPages: AppPages.routes,
       defaultTransition: Transition.cupertino,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sketch_flow/app/data/services/storage_service.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/routes/app_routes.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
@@ -141,12 +142,12 @@ class _SplashViewState extends State<SplashView>
                   ),
                   const SizedBox(height: AppSpace.lg),
                   Text(
-                    'SketchFlow',
+                    'AR Drawing',
                     style: AppTypography.h1.copyWith(color: Colors.blueAccent),
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Draw in Augmented Reality',
+                    TKeys.appTagline.tr,
                     style: AppTypography.body.copyWith(
                       color: Colors.blue.withValues(alpha: 0.85),
                     ),
@@ -164,7 +165,7 @@ class _SplashViewState extends State<SplashView>
                 const _LoadingDots(),
                 const SizedBox(height: AppSpace.sm),
                 Text(
-                  'Loading your canvas…',
+                  TKeys.loadingYourCanvas.tr,
                   style: AppTypography.bodySmall.copyWith(
                     color: Colors.blue.withValues(alpha: 0.7),
                   ),

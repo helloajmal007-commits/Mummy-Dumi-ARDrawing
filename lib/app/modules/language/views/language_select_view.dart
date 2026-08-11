@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sketch_flow/app/data/models/language_model.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/language/controllers/language_controller.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
@@ -27,10 +28,10 @@ class LanguageSelectView extends GetView<LanguageController> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Choose Your Language', style: AppTypography.h1),
+                  Text(TKeys.chooseYourLanguage.tr, style: AppTypography.h1),
                   const SizedBox(height: 4),
                   Text(
-                    'Select your preferred language to continue',
+                    TKeys.selectPreferredLanguage.tr,
                     style: AppTypography.body.copyWith(
                       color: AppColors.inkMuted,
                     ),
@@ -70,7 +71,7 @@ class LanguageSelectView extends GetView<LanguageController> {
                   ),
                   onPressed: controller.goToConfirm,
                   child: Text(
-                    'Continue',
+                    TKeys.continueBtn.tr,
                     style: AppTypography.button.copyWith(
                       color: Colors.white,
                       fontSize: 16,
@@ -133,7 +134,7 @@ class _LanguageTile extends StatelessWidget {
                 const SizedBox(width: AppSpace.md),
                 Expanded(
                   child: Text(
-                    language.name,
+                    language.nameKey.tr,
                     style: AppTypography.bodyLarge.copyWith(
                       fontWeight: FontWeight.w700,
                       color: AppColors.ink,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sketch_flow/app/data/models/onboarding_model.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/onboarding/controllers/onboarding_controller.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
@@ -34,7 +35,7 @@ class OnboardingView extends GetView<OnboardingController> {
                       TextButton(
                         onPressed: controller.skip,
                         child: Text(
-                          'Skip',
+                          TKeys.skip.tr,
                           style: AppTypography.body.copyWith(
                             color: Colors.grey,
                             fontWeight: FontWeight.w600,
@@ -77,7 +78,9 @@ class OnboardingView extends GetView<OnboardingController> {
                       child: AnimatedSwitcher(
                         duration: const Duration(milliseconds: 250),
                         child: Text(
-                          controller.isLastPage ? 'Get Started' : 'Next',
+                          controller.isLastPage
+                              ? TKeys.getStarted.tr
+                              : TKeys.next.tr,
                           key: ValueKey(controller.isLastPage),
                           style: AppTypography.button.copyWith(
                             color: slide.background,
