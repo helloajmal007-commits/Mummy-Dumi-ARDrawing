@@ -15,6 +15,15 @@ class StorageService {
   static const _kRecentColors = 'recent_colors';
   static const _kProjects = 'projects';
   static const _kLanguageCode = 'language_code';
+  static const _kHasCompletedOnboarding = 'has_completed_onboarding';
+
+  static void setHasCompletedOnboarding(bool value) {
+    _box.write(_kHasCompletedOnboarding, value);
+  }
+
+  static bool hasCompletedOnboarding() {
+    return _box.read<bool>(_kHasCompletedOnboarding) ?? false;
+  }
 
   static void saveLanguageCode(String code) {
     _box.write(_kLanguageCode, code);

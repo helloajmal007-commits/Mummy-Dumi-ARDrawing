@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sketch_flow/app/data/services/storage_service.dart';
 import 'package:sketch_flow/app/routes/app_routes.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
@@ -24,8 +25,12 @@ class _SplashViewState extends State<SplashView>
       duration: const Duration(milliseconds: 900),
     )..forward();
 
-    Future.delayed(const Duration(milliseconds: 2600), () {
-      if (mounted) Get.offNamed(Routes.languageSelect);
+    Future.delayed(const Duration(seconds: 3), () {
+      if (!mounted) return;
+      final destination = StorageService.hasCompletedOnboarding()
+          ? Routes.home
+          : Routes.languageSelect;
+      Get.offNamed(destination);
     });
   }
 

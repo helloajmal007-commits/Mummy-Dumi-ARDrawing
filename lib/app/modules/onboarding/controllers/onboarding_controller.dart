@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sketch_flow/app/data/models/onboarding_model.dart';
+import 'package:sketch_flow/app/data/services/storage_service.dart';
 import 'package:sketch_flow/app/routes/app_routes.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 
@@ -44,6 +45,7 @@ class OnboardingController extends GetxController {
 
   void next() {
     if (isLastPage) {
+      StorageService.setHasCompletedOnboarding(true);
       Get.offAllNamed(Routes.home);
       return;
     }
@@ -53,7 +55,10 @@ class OnboardingController extends GetxController {
     );
   }
 
-  void skip() => Get.offAllNamed(Routes.home);
+  void skip() {
+    StorageService.setHasCompletedOnboarding(true);
+    Get.offAllNamed(Routes.home);
+  }
 
   @override
   void onClose() {
