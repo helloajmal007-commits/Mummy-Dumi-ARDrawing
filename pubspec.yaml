@@ -26,10 +26,17 @@ dependencies:
   url_launcher: ^6.3.2
   cupertino_icons: ^1.0.8
   firebase_crashlytics: ^5.2.7
+  flutter_launcher_icons: ^0.14.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/icon.png"
+  min_sdk_android: 21
 
   flutter_lints: ^6.0.0
 
