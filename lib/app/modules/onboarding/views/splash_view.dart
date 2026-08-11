@@ -1,0 +1,246 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:sketch_flow/app/routes/app_routes.dart';
+import 'package:sketch_flow/app/theme/app_colors.dart';
+import 'package:sketch_flow/app/theme/app_dimens.dart';
+import 'package:sketch_flow/app/theme/app_typography.dart';
+
+class SplashView extends StatefulWidget {
+  const SplashView({super.key});
+
+  @override
+  State<SplashView> createState() => _SplashViewState();
+}
+
+class _SplashViewState extends State<SplashView>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 900),
+    )..forward();
+
+    Future.delayed(const Duration(milliseconds: 2600), () {
+      if (mounted) Get.offNamed(Routes.languageSelect);
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.accentSoft,
+      body: Stack(
+        children: [
+          Positioned(
+            top: -60,
+            left: -40,
+            child: _Blob(size: 220, color: Colors.blue.withValues(alpha: 0.1)),
+          ),
+          Positioned(
+            top: 120,
+            right: -50,
+            child: _Blob(
+              size: 140,
+              color: AppColors.amber.withValues(alpha: 0.59),
+            ),
+          ),
+          Positioned(
+            bottom: -80,
+            right: -60,
+            child: _Blob(size: 260, color: Colors.blue.withValues(alpha: 0.08)),
+          ),
+          Positioned(
+            bottom: 140,
+            left: -30,
+            child: _Blob(
+              size: 110,
+              color: AppColors.coral.withValues(alpha: 0.65),
+            ),
+          ),
+          Center(
+            child: AnimatedBuilder(
+              animation: _controller,
+              builder: (context, child) {
+                final scale = Tween<double>(begin: 0.7, end: 1.0)
+                    .chain(CurveTween(curve: Curves.easeOutBack))
+                    .evaluate(_controller);
+                final opacity = Tween<double>(begin: 0.0, end: 1.0)
+                    .chain(CurveTween(curve: Curves.easeOut))
+                    .evaluate(_controller);
+                return Opacity(
+                  opacity: opacity,
+                  child: Transform.scale(scale: scale, child: child),
+                );
+              },
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Container(
+                        width: 96,
+                        height: 96,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(AppRadius.lg),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.15),
+                              blurRadius: 24,
+                              offset: const Offset(0, 12),
+                            ),
+                          ],
+                        ),
+                        child: Icon(
+                          Icons.edit_outlined,
+                          color: AppColors.accent,
+                          size: 44,
+                        ),
+                      ),
+                      Positioned(
+                        bottom: -8,
+                        right: -8,
+                        child: Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: AppColors.amber,
+                            borderRadius: BorderRadius.circular(AppRadius.md),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.15),
+                                blurRadius: 12,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: const Icon(
+                            Icons.crop_free,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: AppSpace.lg),
+                  Text(
+                    'SketchFlow',
+                    style: AppTypography.h1.copyWith(color: Colors.blueAccent),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Draw in Augmented Reality',
+                    style: AppTypography.body.copyWith(
+                      color: Colors.blue.withValues(alpha: 0.85),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 64,
+            left: 0,
+            right: 0,
+            child: Column(
+              children: [
+                const _LoadingDots(),
+                const SizedBox(height: AppSpace.sm),
+                Text(
+                  'Loading your canvas…',
+                  style: AppTypography.bodySmall.copyWith(
+                    color: Colors.blue.withValues(alpha: 0.7),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Blob extends StatelessWidget {
+  final double size;
+  final Color color;
+
+  const _Blob({required this.size, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+    );
+  }
+}
+
+class _LoadingDots extends StatefulWidget {
+  const _LoadingDots();
+
+  @override
+  State<_LoadingDots> createState() => _LoadingDotsState();
+}
+
+class _LoadingDotsState extends State<_LoadingDots>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(3, (i) {
+        return AnimatedBuilder(
+          animation: _controller,
+          builder: (context, _) {
+            final t = (_controller.value - (i * 0.2)) % 1.0;
+            final bump = t < 0.5 ? t * 2 : (1 - t) * 2;
+            return Container(
+              margin: const EdgeInsets.symmetric(horizontal: 4),
+              width: 8,
+              height: 8,
+              decoration: BoxDecoration(
+                color: Color.lerp(
+                  Colors.blue.withValues(alpha: 0.3),
+                  Colors.blue,
+                  bump.clamp(0.0, 1.0),
+                ),
+                shape: BoxShape.circle,
+              ),
+            );
+          },
+        );
+      }),
+    );
+  }
+}

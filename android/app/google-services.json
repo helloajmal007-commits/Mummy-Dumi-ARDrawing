@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "920878048326",
+    "project_id": "trace2sketch",
+    "storage_bucket": "trace2sketch.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:920878048326:android:fb8e230eedc55be0a61647",
+        "android_client_info": {
+          "package_name": "com.artsketch.trace2sketch.ar.drawing"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAglY9dFnCn9Yrgqvzh4iR8m2dPkTso0Cs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
