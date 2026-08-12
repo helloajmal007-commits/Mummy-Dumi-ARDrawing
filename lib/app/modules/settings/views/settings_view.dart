@@ -270,7 +270,12 @@ class SettingsView extends GetView<SettingsController> {
                   contentPadding: EdgeInsets.zero,
                   leading: const Icon(Icons.info_outline),
                   title: Text(TKeys.version.tr, style: AppTypography.body),
-                  trailing: Text('1.0.0', style: AppTypography.bodySmall),
+                  trailing: Obx(
+                    () => Text(
+                      controller.appVersion.value,
+                      style: AppTypography.bodySmall,
+                    ),
+                  ),
                 ),
               ],
             ),

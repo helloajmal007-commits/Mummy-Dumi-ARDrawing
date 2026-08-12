@@ -6,6 +6,7 @@ import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
 import 'package:sketch_flow/app/theme/app_typography.dart';
 import 'package:sketch_flow/app/widgets/chrome_icon_button.dart';
+import 'package:sketch_flow/app/widgets/locale_rebuilder.dart';
 
 class TutorialStepsView extends StatelessWidget {
   const TutorialStepsView({super.key});
@@ -13,66 +14,67 @@ class TutorialStepsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tutorial = Get.arguments as Tutorial;
-
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(
-                AppSpace.lg,
-                AppSpace.md,
-                AppSpace.lg,
-                0,
-              ),
-              child: Row(
-                children: [
-                  ChromeIconButton(
-                    icon: Icons.arrow_back_ios_new,
-                    size: 36,
-                    onTap: () => Get.back(),
-                  ),
-                  const SizedBox(width: AppSpace.md),
-                  Expanded(
-                    child: Text(
-                      tutorial.title,
-                      style: AppTypography.h2,
-                      overflow: TextOverflow.ellipsis,
+    return LocaleRebuilder(
+      builder: (context) => Scaffold(
+        backgroundColor: AppColors.background,
+        body: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpace.lg,
+                  AppSpace.md,
+                  AppSpace.lg,
+                  0,
+                ),
+                child: Row(
+                  children: [
+                    ChromeIconButton(
+                      icon: Icons.arrow_back_ios_new,
+                      size: 36,
+                      onTap: () => Get.back(),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: AppSpace.xs),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpace.lg),
-              child: Text(
-                tutorial.description,
-                style: AppTypography.bodySmall.copyWith(
-                  color: AppColors.inkMuted,
+                    const SizedBox(width: AppSpace.md),
+                    Expanded(
+                      child: Text(
+                        tutorial.title,
+                        style: AppTypography.h2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-            Expanded(
-              child: ListView.separated(
-                padding: const EdgeInsets.all(AppSpace.lg),
-                itemCount: tutorial.steps.length,
-                separatorBuilder: (_, _) =>
-                    const SizedBox(height: AppSpace.md),
-                itemBuilder: (_, i) {
-                  final step = tutorial.steps[i];
-                  return _StepCard(
-                    index: i + 1,
-                    step: step,
-                    accent: tutorial.color,
-                    onTap: () => _openModeSheet(context, step),
-                  );
-                },
+              const SizedBox(height: AppSpace.xs),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppSpace.lg),
+                child: Text(
+                  tutorial.description,
+                  style: AppTypography.bodySmall.copyWith(
+                    color: AppColors.inkMuted,
+                  ),
+                ),
               ),
-            ),
-          ],
+              Expanded(
+                child: ListView.separated(
+                  padding: const EdgeInsets.all(AppSpace.lg),
+                  itemCount: tutorial.steps.length,
+                  separatorBuilder: (_, _) =>
+                      const SizedBox(height: AppSpace.md),
+                  itemBuilder: (_, i) {
+                    final step = tutorial.steps[i];
+                    return _StepCard(
+                      index: i + 1,
+                      step: step,
+                      accent: tutorial.color,
+                      onTap: () => _openModeSheet(context, step),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

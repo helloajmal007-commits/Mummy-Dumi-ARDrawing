@@ -9,6 +9,7 @@ import 'package:sketch_flow/app/theme/app_typography.dart';
 import 'package:sketch_flow/app/widgets/app_bottom_nav.dart';
 import 'package:sketch_flow/app/widgets/asset_image_grid_view.dart';
 import 'package:sketch_flow/app/widgets/image_source_sheet.dart';
+import 'package:sketch_flow/app/widgets/locale_rebuilder.dart';
 
 class CategoriesView extends GetView<CategoriesController> {
   const CategoriesView({super.key});
@@ -19,80 +20,84 @@ class CategoriesView extends GetView<CategoriesController> {
     debugPrint(
       'CATEGORIES VIEW BUILD: previewImages = ${controller.previewImages}',
     );
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(
-                AppSpace.lg,
-                AppSpace.md,
-                AppSpace.lg,
-                0,
+    return LocaleRebuilder(
+      builder: (context) => Scaffold(
+        backgroundColor: AppColors.background,
+        body: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpace.lg,
+                  AppSpace.md,
+                  AppSpace.lg,
+                  0,
+                ),
+                child: Text(TKeys.categoriesTitle.tr, style: AppTypography.h2),
               ),
-              child: Text(TKeys.categoriesTitle.tr, style: AppTypography.h2),
-            ),
-            const SizedBox(height: AppSpace.sm),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpace.lg),
-              child: Text(
-                TKeys.categoriesSubtitle.tr,
-                style: AppTypography.bodySmall.copyWith(
-                  color: AppColors.inkMuted,
+              const SizedBox(height: AppSpace.sm),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppSpace.lg),
+                child: Text(
+                  TKeys.categoriesSubtitle.tr,
+                  style: AppTypography.bodySmall.copyWith(
+                    color: AppColors.inkMuted,
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-              child: Obx(() {
-                debugPrint(
-                  'GRID OBX REBUILD: previewImages = ${controller.previewImages}',
-                );
-                return GridView.builder(
-                  padding: const EdgeInsets.all(AppSpace.lg),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: AppSpace.lg,
-                    crossAxisSpacing: AppSpace.lg,
-                    childAspectRatio: 1.1,
-                  ),
-                  itemCount: controller.categories.length,
-                  itemBuilder: (_, i) {
-                    final category = controller.categories[i];
-                    final previewPath = controller.previewImages[category.key];
-                    debugPrint(
-                      'CARD BUILD [$i] ${category.name}: previewPath = $previewPath',
-                    );
-                    return _CategoryCard(
-                      category: category,
-                      previewPath: previewPath,
-                      onTap: () => Get.toNamed(
-                        Routes.assetGrid,
-                        arguments: AssetGridArgs(
-                          title: category.name,
-                          subtitle: TKeys.pickImageToTraceArOrPaper.tr,
-                          folderPath: category.assetFolder,
-                          accent: category.color,
-                          emptyIcon: category.icon,
+              Expanded(
+                child: Obx(() {
+                  debugPrint(
+                    'GRID OBX REBUILD: previewImages = ${controller.previewImages}',
+                  );
+                  return GridView.builder(
+                    padding: const EdgeInsets.all(AppSpace.lg),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: AppSpace.lg,
+                          crossAxisSpacing: AppSpace.lg,
+                          childAspectRatio: 1.1,
                         ),
-                      ),
-                    );
-                  },
-                );
-              }),
-            ),
-          ],
+                    itemCount: controller.categories.length,
+                    itemBuilder: (_, i) {
+                      final category = controller.categories[i];
+                      final previewPath =
+                          controller.previewImages[category.key];
+                      debugPrint(
+                        'CARD BUILD [$i] ${category.name}: previewPath = $previewPath',
+                      );
+                      return _CategoryCard(
+                        category: category,
+                        previewPath: previewPath,
+                        onTap: () => Get.toNamed(
+                          Routes.assetGrid,
+                          arguments: AssetGridArgs(
+                            title: category.name,
+                            subtitle: TKeys.pickImageToTraceArOrPaper.tr,
+                            folderPath: category.assetFolder,
+                            accent: category.color,
+                            emptyIcon: category.icon,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }),
+              ),
+            ],
+          ),
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: AppColors.accent,
+          elevation: 2,
+          onPressed: () => showImageSourceSheet(context),
+          child: const Icon(Icons.add, color: Colors.white),
+        ),
+        bottomNavigationBar: const AppBottomNav(current: AppTab.categories),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.accent,
-        elevation: 2,
-        onPressed: () => showImageSourceSheet(context),
-        child: const Icon(Icons.add, color: Colors.white),
-      ),
-      bottomNavigationBar: const AppBottomNav(current: AppTab.categories),
     );
   }
 }

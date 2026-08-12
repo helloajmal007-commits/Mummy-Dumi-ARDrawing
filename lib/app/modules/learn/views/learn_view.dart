@@ -9,69 +9,73 @@ import 'package:sketch_flow/app/theme/app_dimens.dart';
 import 'package:sketch_flow/app/theme/app_typography.dart';
 import 'package:sketch_flow/app/widgets/app_bottom_nav.dart';
 import 'package:sketch_flow/app/widgets/image_source_sheet.dart';
+import 'package:sketch_flow/app/widgets/locale_rebuilder.dart';
 
 class LearnView extends GetView<LearnController> {
   const LearnView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(
-                AppSpace.lg,
-                AppSpace.md,
-                AppSpace.lg,
-                0,
+    return LocaleRebuilder(
+      builder: (context) => Scaffold(
+        backgroundColor: AppColors.background,
+        body: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpace.lg,
+                  AppSpace.md,
+                  AppSpace.lg,
+                  0,
+                ),
+                child: Text(TKeys.learnToDraw.tr, style: AppTypography.h2),
               ),
-              child: Text(TKeys.learnToDraw.tr, style: AppTypography.h2),
-            ),
-            const SizedBox(height: AppSpace.xs),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpace.lg),
-              child: Text(
-                TKeys.stepByStepTutorials.tr,
-                style: AppTypography.bodySmall.copyWith(
-                  color: AppColors.inkMuted,
+              const SizedBox(height: AppSpace.xs),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppSpace.lg),
+                child: Text(
+                  TKeys.stepByStepTutorials.tr,
+                  style: AppTypography.bodySmall.copyWith(
+                    color: AppColors.inkMuted,
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-              child: Obx(
-                () => ListView.separated(
-                  padding: const EdgeInsets.all(AppSpace.lg),
-                  itemCount: controller.tutorials.length,
-                  separatorBuilder: (_, _) =>
-                      const SizedBox(height: AppSpace.md),
-                  itemBuilder: (_, i) {
-                    final tutorial = controller.tutorials[i];
-                    return _TutorialCard(
-                      tutorial: tutorial,
-                      onTap: () => showModalBottomSheet(
-                        context: context,
-                        backgroundColor: Colors.transparent,
-                        builder: (_) => _TutorialModeSheet(tutorial: tutorial),
-                      ),
-                    );
-                  },
+              Expanded(
+                child: Obx(
+                  () => ListView.separated(
+                    padding: const EdgeInsets.all(AppSpace.lg),
+                    itemCount: controller.tutorials.length,
+                    separatorBuilder: (_, _) =>
+                        const SizedBox(height: AppSpace.md),
+                    itemBuilder: (_, i) {
+                      final tutorial = controller.tutorials[i];
+                      return _TutorialCard(
+                        tutorial: tutorial,
+                        onTap: () => showModalBottomSheet(
+                          context: context,
+                          backgroundColor: Colors.transparent,
+                          builder: (_) =>
+                              _TutorialModeSheet(tutorial: tutorial),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: AppColors.accent,
+          elevation: 2,
+          onPressed: () => showImageSourceSheet(context),
+          child: const Icon(Icons.add, color: Colors.white),
+        ),
+        bottomNavigationBar: const AppBottomNav(current: AppTab.learn),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.accent,
-        elevation: 2,
-        onPressed: () => showImageSourceSheet(context),
-        child: const Icon(Icons.add, color: Colors.white),
-      ),
-      bottomNavigationBar: const AppBottomNav(current: AppTab.learn),
     );
   }
 }
@@ -131,7 +135,8 @@ class _TutorialCard extends StatelessWidget {
                         _Pill(text: tutorial.difficulty, color: tutorial.color),
                         const SizedBox(width: AppSpace.xs),
                         _Pill(
-                          text: '${tutorial.steps.length} ${TKeys.stepsCount.tr}',
+                          text:
+                              '${tutorial.steps.length} ${TKeys.stepsCount.tr}',
                           color: AppColors.inkMuted,
                         ),
                       ],

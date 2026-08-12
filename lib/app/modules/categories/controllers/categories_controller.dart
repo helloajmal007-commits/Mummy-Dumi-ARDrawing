@@ -6,60 +6,62 @@ import 'package:sketch_flow/app/theme/app_colors.dart';
 
 class CategoryItem {
   final String key;
-  final String name;
+  final String Function() nameResolver;
   final IconData icon;
   final Color color;
   final String assetFolder;
 
   const CategoryItem({
     required this.key,
-    required this.name,
+    required this.nameResolver,
     required this.icon,
     required this.color,
     required this.assetFolder,
   });
+
+  String get name => nameResolver();
 }
 
 class CategoriesController extends GetxController {
   final RxList<CategoryItem> categories = <CategoryItem>[
     CategoryItem(
       key: 'anime',
-      name: TKeys.catAnime.tr,
+      nameResolver: () => TKeys.catAnime.tr,
       icon: Icons.face_retouching_natural,
       color: AppColors.coral,
       assetFolder: 'assets/categories/anime',
     ),
     CategoryItem(
       key: 'cartoon',
-      name: TKeys.catCartoon.tr,
+      nameResolver: () => TKeys.catCartoon.tr,
       icon: Icons.emoji_emotions_outlined,
       color: AppColors.amber,
       assetFolder: 'assets/categories/cartoon',
     ),
     CategoryItem(
       key: 'portrait',
-      name: TKeys.catPortrait.tr,
+      nameResolver: () => TKeys.catPortrait.tr,
       icon: Icons.face_outlined,
       color: AppColors.accent,
       assetFolder: 'assets/categories/portrait',
     ),
     CategoryItem(
-      key: 'animal',
-      name: TKeys.catAnimals.tr,
+      key: 'animals',
+      nameResolver: () => TKeys.catAnimals.tr,
       icon: Icons.pets_outlined,
       color: AppColors.mint,
       assetFolder: 'assets/categories/animals',
     ),
     CategoryItem(
       key: 'nature',
-      name: TKeys.catNature.tr,
+      nameResolver: () => TKeys.catNature.tr,
       icon: Icons.park_outlined,
       color: AppColors.mint,
       assetFolder: 'assets/categories/nature',
     ),
     CategoryItem(
       key: 'objects',
-      name: TKeys.catObjects.tr,
+      nameResolver: () => TKeys.catObjects.tr,
       icon: Icons.category_outlined,
       color: AppColors.lavender,
       assetFolder: 'assets/categories/objects',
