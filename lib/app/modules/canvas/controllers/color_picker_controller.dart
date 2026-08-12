@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sketch_flow/app/data/models/palette_model.dart';
 import 'package:sketch_flow/app/data/services/storage_service.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:uuid/uuid.dart';
 
 enum PickerTab { wheel, grid, favorites }
@@ -54,7 +55,7 @@ class ColorPickerController extends GetxController {
     palettes.addAll([
       PaletteModel(
         id: const Uuid().v4(),
-        name: 'Yellow and Yellow Orange',
+        name: TKeys.paletteYellowOrange.tr,
         colors: [
           const Color(0xFFFFD400),
           const Color(0xFFFFC700),
@@ -72,7 +73,7 @@ class ColorPickerController extends GetxController {
       ),
       PaletteModel(
         id: const Uuid().v4(),
-        name: 'Warm Oranges',
+        name: TKeys.paletteWarmOranges.tr,
         colors: List.generate(
           12,
           (i) => Color.lerp(Colors.orange.shade200, Colors.deepOrange, i / 11)!,
@@ -80,7 +81,7 @@ class ColorPickerController extends GetxController {
       ),
       PaletteModel(
         id: const Uuid().v4(),
-        name: 'Reds',
+        name: TKeys.paletteReds.tr,
         colors: List.generate(
           12,
           (i) => Color.lerp(Colors.red.shade200, Colors.red.shade900, i / 11)!,
@@ -88,7 +89,7 @@ class ColorPickerController extends GetxController {
       ),
       PaletteModel(
         id: const Uuid().v4(),
-        name: 'Magenta',
+        name: TKeys.paletteMagenta.tr,
         colors: List.generate(
           12,
           (i) => Color.lerp(Colors.pink.shade100, Colors.purple, i / 11)!,
@@ -96,7 +97,7 @@ class ColorPickerController extends GetxController {
       ),
       PaletteModel(
         id: const Uuid().v4(),
-        name: 'Purples',
+        name: TKeys.palettePurples.tr,
         colors: List.generate(
           12,
           (i) => Color.lerp(
@@ -108,7 +109,7 @@ class ColorPickerController extends GetxController {
       ),
       PaletteModel(
         id: const Uuid().v4(),
-        name: 'Blues',
+        name: TKeys.paletteBlues.tr,
         colors: List.generate(
           12,
           (i) => Color.lerp(
@@ -120,7 +121,7 @@ class ColorPickerController extends GetxController {
       ),
       PaletteModel(
         id: const Uuid().v4(),
-        name: 'Teals',
+        name: TKeys.paletteTeals.tr,
         colors: List.generate(
           12,
           (i) =>
@@ -129,7 +130,7 @@ class ColorPickerController extends GetxController {
       ),
       PaletteModel(
         id: const Uuid().v4(),
-        name: 'Greens',
+        name: TKeys.paletteGreens.tr,
         colors: List.generate(
           12,
           (i) => Color.lerp(
@@ -141,7 +142,7 @@ class ColorPickerController extends GetxController {
       ),
       PaletteModel(
         id: const Uuid().v4(),
-        name: 'Greyscale',
+        name: TKeys.paletteGreyscale.tr,
         colors: List.generate(
           12,
           (i) => Color.lerp(Colors.white, Colors.black, i / 11)!,
@@ -149,7 +150,7 @@ class ColorPickerController extends GetxController {
       ),
       PaletteModel(
         id: const Uuid().v4(),
-        name: 'Browns',
+        name: TKeys.paletteBrowns.tr,
         colors: List.generate(
           12,
           (i) =>
@@ -158,7 +159,7 @@ class ColorPickerController extends GetxController {
       ),
       PaletteModel(
         id: const Uuid().v4(),
-        name: 'Primary',
+        name: TKeys.palettePrimary.tr,
         colors: const [
           Colors.yellow,
           Colors.cyan,
@@ -257,7 +258,7 @@ class ColorPickerController extends GetxController {
     palettes.add(
       PaletteModel(
         id: const Uuid().v4(),
-        name: 'New Palette',
+        name: TKeys.newPalette.tr,
         colors: List.generate(12, (_) => Colors.grey.shade300),
       ),
     );

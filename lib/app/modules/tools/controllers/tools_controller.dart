@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:sketch_flow/app/data/models/tool_model.dart';
 import 'package:sketch_flow/app/data/services/storage_service.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/canvas/controllers/canvas_controller.dart';
 import 'package:uuid/uuid.dart';
 
@@ -35,10 +36,9 @@ class ToolsController extends GetxController {
   void _seedPresets() {
     final uuid = const Uuid();
     presets.addAll([
-      // --- Basic ---
       BrushPreset(
         id: uuid.v4(),
-        name: 'HB Pencil',
+        name: TKeys.presetHbPencil.tr,
         type: SketchToolType.pencil,
         category: BrushCategory.basic,
         size: 4,
@@ -47,7 +47,7 @@ class ToolsController extends GetxController {
       ),
       BrushPreset(
         id: uuid.v4(),
-        name: 'Fine Liner',
+        name: TKeys.presetFineLiner.tr,
         type: SketchToolType.pen,
         category: BrushCategory.basic,
         size: 3,
@@ -55,7 +55,7 @@ class ToolsController extends GetxController {
       ),
       BrushPreset(
         id: uuid.v4(),
-        name: 'Soft Marker',
+        name: TKeys.presetSoftMarker.tr,
         type: SketchToolType.marker,
         category: BrushCategory.basic,
         size: 14,
@@ -63,7 +63,7 @@ class ToolsController extends GetxController {
       ),
       BrushPreset(
         id: uuid.v4(),
-        name: 'Airbrush Soft',
+        name: TKeys.presetAirbrushSoft.tr,
         type: SketchToolType.airbrush,
         category: BrushCategory.basic,
         size: 28,
@@ -71,7 +71,6 @@ class ToolsController extends GetxController {
         hardness: 0.2,
       ),
 
-      // --- Fine Art: graphite pencil set, hard (4H) to soft (9B) ---
       for (final grade in [
         '4H',
         '3H',
@@ -91,20 +90,17 @@ class ToolsController extends GetxController {
       ])
         BrushPreset(
           id: uuid.v4(),
-          name: '$grade Pencil',
+          name: TKeys.presetGradePencil.trParams({'grade': grade}),
           type: SketchToolType.pencil,
           category: BrushCategory.fineArt,
-          // Harder leads (H-range) → thinner, lower opacity.
-          // Softer leads (B-range) → thicker, more opaque, less hard-edged.
           size: 2 + _gradeIndex(grade) * 0.9,
           opacity: 0.55 + _gradeIndex(grade) * 0.03,
           hardness: (1.0 - _gradeIndex(grade) * 0.05).clamp(0.3, 1.0),
         ),
 
-      // --- Markers ---
       BrushPreset(
         id: uuid.v4(),
-        name: 'Chisel Marker',
+        name: TKeys.presetChiselMarker.tr,
         type: SketchToolType.marker,
         category: BrushCategory.markers,
         size: 10,
@@ -112,7 +108,7 @@ class ToolsController extends GetxController {
       ),
       BrushPreset(
         id: uuid.v4(),
-        name: 'Bullet Marker',
+        name: TKeys.presetBulletMarker.tr,
         type: SketchToolType.marker,
         category: BrushCategory.markers,
         size: 6,
@@ -120,17 +116,16 @@ class ToolsController extends GetxController {
       ),
       BrushPreset(
         id: uuid.v4(),
-        name: 'Broad Marker',
+        name: TKeys.presetBroadMarker.tr,
         type: SketchToolType.marker,
         category: BrushCategory.markers,
         size: 20,
         opacity: 0.8,
       ),
 
-      // --- Artist ---
       BrushPreset(
         id: uuid.v4(),
-        name: 'Round Brush',
+        name: TKeys.presetRoundBrush.tr,
         type: SketchToolType.pen,
         category: BrushCategory.artist,
         size: 12,
@@ -138,7 +133,7 @@ class ToolsController extends GetxController {
       ),
       BrushPreset(
         id: uuid.v4(),
-        name: 'Flat Brush',
+        name: TKeys.presetFlatBrush.tr,
         type: SketchToolType.pen,
         category: BrushCategory.artist,
         size: 16,
@@ -146,7 +141,7 @@ class ToolsController extends GetxController {
       ),
       BrushPreset(
         id: uuid.v4(),
-        name: 'Fan Brush',
+        name: TKeys.presetFanBrush.tr,
         type: SketchToolType.pen,
         category: BrushCategory.artist,
         size: 22,
@@ -154,10 +149,9 @@ class ToolsController extends GetxController {
         hardness: 0.3,
       ),
 
-      // --- Pastel ---
       BrushPreset(
         id: uuid.v4(),
-        name: 'Soft Pastel',
+        name: TKeys.presetSoftPastel.tr,
         type: SketchToolType.pencil,
         category: BrushCategory.pastel,
         size: 18,
@@ -166,7 +160,7 @@ class ToolsController extends GetxController {
       ),
       BrushPreset(
         id: uuid.v4(),
-        name: 'Hard Pastel',
+        name: TKeys.presetHardPastel.tr,
         type: SketchToolType.pencil,
         category: BrushCategory.pastel,
         size: 10,
@@ -174,10 +168,9 @@ class ToolsController extends GetxController {
         hardness: 0.55,
       ),
 
-      // --- Texture ---
       BrushPreset(
         id: uuid.v4(),
-        name: 'Crosshatch',
+        name: TKeys.presetCrosshatch.tr,
         type: SketchToolType.pen,
         category: BrushCategory.texture,
         size: 6,
@@ -186,7 +179,7 @@ class ToolsController extends GetxController {
       ),
       BrushPreset(
         id: uuid.v4(),
-        name: 'Grain',
+        name: TKeys.presetGrain.tr,
         type: SketchToolType.pencil,
         category: BrushCategory.texture,
         size: 8,
@@ -195,12 +188,10 @@ class ToolsController extends GetxController {
       ),
     ]);
     final savedId = StorageService.loadLastPresetId();
-    final matched = presets.firstWhereOrNull((p) => p.name == savedId);
+    final matched = presets.firstWhereOrNull((p) => p.id == savedId);
     activePresetId.value = matched?.id ?? presets.first.id;
   }
 
-  /// Maps a pencil grade string to a 0-14 index (4H hardest → 9B softest),
-  /// used to interpolate size/opacity/hardness across the set.
   int _gradeIndex(String grade) {
     const order = [
       '4H',
@@ -222,8 +213,6 @@ class ToolsController extends GetxController {
     return order.indexOf(grade);
   }
 
-  /// Presets grouped by category, in category-declaration order — used by
-  /// the Tools view to render Sketchbook-style labeled sections.
   Map<BrushCategory, List<BrushPreset>> get groupedPresets {
     final map = <BrushCategory, List<BrushPreset>>{};
     for (final category in BrushCategory.values) {
@@ -247,7 +236,7 @@ class ToolsController extends GetxController {
     canvas.setBrushSize(preset.size);
     canvas.setBrushOpacity(preset.opacity);
     canvas.setBrushHardness(preset.hardness);
-    StorageService.saveLastPreset(preset.name);
+    StorageService.saveLastPreset(preset.id);
   }
 
   void updatePresetSize(BrushPreset preset, double size) {

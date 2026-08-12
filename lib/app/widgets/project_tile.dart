@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sketch_flow/app/data/models/project_model.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/sketches/controllers/sketches_controller.dart';
 import 'package:sketch_flow/app/routes/app_routes.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
@@ -110,7 +111,7 @@ class ProjectTile extends StatelessWidget {
             children: [
               ListTile(
                 leading: const Icon(Icons.drive_file_rename_outline),
-                title: const Text('Rename'),
+                title: Text(TKeys.rename.tr),
                 onTap: () {
                   Navigator.pop(context);
                   _showRenameDialog(context);
@@ -118,7 +119,7 @@ class ProjectTile extends StatelessWidget {
               ),
               ListTile(
                 leading: const Icon(Icons.ios_share),
-                title: const Text('Export'),
+                title: Text(TKeys.exportLabel.tr),
                 onTap: () {
                   Navigator.pop(context);
                   Get.toNamed(Routes.export, arguments: project);
@@ -126,9 +127,9 @@ class ProjectTile extends StatelessWidget {
               ),
               ListTile(
                 leading: const Icon(Icons.delete_outline, color: Colors.red),
-                title: const Text(
-                  'Delete',
-                  style: TextStyle(color: Colors.red),
+                title: Text(
+                  TKeys.delete.tr,
+                  style: const TextStyle(color: Colors.red),
                 ),
                 onTap: () {
                   Navigator.pop(context);
@@ -147,12 +148,12 @@ class ProjectTile extends StatelessWidget {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Rename sketch'),
+        title: Text(TKeys.renameSketch.tr),
         content: TextField(controller: textController, autofocus: true),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancel'),
+            child: Text(TKeys.cancel.tr),
           ),
           TextButton(
             onPressed: () {
@@ -165,7 +166,7 @@ class ProjectTile extends StatelessWidget {
               Navigator.pop(ctx);
               onChanged();
             },
-            child: const Text('Save'),
+            child: Text(TKeys.save.tr),
           ),
         ],
       ),
@@ -176,12 +177,14 @@ class ProjectTile extends StatelessWidget {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Delete sketch?'),
-        content: Text('"${project.name}" will be permanently deleted.'),
+        title: Text(TKeys.deleteSketchQuestion.tr),
+        content: Text(
+          TKeys.deleteSketchConfirm.trParams({'name': project.name}),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancel'),
+            child: Text(TKeys.cancel.tr),
           ),
           TextButton(
             onPressed: () {
@@ -191,7 +194,10 @@ class ProjectTile extends StatelessWidget {
               Navigator.pop(ctx);
               onChanged();
             },
-            child: const Text('Delete', style: TextStyle(color: Colors.red)),
+            child: Text(
+              TKeys.delete.tr,
+              style: const TextStyle(color: Colors.red),
+            ),
           ),
         ],
       ),

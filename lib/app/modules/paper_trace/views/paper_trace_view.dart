@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sketch_flow/app/data/models/tutorial_model.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/paper_trace/controllers/paper_trace_controller.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
@@ -254,7 +255,7 @@ class _NoImagePrompt extends StatelessWidget {
             Icon(Icons.image_outlined, size: 40, color: AppColors.inkFaint),
             const SizedBox(height: AppSpace.md),
             Text(
-              'Choose a photo to trace',
+              TKeys.choosePhotoToTrace.tr,
               style: AppTypography.body.copyWith(color: AppColors.inkMuted),
             ),
             const SizedBox(height: AppSpace.lg),
@@ -263,13 +264,13 @@ class _NoImagePrompt extends StatelessWidget {
               children: [
                 _PromptButton(
                   icon: Icons.camera_alt_outlined,
-                  label: 'Camera',
+                  label: TKeys.camera.tr,
                   onTap: controller.captureWithCamera,
                 ),
                 const SizedBox(width: AppSpace.sm),
                 _PromptButton(
                   icon: Icons.photo_library_outlined,
-                  label: 'Gallery',
+                  label: TKeys.gallery.tr,
                   onTap: controller.pickFromGallery,
                 ),
               ],
@@ -397,7 +398,7 @@ class _BottomControlsState extends State<_BottomControls> {
             children: [
               _ToolbarAction(
                 icon: Icons.opacity,
-                label: 'Opacity',
+                label: TKeys.opacityLabel.tr,
                 isActive: _showOpacitySlider,
                 onTap: () =>
                     setState(() => _showOpacitySlider = !_showOpacitySlider),
@@ -407,14 +408,14 @@ class _BottomControlsState extends State<_BottomControls> {
                   icon: controller.isLocked.value
                       ? Icons.lock
                       : Icons.lock_open_outlined,
-                  label: 'Lock',
+                  label: TKeys.lockLabel.tr,
                   isActive: controller.isLocked.value,
                   onTap: controller.toggleLock,
                 ),
               ),
               _ToolbarAction(
                 icon: Icons.open_in_full,
-                label: 'Extend',
+                label: TKeys.extendLabel.tr,
                 isActive: false,
                 onTap: controller.toggleExtended,
               ),
@@ -520,7 +521,10 @@ class _StepNavigatorBar extends StatelessWidget {
                 border: Border.all(color: AppColors.divider),
               ),
               child: Text(
-                'Step: ${controller.currentStepIndex.value + 1}/${controller.stepSequence.length}',
+                TKeys.stepProgress.trParams({
+                  'current': '${controller.currentStepIndex.value + 1}',
+                  'total': '${controller.stepSequence.length}',
+                }),
                 style: const TextStyle(fontWeight: FontWeight.w600),
               ),
             ),

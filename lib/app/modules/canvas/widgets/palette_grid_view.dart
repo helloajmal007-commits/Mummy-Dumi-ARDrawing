@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/canvas/controllers/color_picker_controller.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
 import 'package:sketch_flow/app/theme/app_typography.dart';
@@ -14,10 +15,10 @@ class PaletteGridView extends StatelessWidget {
     return Obx(() {
       final palettes = controller.palettes;
       if (palettes.isEmpty) {
-        return const Center(
+        return Center(
           child: Text(
-            'No palettes yet',
-            style: TextStyle(color: Colors.white54),
+            TKeys.noPalettesYet.tr,
+            style: const TextStyle(color: Colors.white54),
           ),
         );
       }
@@ -168,9 +169,9 @@ class PaletteGridView extends StatelessWidget {
       context: context,
       builder: (_) => AlertDialog(
         backgroundColor: const Color(0xFF2A2A2A),
-        title: const Text(
-          'Rename palette',
-          style: TextStyle(color: Colors.white),
+        title: Text(
+          TKeys.renamePalette.tr,
+          style: const TextStyle(color: Colors.white),
         ),
         content: TextField(
           controller: textController,
@@ -180,7 +181,7 @@ class PaletteGridView extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(TKeys.cancel.tr),
           ),
           TextButton(
             onPressed: () {
@@ -190,7 +191,7 @@ class PaletteGridView extends StatelessWidget {
               );
               Navigator.pop(context);
             },
-            child: const Text('Save'),
+            child: Text(TKeys.save.tr),
           ),
         ],
       ),

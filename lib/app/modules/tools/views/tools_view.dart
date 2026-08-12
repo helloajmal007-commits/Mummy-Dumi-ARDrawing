@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sketch_flow/app/data/models/tool_model.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/tools/controllers/tools_controller.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
@@ -34,7 +35,7 @@ class ToolsView extends GetView<ToolsController> {
                     size: 36,
                     onTap: () => Get.back(),
                   ),
-                  Text('Tools', style: AppTypography.h3),
+                  Text(TKeys.toolsTitle.tr, style: AppTypography.h3),
                   const SizedBox(width: 36),
                 ],
               ),
@@ -89,7 +90,7 @@ class ToolsView extends GetView<ToolsController> {
                       );
                     }),
                     const SizedBox(height: AppSpace.xl),
-                    const SectionHeader(title: 'UTILITY'),
+                    SectionHeader(title: TKeys.sectionUtility.tr),
                     const SizedBox(height: AppSpace.md),
                     Wrap(
                       spacing: AppSpace.md,
@@ -108,7 +109,7 @@ class ToolsView extends GetView<ToolsController> {
                           .toList(),
                     ),
                     const SizedBox(height: AppSpace.xl),
-                    const SectionHeader(title: 'BRUSH SETTINGS'),
+                    SectionHeader(title: TKeys.sectionBrushSettings.tr),
                     const SizedBox(height: AppSpace.md),
                     _BrushSettingsCard(controller: controller),
                   ],
@@ -255,7 +256,7 @@ class _BrushSettingsCard extends StatelessWidget {
         children: [
           Obx(
             () => _SliderRow(
-              label: 'Size',
+              label: TKeys.sizeLabel.tr,
               value: controller.canvas.brushSize.value,
               min: 1,
               max: 64,
@@ -266,7 +267,7 @@ class _BrushSettingsCard extends StatelessWidget {
           const SizedBox(height: AppSpace.md),
           Obx(
             () => _SliderRow(
-              label: 'Opacity',
+              label: TKeys.opacityLabel.tr,
               value: controller.canvas.brushOpacity.value,
               min: 0.05,
               max: 1.0,
@@ -278,7 +279,7 @@ class _BrushSettingsCard extends StatelessWidget {
           const SizedBox(height: AppSpace.md),
           Obx(
             () => _SliderRow(
-              label: 'Hardness',
+              label: TKeys.hardnessLabel.tr,
               value: controller.canvas.brushHardness.value,
               min: 0.0,
               max: 1.0,

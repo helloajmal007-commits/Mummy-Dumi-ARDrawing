@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/routes/app_routes.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
@@ -51,15 +52,15 @@ class ImageSourceSheet extends StatelessWidget {
             const SizedBox(height: AppSpace.lg),
             Text(
               category != null
-                  ? 'Draw from $category'
-                  : 'How do you want to trace?',
+                  ? TKeys.drawFromCategory.trParams({'category': category!})
+                  : TKeys.howDoYouWantToTrace2.tr,
               style: AppTypography.h3,
             ),
             const SizedBox(height: AppSpace.md),
             _SheetOption(
               icon: Icons.view_in_ar_outlined,
-              label: 'AR camera',
-              sublabel: 'Overlay the image on your live camera view',
+              label: TKeys.arCameraOption.tr,
+              sublabel: TKeys.arCameraSublabel.tr,
               onTap: () {
                 Navigator.pop(context);
                 Get.toNamed(Routes.arTrace);
@@ -67,8 +68,8 @@ class ImageSourceSheet extends StatelessWidget {
             ),
             _SheetOption(
               icon: Icons.crop_portrait,
-              label: 'On paper',
-              sublabel: 'Show the image on screen and copy it by eye',
+              label: TKeys.onPaperOption.tr,
+              sublabel: TKeys.onPaperSublabel.tr,
               onTap: () {
                 Navigator.pop(context);
                 Get.toNamed(Routes.paperTrace);
@@ -77,7 +78,7 @@ class ImageSourceSheet extends StatelessWidget {
             if (category != null) ...[
               const SizedBox(height: AppSpace.xs),
               Text(
-                'You can browse $category presets once you\'re in either mode.',
+                TKeys.browseCategoryPresets.trParams({'category': category!}),
                 style: AppTypography.bodySmall.copyWith(
                   color: AppColors.inkMuted,
                 ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/canvas/controllers/color_picker_controller.dart';
 import 'package:sketch_flow/app/modules/canvas/widgets/color_value_sliders.dart';
 import 'package:sketch_flow/app/modules/canvas/widgets/gradient_bar_picker.dart';
@@ -172,18 +173,18 @@ class _ComplementaryAndHistory extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Complementary',
-                    style: TextStyle(color: Colors.white70, fontSize: 13),
+                  Text(
+                    TKeys.complementaryLabel.tr,
+                    style: const TextStyle(color: Colors.white70, fontSize: 13),
                   ),
                   Container(
                     height: 18,
                     margin: const EdgeInsets.symmetric(vertical: 4),
                     color: complementary,
                   ),
-                  const Text(
-                    'Color History',
-                    style: TextStyle(color: Colors.white70, fontSize: 13),
+                  Text(
+                    TKeys.colorHistoryLabel.tr,
+                    style: const TextStyle(color: Colors.white70, fontSize: 13),
                   ),
                   SizedBox(
                     height: 18,
@@ -234,7 +235,7 @@ class _WheelTab extends StatelessWidget {
             () => Align(
               alignment: Alignment.centerRight,
               child: Text(
-                'HEX # ${controller.hexCode.replaceAll('#', '')}',
+                '${TKeys.hexPrefix.tr}${controller.hexCode.replaceAll('#', '')}',
                 style: const TextStyle(color: Colors.white54),
               ),
             ),
@@ -344,10 +345,10 @@ class _FavoritesTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       if (controller.favorites.isEmpty) {
-        return const Center(
+        return Center(
           child: Text(
-            'No favorites yet — tap the star on any color.',
-            style: TextStyle(color: Colors.white54),
+            TKeys.noFavoritesYet.tr,
+            style: const TextStyle(color: Colors.white54),
           ),
         );
       }

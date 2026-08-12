@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sketch_flow/app/data/models/tutorial_model.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 
 class ArTraceController extends GetxController {
   CameraController? cameraController;
@@ -27,12 +28,16 @@ class ArTraceController extends GetxController {
   bool _isInitializing = false;
 
   final RxBool isImageHidden = false.obs;
+
   void toggleImageHidden() => isImageHidden.value = !isImageHidden.value;
 
   final RxList<TutorialStep> stepSequence = <TutorialStep>[].obs;
   final RxInt currentStepIndex = 0.obs;
+
   bool get hasSteps => stepSequence.isNotEmpty;
+
   bool get canGoPrevStep => currentStepIndex.value > 0;
+
   bool get canGoNextStep => currentStepIndex.value < stepSequence.length - 1;
 
   final RxBool isFlashOn = false.obs;
@@ -84,7 +89,7 @@ class ArTraceController extends GetxController {
     try {
       _cameras = await availableCameras();
       if (_cameras.isEmpty) {
-        errorMessage.value = 'No camera found on this device.';
+        errorMessage.value = TKeys.errNoCameraFound.tr;
         return;
       }
       final backCamera = _cameras.firstWhere(
@@ -94,7 +99,7 @@ class ArTraceController extends GetxController {
       await _startCamera(backCamera);
       isFrontCamera.value = false;
     } catch (e) {
-      errorMessage.value = 'Could not start the camera. Check permissions.';
+      errorMessage.value = TKeys.errCameraStartFailed.tr;
     } finally {
       _isInitializing = false;
     }
@@ -127,7 +132,7 @@ class ArTraceController extends GetxController {
       await controller.setFlashMode(next ? FlashMode.torch : FlashMode.off);
       isFlashOn.value = next;
     } catch (e) {
-      errorMessage.value = 'Could not toggle flash.';
+      errorMessage.value = TKeys.errFlashToggleFailed.tr;
     }
   }
 
@@ -176,7 +181,7 @@ class ArTraceController extends GetxController {
       overlayImage.value = file;
       _resetTransform();
     } catch (e) {
-      imageLoadError.value = 'Could not load this image: $e';
+      imageLoadError.value = TKeys.errImageLoadFailed.trParams({'error': '$e'});
     } finally {
       isLoadingImage.value = false;
     }
@@ -206,7 +211,7 @@ class ArTraceController extends GetxController {
       frozenFrame.value = saved;
       isFrozen.value = true;
     } catch (e) {
-      errorMessage.value = 'Could not freeze the frame. Try again.';
+      errorMessage.value = TKeys.errFreezeFailed.tr;
     } finally {
       _isCapturing = false;
     }

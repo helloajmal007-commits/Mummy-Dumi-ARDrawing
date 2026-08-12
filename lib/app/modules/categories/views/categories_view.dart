@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/categories/controllers/categories_controller.dart';
 import 'package:sketch_flow/app/routes/app_routes.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
@@ -31,15 +32,13 @@ class CategoriesView extends GetView<CategoriesController> {
                 AppSpace.lg,
                 0,
               ),
-              child: Row(
-                children: [Text('Categories', style: AppTypography.h2)],
-              ),
+              child: Text(TKeys.categoriesTitle.tr, style: AppTypography.h2),
             ),
             const SizedBox(height: AppSpace.sm),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppSpace.lg),
               child: Text(
-                'Pick a style to browse a curated set of images to trace.',
+                TKeys.categoriesSubtitle.tr,
                 style: AppTypography.bodySmall.copyWith(
                   color: AppColors.inkMuted,
                 ),
@@ -61,7 +60,7 @@ class CategoriesView extends GetView<CategoriesController> {
                   itemCount: controller.categories.length,
                   itemBuilder: (_, i) {
                     final category = controller.categories[i];
-                    final previewPath = controller.previewImages[category.name];
+                    final previewPath = controller.previewImages[category.key];
                     debugPrint(
                       'CARD BUILD [$i] ${category.name}: previewPath = $previewPath',
                     );
@@ -72,8 +71,7 @@ class CategoriesView extends GetView<CategoriesController> {
                         Routes.assetGrid,
                         arguments: AssetGridArgs(
                           title: category.name,
-                          subtitle:
-                              'Pick an image to trace with AR or on paper',
+                          subtitle: TKeys.pickImageToTraceArOrPaper.tr,
                           folderPath: category.assetFolder,
                           accent: category.color,
                           emptyIcon: category.icon,

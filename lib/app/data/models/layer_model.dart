@@ -1,35 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 
 enum BlendMode2 { normal, multiply, screen, overlay, darken, lighten }
 
-extension BlendMode2Label on BlendMode2 {
+extension BlendMode2Meta on BlendMode2 {
   String get label {
     switch (this) {
       case BlendMode2.normal:
-        return 'Normal';
+        return TKeys.blendNormal.tr;
       case BlendMode2.multiply:
-        return 'Multiply';
+        return TKeys.blendMultiply.tr;
       case BlendMode2.screen:
-        return 'Screen';
+        return TKeys.blendScreen.tr;
       case BlendMode2.overlay:
-        return 'Overlay';
+        return TKeys.blendOverlay.tr;
       case BlendMode2.darken:
-        return 'Darken';
+        return TKeys.blendDarken.tr;
       case BlendMode2.lighten:
-        return 'Lighten';
+        return TKeys.blendLighten.tr;
     }
   }
 }
 
-/// Represents a single layer inside a sketch canvas.
 class LayerModel {
   final String id;
   String name;
   bool isVisible;
   bool isLocked;
-  double opacity; // 0.0 - 1.0
+  double opacity;
   BlendMode2 blendMode;
-  final Color previewColor; // placeholder for a rendered thumbnail
+  final Color previewColor;
 
   LayerModel({
     required this.id,

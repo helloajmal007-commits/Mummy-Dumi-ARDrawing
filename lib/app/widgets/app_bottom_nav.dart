@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/routes/app_routes.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
@@ -48,26 +49,26 @@ class AppBottomNav extends StatelessWidget {
             children: [
               _NavItem(
                 icon: Icons.home_filled,
-                label: 'Home',
+                label: TKeys.navHome.tr,
                 isActive: current == AppTab.home,
                 onTap: () => _go(AppTab.home),
               ),
               _NavItem(
                 icon: Icons.school_outlined,
-                label: 'Learn',
+                label: TKeys.navLearn.tr,
                 isActive: current == AppTab.learn,
                 onTap: () => _go(AppTab.learn),
               ),
-              const SizedBox(width: 40), // reserved notch space
+              const SizedBox(width: 40),
               _NavItem(
                 icon: Icons.grid_view_outlined,
-                label: 'Categories',
+                label: TKeys.navCategories.tr,
                 isActive: current == AppTab.categories,
                 onTap: () => _go(AppTab.categories),
               ),
               _NavItem(
                 icon: Icons.settings_outlined,
-                label: 'Settings',
+                label: TKeys.navSettings.tr,
                 isActive: current == AppTab.settings,
                 onTap: () => _go(AppTab.settings),
               ),

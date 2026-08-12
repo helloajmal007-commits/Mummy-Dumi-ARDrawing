@@ -12,80 +12,112 @@ class LanguageSelectView extends GetView<LanguageController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.accentSoft,
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(
-                AppSpace.lg,
-                AppSpace.lg,
-                AppSpace.lg,
-                0,
+    final isSettingsMode = controller.isSettingsMode;
+
+    return PopScope(
+      canPop: !isSettingsMode,
+      onPopInvoked: (didPop) {
+        if (didPop) return;
+        if (isSettingsMode) controller.revertAndGoBack();
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.accentSoft,
+        appBar: isSettingsMode
+            ? AppBar(
+                backgroundColor: AppColors.accentSoft,
+                elevation: 0,
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back_ios_new),
+                  onPressed: controller.revertAndGoBack,
+                ),
+                title: Text(
+                  TKeys.chooseYourLanguage.tr,
+                  style: AppTypography.h3,
+                ),
+              )
+            : null,
+        body: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (!isSettingsMode)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpace.lg,
+                    AppSpace.lg,
+                    AppSpace.lg,
+                    0,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        TKeys.chooseYourLanguage.tr,
+                        style: AppTypography.h1,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        TKeys.selectPreferredLanguage.tr,
+                        style: AppTypography.body.copyWith(
+                          color: AppColors.inkMuted,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              const SizedBox(height: AppSpace.lg),
+              Expanded(
+                child: ListView.separated(
+                  padding: const EdgeInsets.symmetric(horizontal: AppSpace.lg),
+                  itemCount: kSupportedLanguages.length,
+                  separatorBuilder: (_, _) =>
+                      const SizedBox(height: AppSpace.sm),
+                  itemBuilder: (context, i) {
+                    final language = kSupportedLanguages[i];
+                    return Obx(() {
+                      final isSelected =
+                          controller.selected.value.code == language.code;
+                      return _LanguageTile(
+                        language: language,
+                        isSelected: isSelected,
+                        onTap: () => controller.select(language),
+                      );
+                    });
+                  },
+                ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(TKeys.chooseYourLanguage.tr, style: AppTypography.h1),
-                  const SizedBox(height: 4),
-                  Text(
-                    TKeys.selectPreferredLanguage.tr,
-                    style: AppTypography.body.copyWith(
-                      color: AppColors.inkMuted,
+              Padding(
+                padding: const EdgeInsets.all(AppSpace.lg),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      elevation: 0,
                     ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: AppSpace.lg),
-            Expanded(
-              child: ListView.separated(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpace.lg),
-                itemCount: kSupportedLanguages.length,
-                separatorBuilder: (_, _) => const SizedBox(height: AppSpace.sm),
-                itemBuilder: (context, i) {
-                  final language = kSupportedLanguages[i];
-                  return Obx(() {
-                    final isSelected =
-                        controller.selected.value.code == language.code;
-                    return _LanguageTile(
-                      language: language,
-                      isSelected: isSelected,
-                      onTap: () => controller.select(language),
-                    );
-                  });
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(AppSpace.lg),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    elevation: 0,
-                  ),
-                  onPressed: controller.goToConfirm,
-                  child: Text(
-                    TKeys.continueBtn.tr,
-                    style: AppTypography.button.copyWith(
-                      color: Colors.white,
-                      fontSize: 16,
+                    onPressed: isSettingsMode
+                        ? controller.saveAndGoBack
+                        : controller.goToConfirm,
+                    child: Text(
+                      isSettingsMode ? TKeys.save.tr : TKeys.continueBtn.tr,
+                      style: AppTypography.button.copyWith(
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 }
+
+// _LanguageTile unchanged
 
 class _LanguageTile extends StatelessWidget {
   final AppLanguage language;

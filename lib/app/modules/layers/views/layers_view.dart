@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sketch_flow/app/data/models/layer_model.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/layers/controllers/layers_controller.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
@@ -19,7 +20,11 @@ class LayersView extends GetView<LayersController> {
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(
-                  AppSpace.lg, AppSpace.md, AppSpace.lg, 0),
+                AppSpace.lg,
+                AppSpace.md,
+                AppSpace.lg,
+                0,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -28,7 +33,7 @@ class LayersView extends GetView<LayersController> {
                     size: 36,
                     onTap: () => Get.back(),
                   ),
-                  Text('Layers', style: AppTypography.h3),
+                  Text(TKeys.layersTitle.tr, style: AppTypography.h3),
                   ChromeIconButton(
                     icon: Icons.add,
                     size: 36,
@@ -43,7 +48,11 @@ class LayersView extends GetView<LayersController> {
                 final layers = controller.layers;
                 return ReorderableListView.builder(
                   padding: const EdgeInsets.fromLTRB(
-                      AppSpace.lg, 0, AppSpace.lg, AppSpace.xxxl),
+                    AppSpace.lg,
+                    0,
+                    AppSpace.lg,
+                    AppSpace.xxxl,
+                  ),
                   itemCount: layers.length,
                   onReorder: controller.reorder,
                   itemBuilder: (context, i) {
@@ -116,8 +125,9 @@ class _LayerTile extends StatelessWidget {
                       layer.name,
                       style: AppTypography.body.copyWith(
                         fontWeight: FontWeight.w600,
-                        color:
-                        layer.isVisible ? AppColors.ink : AppColors.inkFaint,
+                        color: layer.isVisible
+                            ? AppColors.ink
+                            : AppColors.inkFaint,
                       ),
                     ),
                     Text(
@@ -149,7 +159,10 @@ class _LayerTile extends StatelessWidget {
 }
 
 void _showLayerSheet(
-    BuildContext context, LayerModel layer, LayersController controller) {
+  BuildContext context,
+  LayerModel layer,
+  LayersController controller,
+) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -161,7 +174,7 @@ void _showLayerSheet(
         children: [
           Text(layer.name, style: AppTypography.h3),
           const SizedBox(height: AppSpace.lg),
-          Text('Opacity', style: AppTypography.label),
+          Text(TKeys.layerOpacityLabel.tr, style: AppTypography.label),
           StatefulBuilder(
             builder: (context, setState) => Slider(
               value: layer.opacity,
@@ -172,7 +185,7 @@ void _showLayerSheet(
             ),
           ),
           const SizedBox(height: AppSpace.md),
-          Text('Blend mode', style: AppTypography.label),
+          Text(TKeys.blendModeLabel.tr, style: AppTypography.label),
           const SizedBox(height: AppSpace.sm),
           Wrap(
             spacing: AppSpace.sm,
@@ -180,11 +193,11 @@ void _showLayerSheet(
             children: BlendMode2.values
                 .map(
                   (mode) => ChoiceChip(
-                label: Text(mode.label),
-                selected: layer.blendMode == mode,
-                onSelected: (_) => controller.setBlendMode(layer, mode),
-              ),
-            )
+                    label: Text(mode.label),
+                    selected: layer.blendMode == mode,
+                    onSelected: (_) => controller.setBlendMode(layer, mode),
+                  ),
+                )
                 .toList(),
           ),
           const SizedBox(height: AppSpace.xl),
@@ -197,7 +210,7 @@ void _showLayerSheet(
                     Navigator.pop(context);
                   },
                   icon: const Icon(Icons.copy_outlined, size: 18),
-                  label: const Text('Duplicate'),
+                  label: Text(TKeys.duplicate.tr),
                 ),
               ),
               const SizedBox(width: AppSpace.md),
@@ -207,10 +220,15 @@ void _showLayerSheet(
                     controller.deleteLayer(layer);
                     Navigator.pop(context);
                   },
-                  icon: Icon(Icons.delete_outline,
-                      size: 18, color: AppColors.danger),
-                  label: Text('Delete',
-                      style: TextStyle(color: AppColors.danger)),
+                  icon: Icon(
+                    Icons.delete_outline,
+                    size: 18,
+                    color: AppColors.danger,
+                  ),
+                  label: Text(
+                    TKeys.delete.tr,
+                    style: TextStyle(color: AppColors.danger),
+                  ),
                 ),
               ),
             ],

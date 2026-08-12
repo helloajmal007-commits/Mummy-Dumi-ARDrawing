@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 
 class StrokePoint {
   final Offset offset;
   final double pressure;
+
   const StrokePoint(this.offset, this.pressure);
 }
 
@@ -19,29 +22,29 @@ enum SketchToolType {
   text,
 }
 
-extension SketchToolMeta on SketchToolType {
+extension SketchToolTypeMeta on SketchToolType {
   String get label {
     switch (this) {
       case SketchToolType.pencil:
-        return 'Pencil';
+        return TKeys.toolPencil.tr;
       case SketchToolType.pen:
-        return 'Pen';
+        return TKeys.toolPen.tr;
       case SketchToolType.marker:
-        return 'Marker';
+        return TKeys.toolMarker.tr;
       case SketchToolType.airbrush:
-        return 'Airbrush';
+        return TKeys.toolAirbrush.tr;
       case SketchToolType.smear:
-        return 'Smear';
+        return TKeys.toolSmear.tr;
       case SketchToolType.eraser:
-        return 'Eraser';
+        return TKeys.toolEraser.tr;
       case SketchToolType.fill:
-        return 'Fill';
+        return TKeys.toolFill.tr;
       case SketchToolType.eyedropper:
-        return 'Eyedropper';
+        return TKeys.toolEyedropper.tr;
       case SketchToolType.shape:
-        return 'Shape';
+        return TKeys.toolShape.tr;
       case SketchToolType.text:
-        return 'Text';
+        return TKeys.toolText.tr;
     }
   }
 
@@ -94,51 +97,51 @@ extension BrushCategoryLabel on BrushCategory {
   String get label {
     switch (this) {
       case BrushCategory.basic:
-        return 'Basic';
+        return TKeys.categoryBasic.tr;
       case BrushCategory.fineArt:
-        return 'Fine Art';
+        return TKeys.categoryFineArt.tr;
       case BrushCategory.markers:
-        return 'Markers';
+        return TKeys.categoryMarkers.tr;
       case BrushCategory.legacy:
-        return 'Legacy';
+        return TKeys.categoryLegacy.tr;
       case BrushCategory.artist:
-        return 'Artist';
+        return TKeys.categoryArtist.tr;
       case BrushCategory.pastel:
-        return 'Pastel';
+        return TKeys.categoryPastel.tr;
       case BrushCategory.synthetic:
-        return 'Synthetic Paint';
+        return TKeys.categorySynthetic.tr;
       case BrushCategory.traditional:
-        return 'Traditional';
+        return TKeys.categoryTraditional.tr;
       case BrushCategory.texture:
-        return 'Texture';
+        return TKeys.categoryTexture.tr;
       case BrushCategory.halfTone:
-        return 'Half Tone';
+        return TKeys.categoryHalfTone.tr;
       case BrushCategory.shape:
-        return 'Shape';
+        return TKeys.categoryShape.tr;
       case BrushCategory.splatter:
-        return 'Splatter';
+        return TKeys.categorySplatter.tr;
       case BrushCategory.glow:
-        return 'Glow';
+        return TKeys.categoryGlow.tr;
       case BrushCategory.smudge:
-        return 'Smudge';
+        return TKeys.categorySmudge.tr;
       case BrushCategory.designer:
-        return 'Designer';
+        return TKeys.categoryDesigner.tr;
       case BrushCategory.colorless:
-        return 'Colorless';
+        return TKeys.categoryColorless.tr;
     }
   }
 }
 
 enum BrushFamily {
-  graphite, // grainy, pressure-thinned, textured edge
-  ink, // crisp constant width, hard edge, high opacity
-  markerFlat, // flat semi-transparent fill, overlap darkening, chisel cap
-  airbrushSpray, // soft radial dab stamping, additive buildup
-  softChalk, // broad low-opacity strokes, heavy grain scatter
-  bristlePaint, // multi-line offset strokes simulating brush hairs
-  smudgeDrag, // drags/samples existing canvas pixels
-  splatterDots, // randomized particle stamping
-  patternStamp, // repeating motif/texture/glow stamped along the path
+  graphite,
+  ink,
+  markerFlat,
+  airbrushSpray,
+  softChalk,
+  bristlePaint,
+  smudgeDrag,
+  splatterDots,
+  patternStamp,
 }
 
 extension BrushCategoryFamily on BrushCategory {

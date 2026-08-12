@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/gallery/controllers/gallery_controller.dart';
 import 'package:sketch_flow/app/routes/app_routes.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
@@ -34,7 +35,7 @@ class GalleryView extends GetView<GalleryController> {
                     onTap: () => Get.back(),
                   ),
                   const SizedBox(width: AppSpace.md),
-                  Text('Gallery', style: AppTypography.h2),
+                  Text(TKeys.galleryTitle.tr, style: AppTypography.h2),
                 ],
               ),
             ),
@@ -86,10 +87,10 @@ class _EmptyState extends StatelessWidget {
               color: AppColors.inkFaint,
             ),
             const SizedBox(height: AppSpace.md),
-            Text('Start your first sketch', style: AppTypography.h3),
+            Text(TKeys.startYourFirstSketch.tr, style: AppTypography.h3),
             const SizedBox(height: AppSpace.xs),
             Text(
-              'Drawings you save will show up here.',
+              TKeys.galleryEmptyDesc.tr,
               textAlign: TextAlign.center,
               style: AppTypography.bodySmall.copyWith(
                 color: AppColors.inkMuted,
@@ -98,7 +99,7 @@ class _EmptyState extends StatelessWidget {
             const SizedBox(height: AppSpace.lg),
             OutlinedButton(
               onPressed: () => Get.toNamed(Routes.canvas),
-              child: const Text('New sketch'),
+              child: Text(TKeys.newSketch.tr),
             ),
           ],
         ),

@@ -9,6 +9,7 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:share_plus/share_plus.dart';
 import 'package:sketch_flow/app/data/models/project_model.dart';
 import 'package:sketch_flow/app/data/services/thumbnail_service.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/canvas/controllers/canvas_controller.dart';
 
 enum ExportFormat { png, jpg, pdf, psd }
@@ -17,16 +18,15 @@ extension ExportFormatMeta on ExportFormat {
   String get label {
     switch (this) {
       case ExportFormat.png:
-        return 'PNG';
+        return TKeys.exportFormatPng.tr;
       case ExportFormat.jpg:
-        return 'JPG';
+        return TKeys.exportFormatJpg.tr;
       case ExportFormat.pdf:
-        return 'PDF';
+        return TKeys.exportFormatPdf.tr;
       case ExportFormat.psd:
-        return 'PSD (coming soon)';
+        return TKeys.exportFormatPsd.tr;
     }
   }
-
   bool get isAvailable => this != ExportFormat.psd;
 }
 
@@ -36,11 +36,11 @@ extension ExportResolutionMeta on ExportResolution {
   String get label {
     switch (this) {
       case ExportResolution.standard:
-        return 'Standard · 1x';
+        return TKeys.exportResStandard.tr;
       case ExportResolution.high:
-        return 'High · 2x';
+        return TKeys.exportResHigh.tr;
       case ExportResolution.original:
-        return 'Original canvas size';
+        return TKeys.exportResOriginal.tr;
     }
   }
 
@@ -105,7 +105,7 @@ class ExportController extends GetxController {
       if (!hasAccess) {
         final granted = await Gal.requestAccess();
         if (!granted) {
-          errorMessage.value = 'Permission to save photos was denied.';
+          errorMessage.value = TKeys.errPermissionDenied.tr;
           isExporting.value = false;
           return;
         }
@@ -139,14 +139,14 @@ class ExportController extends GetxController {
           await _exportPdf(baseWidth * scale, baseHeight * scale);
           break;
         case ExportFormat.psd:
-          errorMessage.value = 'PSD export is coming soon.';
+          errorMessage.value = TKeys.errPsdComingSoon.tr;
           isExporting.value = false;
           return;
       }
 
       exportComplete.value = true;
     } catch (e) {
-      errorMessage.value = 'Export failed: $e';
+      errorMessage.value = TKeys.errExportFailed.trParams({'error': '$e'});
     } finally {
       isExporting.value = false;
     }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sketch_flow/app/data/models/tool_model.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/canvas/controllers/canvas_controller.dart';
 import 'package:sketch_flow/app/modules/canvas/views/color_picker_view.dart';
 import 'package:sketch_flow/app/modules/canvas/widgets/sketch_painter.dart';
@@ -273,11 +274,9 @@ Future<void> _manualSave(
   if (controller.activeProject.value == null) {
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Nothing to save yet — this sketch isn\'t linked to a project.',
-          ),
-          duration: Duration(seconds: 2),
+        SnackBar(
+          content: Text(TKeys.nothingToSaveYet.tr),
+          duration: const Duration(seconds: 2),
         ),
       );
     }
@@ -287,7 +286,10 @@ Future<void> _manualSave(
   await controller.saveCurrentProject();
   if (context.mounted) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Saved'), duration: Duration(seconds: 1)),
+      SnackBar(
+        content: Text(TKeys.saved.tr),
+        duration: const Duration(seconds: 1),
+      ),
     );
   }
 }

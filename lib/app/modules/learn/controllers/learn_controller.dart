@@ -1,273 +1,242 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sketch_flow/app/data/models/tutorial_model.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 
 class LearnController extends GetxController {
   final RxList<Tutorial> tutorials = <Tutorial>[
     Tutorial(
       id: 'draw-a-face',
-      title: 'How to Draw a Face',
-      description: 'Learn face proportions step by step',
+      title: TKeys.tutFaceTitle.tr,
+      description: TKeys.tutFaceDesc.tr,
       icon: Icons.face_outlined,
       color: AppColors.coral,
-      difficulty: 'Beginner',
-      steps: const [
+      difficulty: TKeys.difficultyBeginner.tr,
+      steps: [
         TutorialStep(
-          title: 'The guide oval',
-          instruction: 'Start with a simple oval for the head shape.',
+          title: TKeys.tutFaceStep1Title.tr,
+          instruction: TKeys.tutFaceStep1Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-face/step_1.webp',
         ),
         TutorialStep(
-          title: 'Center lines',
-          instruction:
-              'Add a vertical and horizontal center line to line up features.',
+          title: TKeys.tutFaceStep2Title.tr,
+          instruction: TKeys.tutFaceStep2Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-face/step_2.webp',
         ),
         TutorialStep(
-          title: 'Jaw and chin',
-          instruction: 'Refine the oval into a jaw and chin shape.',
+          title: TKeys.tutFaceStep3Title.tr,
+          instruction: TKeys.tutFaceStep3Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-face/step_3.webp',
         ),
         TutorialStep(
-          title: 'Eye placement',
-          instruction:
-              'Mark the eye line and space out five eye-widths across it.',
+          title: TKeys.tutFaceStep4Title.tr,
+          instruction: TKeys.tutFaceStep4Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-face/step_4.webp',
         ),
         TutorialStep(
-          title: 'Eyes and eyebrows',
-          instruction:
-              'Draw almond-shaped eyes on the second and fourth marks, then add eyebrows above.',
+          title: TKeys.tutFaceStep5Title.tr,
+          instruction: TKeys.tutFaceStep5Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-face/step_5.webp',
         ),
         TutorialStep(
-          title: 'The nose',
-          instruction:
-              'The nose bottom sits halfway between the eyes and chin.',
+          title: TKeys.tutFaceStep6Title.tr,
+          instruction: TKeys.tutFaceStep6Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-face/step_6.webp',
         ),
         TutorialStep(
-          title: 'The mouth',
-          instruction:
-              'The mouth sits a third of the way down from the nose to the chin.',
+          title: TKeys.tutFaceStep7Title.tr,
+          instruction: TKeys.tutFaceStep7Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-face/step_7.webp',
         ),
         TutorialStep(
-          title: 'Ears',
-          instruction:
-              'Ears span from the eyebrow line down to the bottom of the nose.',
+          title: TKeys.tutFaceStep8Title.tr,
+          instruction: TKeys.tutFaceStep8Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-face/step_8.webp',
         ),
         TutorialStep(
-          title: 'Hair',
-          instruction: 'Finish with a hairline and a few strands for texture.',
+          title: TKeys.tutFaceStep9Title.tr,
+          instruction: TKeys.tutFaceStep9Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-face/step_9.webp',
         ),
       ],
     ),
     Tutorial(
       id: 'draw-a-cat',
-      title: 'How to Draw a Cat Face',
-      description: 'Simple shapes to a full cat face sketch',
+      title: TKeys.tutCatTitle.tr,
+      description: TKeys.tutCatDesc.tr,
       icon: Icons.pets_outlined,
       color: AppColors.mint,
-      difficulty: 'Beginner',
-      steps: const [
+      difficulty: TKeys.difficultyBeginner.tr,
+      steps: [
         TutorialStep(
-          title: 'The guide circle',
-          instruction:
-              'Start with a circle for the head, then add a center cross to line up features.',
+          title: TKeys.tutCatStep1Title.tr,
+          instruction: TKeys.tutCatStep1Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-cat/step_1.png',
         ),
         TutorialStep(
-          title: 'Add the ears',
-          instruction:
-              'Draw two triangular ears sitting on top of the circle, slightly angled outward.',
+          title: TKeys.tutCatStep2Title.tr,
+          instruction: TKeys.tutCatStep2Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-cat/step_2.png',
         ),
         TutorialStep(
-          title: 'Eyes and nose',
-          instruction:
-              'Place almond-shaped eyes on the center line, then a small triangle nose below.',
+          title: TKeys.tutCatStep3Title.tr,
+          instruction: TKeys.tutCatStep3Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-cat/step_3.png',
         ),
         TutorialStep(
-          title: 'Mouth and whiskers',
-          instruction:
-              'Finish the mouth with a curved line from the nose, then add whiskers and cheek fur.',
+          title: TKeys.tutCatStep4Title.tr,
+          instruction: TKeys.tutCatStep4Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-cat/step_4.png',
         ),
       ],
     ),
     Tutorial(
       id: 'draw-a-house',
-      title: 'How to Draw a House',
-      description: 'Build a cozy cottage from basic shapes',
+      title: TKeys.tutHouseTitle.tr,
+      description: TKeys.tutHouseDesc.tr,
       icon: Icons.home_outlined,
       color: AppColors.accent,
-      difficulty: 'Beginner',
-      steps: const [
+      difficulty: TKeys.difficultyBeginner.tr,
+      steps: [
         TutorialStep(
-          title: 'The base rectangle',
-          instruction:
-              'Start with a simple rectangle for the front wall, and a center line to keep things symmetrical.',
+          title: TKeys.tutHouseStep1Title.tr,
+          instruction: TKeys.tutHouseStep1Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-house/step_1.png',
         ),
         TutorialStep(
-          title: 'The roofline',
-          instruction:
-              'Add a peaked roof on top, meeting at a point above the center line.',
+          title: TKeys.tutHouseStep2Title.tr,
+          instruction: TKeys.tutHouseStep2Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-house/step_2.png',
         ),
         TutorialStep(
-          title: 'Door and windows',
-          instruction:
-              'Sketch a door in the middle and a window on each side of it.',
+          title: TKeys.tutHouseStep3Title.tr,
+          instruction: TKeys.tutHouseStep3Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-house/step_3.png',
         ),
         TutorialStep(
-          title: 'Add the chimney',
-          instruction:
-              'Draw a rectangular chimney rising from the back edge of the roof.',
+          title: TKeys.tutHouseStep4Title.tr,
+          instruction: TKeys.tutHouseStep4Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-house/step_4.png',
         ),
         TutorialStep(
-          title: 'Roof shingles',
-          instruction:
-              'Fill the roof with short overlapping shingle lines for texture.',
+          title: TKeys.tutHouseStep5Title.tr,
+          instruction: TKeys.tutHouseStep5Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-house/step_5.png',
         ),
         TutorialStep(
-          title: 'Shading the walls',
-          instruction:
-              'Add crosshatching to the walls and roof to suggest shadow and depth.',
+          title: TKeys.tutHouseStep6Title.tr,
+          instruction: TKeys.tutHouseStep6Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-house/step_6.png',
         ),
         TutorialStep(
-          title: 'Final details',
-          instruction:
-              'Finish with a doorknob, window panes, and a ground line beneath the house.',
+          title: TKeys.tutHouseStep7Title.tr,
+          instruction: TKeys.tutHouseStep7Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-house/step_7.png',
         ),
       ],
     ),
     Tutorial(
       id: 'draw-a-tree',
-      title: 'How to Draw a Tree',
-      description: 'Grow a full oak from a simple oval guide',
+      title: TKeys.tutTreeTitle.tr,
+      description: TKeys.tutTreeDesc.tr,
       icon: Icons.park_outlined,
       color: AppColors.mint,
-      difficulty: 'Beginner',
-      steps: const [
+      difficulty: TKeys.difficultyBeginner.tr,
+      steps: [
         TutorialStep(
-          title: 'The guide oval',
-          instruction:
-              'Sketch a loose oval for the canopy, then drop a trunk line straight down from its center.',
+          title: TKeys.tutTreeStep1Title.tr,
+          instruction: TKeys.tutTreeStep1Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-tree/step_1.webp',
         ),
         TutorialStep(
-          title: 'Trunk and branches',
-          instruction:
-              'Thicken the trunk and split it into a few main branches reaching up into the oval.',
+          title: TKeys.tutTreeStep2Title.tr,
+          instruction: TKeys.tutTreeStep2Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-tree/step_2.webp',
         ),
         TutorialStep(
-          title: 'Canopy outline',
-          instruction:
-              'Trace a bumpy, cloud-like outline around the oval to form the leafy canopy edge.',
+          title: TKeys.tutTreeStep3Title.tr,
+          instruction: TKeys.tutTreeStep3Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-tree/step_3.webp',
         ),
         TutorialStep(
-          title: 'Bark and roots',
-          instruction:
-              'Add texture lines down the trunk and a few root lines flaring out at the base.',
+          title: TKeys.tutTreeStep4Title.tr,
+          instruction: TKeys.tutTreeStep4Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-tree/step_4.webp',
         ),
         TutorialStep(
-          title: 'Leaf clusters',
-          instruction:
-              'Scatter small scalloped leaf clusters inside the canopy, following the branch lines.',
+          title: TKeys.tutTreeStep5Title.tr,
+          instruction: TKeys.tutTreeStep5Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-tree/step_5.webp',
         ),
         TutorialStep(
-          title: 'Shading',
-          instruction:
-              'Shade the underside of the canopy and one side of the trunk to give the tree form.',
+          title: TKeys.tutTreeStep6Title.tr,
+          instruction: TKeys.tutTreeStep6Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-tree/step_6.webp',
         ),
       ],
     ),
     Tutorial(
       id: 'draw-a-hand',
-      title: 'How to Draw a Hand',
-      description: 'Break a raised hand down into simple shapes',
+      title: TKeys.tutHandTitle.tr,
+      description: TKeys.tutHandDesc.tr,
       icon: Icons.back_hand_outlined,
       color: AppColors.coral,
-      difficulty: 'Intermediate',
-      steps: const [
+      difficulty: TKeys.difficultyIntermediate.tr,
+      steps: [
         TutorialStep(
-          title: 'The palm shape',
-          instruction:
-              'Start with a rounded square for the palm, then add a short wrist line below it.',
+          title: TKeys.tutHandStep1Title.tr,
+          instruction: TKeys.tutHandStep1Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-hand/step_1.webp',
         ),
         TutorialStep(
-          title: 'Finger guide lines',
-          instruction:
-              'Add five straight guide lines fanning out from the top of the palm for each finger.',
+          title: TKeys.tutHandStep2Title.tr,
+          instruction: TKeys.tutHandStep2Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-hand/step_2.webp',
         ),
         TutorialStep(
-          title: 'Finger segments',
-          instruction:
-              'Build each finger as stacked tube segments along its guide line, tapering slightly toward the tip.',
+          title: TKeys.tutHandStep3Title.tr,
+          instruction: TKeys.tutHandStep3Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-hand/step_3.webp',
         ),
         TutorialStep(
-          title: 'Refine the outline',
-          instruction:
-              'Clean up the outer silhouette of the hand and fingers into one continuous line.',
+          title: TKeys.tutHandStep4Title.tr,
+          instruction: TKeys.tutHandStep4Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-hand/step_4.webp',
         ),
         TutorialStep(
-          title: 'Knuckle creases',
-          instruction:
-              'Add short curved creases at each knuckle joint to show where the fingers bend.',
+          title: TKeys.tutHandStep5Title.tr,
+          instruction: TKeys.tutHandStep5Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-hand/step_5.webp',
         ),
         TutorialStep(
-          title: 'Palm lines',
-          instruction:
-              'Erase the construction lines and add a few soft creases across the palm.',
+          title: TKeys.tutHandStep6Title.tr,
+          instruction: TKeys.tutHandStep6Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-hand/step_6.webp',
         ),
         TutorialStep(
-          title: 'Shading',
-          instruction:
-              'Shade the base of the palm and the sides of the fingers to give the hand volume.',
+          title: TKeys.tutHandStep7Title.tr,
+          instruction: TKeys.tutHandStep7Instruction.tr,
           imagePath: 'assets/tutorials/draw-a-hand/step_7.webp',
         ),
       ],
     ),
     Tutorial(
       id: 'shading-basics',
-      title: 'Shading Basics',
-      description: 'Light, shadow, and form with simple shapes',
+      title: TKeys.tutShadingTitle.tr,
+      description: TKeys.tutShadingDesc.tr,
       icon: Icons.gradient_outlined,
       color: AppColors.accent,
-      difficulty: 'Intermediate',
-      steps: const [
+      difficulty: TKeys.difficultyIntermediate.tr,
+      steps: [
         TutorialStep(
-          title: 'Light source',
-          instruction:
-              'Pick one light direction and keep it consistent across the whole drawing.',
+          title: TKeys.tutShadingStep1Title.tr,
+          instruction: TKeys.tutShadingStep1Instruction.tr,
           imagePath: 'assets/tutorials/shading-basics/step_1.jpg',
         ),
         TutorialStep(
-          title: 'Core shadow',
-          instruction:
-              'The darkest shadow sits just past the terminator line, not at the very edge of the form.',
+          title: TKeys.tutShadingStep2Title.tr,
+          instruction: TKeys.tutShadingStep2Instruction.tr,
           imagePath: 'assets/tutorials/shading-basics/step_2.jpg',
         ),
       ],

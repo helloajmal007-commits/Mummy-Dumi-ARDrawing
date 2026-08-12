@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sketch_flow/app/data/models/tutorial_model.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/learn/controllers/learn_controller.dart';
 import 'package:sketch_flow/app/routes/app_routes.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
@@ -27,13 +28,13 @@ class LearnView extends GetView<LearnController> {
                 AppSpace.lg,
                 0,
               ),
-              child: Text('Learn to Draw', style: AppTypography.h2),
+              child: Text(TKeys.learnToDraw.tr, style: AppTypography.h2),
             ),
             const SizedBox(height: AppSpace.xs),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppSpace.lg),
               child: Text(
-                'Step-by-step tutorials you can trace as you go',
+                TKeys.stepByStepTutorials.tr,
                 style: AppTypography.bodySmall.copyWith(
                   color: AppColors.inkMuted,
                 ),
@@ -130,7 +131,7 @@ class _TutorialCard extends StatelessWidget {
                         _Pill(text: tutorial.difficulty, color: tutorial.color),
                         const SizedBox(width: AppSpace.xs),
                         _Pill(
-                          text: '${tutorial.steps.length} steps',
+                          text: '${tutorial.steps.length} ${TKeys.stepsCount.tr}',
                           color: AppColors.inkMuted,
                         ),
                       ],
@@ -224,8 +225,8 @@ class _TutorialModeSheet extends StatelessWidget {
             const SizedBox(height: AppSpace.md),
             _ModeOption(
               icon: Icons.view_in_ar_outlined,
-              label: 'AR camera',
-              sublabel: 'Step through the tutorial over your live camera view',
+              label: TKeys.arCamera.tr,
+              sublabel: TKeys.arCameraSublabelTutorial.tr,
               onTap: () {
                 Navigator.pop(context);
                 Get.toNamed(
@@ -239,8 +240,8 @@ class _TutorialModeSheet extends StatelessWidget {
             ),
             _ModeOption(
               icon: Icons.crop_portrait,
-              label: 'On paper',
-              sublabel: 'Step through the tutorial on screen and copy by eye',
+              label: TKeys.onPaper.tr,
+              sublabel: TKeys.onPaperSublabelTutorial.tr,
               onTap: () {
                 Navigator.pop(context);
                 Get.toNamed(

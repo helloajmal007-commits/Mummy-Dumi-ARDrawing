@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sketch_flow/app/data/models/tutorial_model.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 
 class PaperTraceController extends GetxController {
   final Rx<File?> image = Rx<File?>(null);
@@ -68,7 +69,7 @@ class PaperTraceController extends GetxController {
       image.value = file;
       resetTransform();
     } catch (e) {
-      loadError.value = 'Could not load this image.';
+      loadError.value = TKeys.errImageLoadFailedGeneric.tr;
     } finally {
       isLoadingImage.value = false;
     }

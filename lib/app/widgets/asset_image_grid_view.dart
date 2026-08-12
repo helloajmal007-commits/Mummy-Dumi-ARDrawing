@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sketch_flow/app/data/services/asset_discovery.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/routes/app_routes.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
@@ -43,7 +44,12 @@ class _AssetImageGridViewState extends State<AssetImageGridView> {
           if (mounted) setState(() => _images = found);
         })
         .catchError((e) {
-          if (mounted) setState(() => _error = 'Could not load images: $e');
+          if (mounted)
+            setState(
+              () => _error = TKeys.errCouldNotLoadImages.trParams({
+                'error': '$e',
+              }),
+            );
         });
   }
 
@@ -202,10 +208,10 @@ class _EmptyState extends StatelessWidget {
           children: [
             Icon(args.emptyIcon, size: 40, color: AppColors.inkFaint),
             const SizedBox(height: AppSpace.md),
-            Text('No images yet', style: AppTypography.h3),
+            Text(TKeys.noImagesYet.tr, style: AppTypography.h3),
             const SizedBox(height: AppSpace.xs),
             Text(
-              'Add images to ${args.folderPath}/ and declare the folder in pubspec.yaml.',
+              TKeys.addImagesToFolder.trParams({'folder': args.folderPath}),
               textAlign: TextAlign.center,
               style: AppTypography.bodySmall.copyWith(
                 color: AppColors.inkMuted,
@@ -254,12 +260,12 @@ class _ModeSheet extends StatelessWidget {
               ),
             ),
             const SizedBox(height: AppSpace.lg),
-            Text('How do you want to trace this?', style: AppTypography.h3),
+            Text(TKeys.howDoYouWantToTraceThis.tr, style: AppTypography.h3),
             const SizedBox(height: AppSpace.md),
             _ModeOption(
               icon: Icons.view_in_ar_outlined,
-              label: 'AR camera',
-              sublabel: 'Overlay the image on your live camera view',
+              label: TKeys.arCameraOption.tr,
+              sublabel: TKeys.arCameraSublabel.tr,
               onTap: () {
                 Navigator.pop(context);
                 Get.toNamed(Routes.arTrace, arguments: assetPath);
@@ -267,8 +273,8 @@ class _ModeSheet extends StatelessWidget {
             ),
             _ModeOption(
               icon: Icons.crop_portrait,
-              label: 'On paper',
-              sublabel: 'Show the image on screen and copy it by eye',
+              label: TKeys.onPaperOption.tr,
+              sublabel: TKeys.onPaperSublabel.tr,
               onTap: () {
                 Navigator.pop(context);
                 Get.toNamed(Routes.paperTrace, arguments: assetPath);

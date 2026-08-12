@@ -2,7 +2,9 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/settings/controllers/settings_controller.dart';
+import 'package:sketch_flow/app/routes/app_routes.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
 import 'package:sketch_flow/app/theme/app_typography.dart';
@@ -81,7 +83,7 @@ class SettingsView extends GetView<SettingsController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(title: const Text('Settings')),
+      appBar: AppBar(title: Text(TKeys.settingsTitle.tr)),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.fromLTRB(
@@ -91,7 +93,7 @@ class SettingsView extends GetView<SettingsController> {
             AppSpace.xxxl,
           ),
           children: [
-            const SectionHeader(title: 'DRAWING'),
+            SectionHeader(title: TKeys.sectionDrawing.tr),
             const SizedBox(height: AppSpace.sm),
             _SettingsCard(
               children: [
@@ -99,11 +101,11 @@ class SettingsView extends GetView<SettingsController> {
                   () => SwitchListTile(
                     contentPadding: EdgeInsets.zero,
                     title: Text(
-                      'Pressure sensitivity',
+                      TKeys.pressureSensitivity.tr,
                       style: AppTypography.body,
                     ),
                     subtitle: Text(
-                      'For styluses that support it',
+                      TKeys.pressureSensitivitySub.tr,
                       style: AppTypography.caption,
                     ),
                     value: controller.pressureSensitivity.value,
@@ -114,9 +116,12 @@ class SettingsView extends GetView<SettingsController> {
                 Obx(
                   () => SwitchListTile(
                     contentPadding: EdgeInsets.zero,
-                    title: Text('Left-handed mode', style: AppTypography.body),
+                    title: Text(
+                      TKeys.leftHandedMode.tr,
+                      style: AppTypography.body,
+                    ),
                     subtitle: Text(
-                      'Move tool dock to the left',
+                      TKeys.leftHandedModeSub.tr,
                       style: AppTypography.caption,
                     ),
                     value: controller.leftHandedMode.value,
@@ -127,7 +132,10 @@ class SettingsView extends GetView<SettingsController> {
                 Obx(
                   () => ListTile(
                     contentPadding: EdgeInsets.zero,
-                    title: Text('Stroke smoothing', style: AppTypography.body),
+                    title: Text(
+                      TKeys.strokeSmoothing.tr,
+                      style: AppTypography.body,
+                    ),
                     trailing: DropdownButton<StrokeSmoothing>(
                       value: controller.smoothing.value,
                       underline: const SizedBox(),
@@ -144,14 +152,17 @@ class SettingsView extends GetView<SettingsController> {
               ],
             ),
             const SizedBox(height: AppSpace.xl),
-            const SectionHeader(title: 'GENERAL'),
+            SectionHeader(title: TKeys.sectionGeneral.tr),
             const SizedBox(height: AppSpace.sm),
             _SettingsCard(
               children: [
                 Obx(
                   () => SwitchListTile(
                     contentPadding: EdgeInsets.zero,
-                    title: Text('Haptic feedback', style: AppTypography.body),
+                    title: Text(
+                      TKeys.hapticFeedback.tr,
+                      style: AppTypography.body,
+                    ),
                     value: controller.hapticFeedback.value,
                     onChanged: controller.toggleHaptics,
                   ),
@@ -160,9 +171,9 @@ class SettingsView extends GetView<SettingsController> {
                 Obx(
                   () => SwitchListTile(
                     contentPadding: EdgeInsets.zero,
-                    title: Text('Autosave', style: AppTypography.body),
+                    title: Text(TKeys.autosave.tr, style: AppTypography.body),
                     subtitle: Text(
-                      'Save changes as you draw',
+                      TKeys.autosaveSub.tr,
                       style: AppTypography.caption,
                     ),
                     value: controller.autosave.value,
@@ -173,7 +184,10 @@ class SettingsView extends GetView<SettingsController> {
                 Obx(
                   () => ListTile(
                     contentPadding: EdgeInsets.zero,
-                    title: Text('Measurement unit', style: AppTypography.body),
+                    title: Text(
+                      TKeys.measurementUnit.tr,
+                      style: AppTypography.body,
+                    ),
                     trailing: DropdownButton<String>(
                       value: controller.unitSystem.value,
                       underline: const SizedBox(),
@@ -186,17 +200,31 @@ class SettingsView extends GetView<SettingsController> {
                     ),
                   ),
                 ),
+                const Divider(),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: const Icon(Icons.language_outlined),
+                  title: Text(
+                    TKeys.languageSetting.tr,
+                    style: AppTypography.body,
+                  ),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                  onTap: () => Get.toNamed(
+                    Routes.languageSelect,
+                    arguments: {'isSettingsMode': true},
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: AppSpace.xl),
-            const SectionHeader(title: 'ABOUT & SUPPORT'),
+            SectionHeader(title: TKeys.sectionAboutSupport.tr),
             const SizedBox(height: AppSpace.sm),
             _SettingsCard(
               children: [
                 ListTile(
                   contentPadding: EdgeInsets.zero,
                   leading: const Icon(Icons.apps_outlined),
-                  title: Text('More Apps', style: AppTypography.body),
+                  title: Text(TKeys.moreApps.tr, style: AppTypography.body),
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   onTap: _openMoreApps,
                 ),
@@ -204,7 +232,7 @@ class SettingsView extends GetView<SettingsController> {
                 ListTile(
                   contentPadding: EdgeInsets.zero,
                   leading: const Icon(Icons.share_outlined),
-                  title: Text('Share App', style: AppTypography.body),
+                  title: Text(TKeys.shareApp.tr, style: AppTypography.body),
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   onTap: () => _shareApp(context),
                 ),
@@ -212,7 +240,10 @@ class SettingsView extends GetView<SettingsController> {
                 ListTile(
                   contentPadding: EdgeInsets.zero,
                   leading: const Icon(Icons.lock_outline),
-                  title: Text('Privacy Policy', style: AppTypography.body),
+                  title: Text(
+                    TKeys.privacyPolicy.tr,
+                    style: AppTypography.body,
+                  ),
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   onTap: _openPrivacyPolicy,
                 ),
@@ -220,7 +251,7 @@ class SettingsView extends GetView<SettingsController> {
                 ListTile(
                   contentPadding: EdgeInsets.zero,
                   leading: const Icon(Icons.feedback_outlined),
-                  title: Text('Feedback', style: AppTypography.body),
+                  title: Text(TKeys.feedback.tr, style: AppTypography.body),
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   onTap: _sendEmail,
                 ),
@@ -229,7 +260,7 @@ class SettingsView extends GetView<SettingsController> {
                   ListTile(
                     contentPadding: EdgeInsets.zero,
                     leading: const Icon(Icons.star_outline),
-                    title: Text('Rate App', style: AppTypography.body),
+                    title: Text(TKeys.rateApp.tr, style: AppTypography.body),
                     trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                     onTap: _rateApp,
                   ),
@@ -238,7 +269,7 @@ class SettingsView extends GetView<SettingsController> {
                 ListTile(
                   contentPadding: EdgeInsets.zero,
                   leading: const Icon(Icons.info_outline),
-                  title: Text('Version', style: AppTypography.body),
+                  title: Text(TKeys.version.tr, style: AppTypography.body),
                   trailing: Text('1.0.0', style: AppTypography.bodySmall),
                 ),
               ],

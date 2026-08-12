@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sketch_flow/app/data/models/tutorial_model.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/ar_trace/controllers/ar_trace_controller.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
@@ -329,7 +330,7 @@ class _ZoomChips extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: Obx(
-                  () => Text(
+              () => Text(
                 '${controller.overlayScale.value.toStringAsFixed(1)}x',
                 style: const TextStyle(
                   color: Colors.white,
@@ -340,10 +341,7 @@ class _ZoomChips extends StatelessWidget {
             ),
           ),
           const SizedBox(width: AppSpace.sm),
-          _ZoomStepButton(
-            icon: Icons.add,
-            onTap: controller.imageZoomStepIn,
-          ),
+          _ZoomStepButton(icon: Icons.add, onTap: controller.imageZoomStepIn),
         ],
       );
     });
@@ -420,7 +418,7 @@ class _NoImagePrompt extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Choose a photo to trace',
+              TKeys.choosePhotoToTrace.tr,
               style: AppTypography.body.copyWith(color: Colors.white),
             ),
             const SizedBox(height: AppSpace.md),
@@ -429,7 +427,7 @@ class _NoImagePrompt extends StatelessWidget {
                 Expanded(
                   child: _PromptButton(
                     icon: Icons.camera_alt_outlined,
-                    label: 'Camera',
+                    label: TKeys.camera.tr,
                     onTap: controller.captureWithCamera,
                   ),
                 ),
@@ -437,7 +435,7 @@ class _NoImagePrompt extends StatelessWidget {
                 Expanded(
                   child: _PromptButton(
                     icon: Icons.photo_library_outlined,
-                    label: 'Gallery',
+                    label: TKeys.gallery.tr,
                     onTap: controller.pickFromGallery,
                   ),
                 ),
@@ -572,20 +570,20 @@ class _BottomControlsState extends State<_BottomControls> {
             children: [
               _ToolbarAction(
                 icon: Icons.opacity,
-                label: 'Opacity',
+                label: TKeys.opacityLabel.tr,
                 isActive: _showOpacitySlider,
                 onTap: () =>
                     setState(() => _showOpacitySlider = !_showOpacitySlider),
               ),
               _ToolbarAction(
                 icon: Icons.camera_alt_outlined,
-                label: 'Camera',
+                label: TKeys.camera.tr,
                 isActive: false,
                 onTap: controller.captureWithCamera,
               ),
               _ToolbarAction(
                 icon: Icons.image_outlined,
-                label: 'Image',
+                label: TKeys.gallery.tr ,
                 isActive: false,
                 onTap: controller.pickFromGallery,
               ),
@@ -594,7 +592,7 @@ class _BottomControlsState extends State<_BottomControls> {
                   icon: controller.isImageHidden.value
                       ? Icons.visibility_off
                       : Icons.visibility_off_outlined,
-                  label: 'Hide',
+                  label: TKeys.hideLabel.tr,
                   isActive: controller.isImageHidden.value,
                   onTap: controller.toggleImageHidden,
                 ),
@@ -731,7 +729,10 @@ class _StepNavigatorBar extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
-                'Step: ${controller.currentStepIndex.value + 1}/${controller.stepSequence.length}',
+                TKeys.stepProgress.trParams({
+                  'current': '${controller.currentStepIndex.value + 1}',
+                  'total': '${controller.stepSequence.length}',
+                }),
                 style: const TextStyle(fontWeight: FontWeight.w600),
               ),
             ),

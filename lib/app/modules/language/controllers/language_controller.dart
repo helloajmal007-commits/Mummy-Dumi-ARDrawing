@@ -7,9 +7,15 @@ import 'package:sketch_flow/app/routes/app_routes.dart';
 class LanguageController extends GetxController {
   final Rx<AppLanguage> selected = kSupportedLanguages.first.obs;
 
+  bool isSettingsMode = false;
+  late AppLanguage _previousLanguage;
+
   @override
   void onInit() {
     super.onInit();
+    final args = Get.arguments;
+    isSettingsMode = args is Map && args['isSettingsMode'] == true;
+
     final savedCode = StorageService.loadLanguageCode();
     if (savedCode != null) {
       final match = kSupportedLanguages.firstWhereOrNull(
@@ -17,6 +23,8 @@ class LanguageController extends GetxController {
       );
       if (match != null) selected.value = match;
     }
+
+    _previousLanguage = selected.value;
   }
 
   void select(AppLanguage language) {
@@ -33,4 +41,16 @@ class LanguageController extends GetxController {
   }
 
   void goToLanguageSelect() => Get.back();
+
+  void saveAndGoBack() {
+    StorageService.saveLanguageCode(selected.value.code);
+    Get.find<LocaleController>().changeLocale(selected.value.englishName);
+    Get.back();
+  }
+
+  void revertAndGoBack() {
+    Get.find<LocaleController>().changeLocale(_previousLanguage.englishName);
+    selected.value = _previousLanguage;
+    Get.back();
+  }
 }

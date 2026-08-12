@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show SystemNavigator;
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/home/controllers/home_controller.dart';
 import 'package:sketch_flow/app/routes/app_routes.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
@@ -65,13 +66,13 @@ class _HomeViewState extends State<HomeView> {
                   onTapPaper: () => Get.toNamed(Routes.paperTrace),
                 ),
                 const SizedBox(height: AppSpace.xl),
-                _SectionHeaderRow(title: 'Explore Features'),
+                _SectionHeaderRow(title: TKeys.exploreFeatures.tr),
                 const SizedBox(height: AppSpace.md),
                 _FeatureCard(
                   icon: Icons.edit_outlined,
                   iconColor: AppColors.amber,
                   cardBg: AppColors.amberSoft,
-                  title: 'Sketch',
+                  title: TKeys.sketch.tr,
                   onTap: () => Get.toNamed(Routes.sketches),
                 ),
                 const SizedBox(height: AppSpace.md),
@@ -82,7 +83,7 @@ class _HomeViewState extends State<HomeView> {
                         icon: Icons.grid_view_sharp,
                         iconColor: AppColors.accent,
                         cardBg: AppColors.accentSoft,
-                        title: 'Categories',
+                        title: TKeys.categories.tr,
                         onTap: () => Get.toNamed(Routes.categories),
                       ),
                     ),
@@ -96,7 +97,7 @@ class _HomeViewState extends State<HomeView> {
                         icon: Icons.photo_library_outlined,
                         iconColor: AppColors.lavender,
                         cardBg: AppColors.lavenderSoft,
-                        title: 'Gallery',
+                        title: TKeys.gallery.tr,
                         onTap: () => Get.toNamed(Routes.gallery),
                       ),
                     ),
@@ -104,7 +105,7 @@ class _HomeViewState extends State<HomeView> {
                 ),
                 const SizedBox(height: AppSpace.xl),
                 _SectionHeaderRow(
-                  title: 'Categories',
+                  title: TKeys.categories.tr,
                   onSeeAll: () => Get.toNamed(Routes.categories),
                 ),
                 const SizedBox(height: AppSpace.md),
@@ -128,8 +129,7 @@ class _HomeViewState extends State<HomeView> {
                           Routes.assetGrid,
                           arguments: AssetGridArgs(
                             title: category.name,
-                            subtitle:
-                                'Pick an image to trace with AR or on paper',
+                            subtitle: TKeys.pickImageToTrace.tr,
                             folderPath: category.assetFolder,
                             accent: category.color,
                             emptyIcon: category.icon,
@@ -184,13 +184,13 @@ class _ExitConfirmScreen extends StatelessWidget {
               ),
               const SizedBox(height: AppSpace.xl),
               Text(
-                'Leaving So Soon?',
+                TKeys.leavingSoSoon.tr,
                 style: AppTypography.h2,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: AppSpace.sm),
               Text(
-                'We\'ll miss your amazing AR creations!',
+                TKeys.missYourCreations.tr,
                 style: AppTypography.body.copyWith(color: AppColors.inkMuted),
                 textAlign: TextAlign.center,
               ),
@@ -205,8 +205,8 @@ class _ExitConfirmScreen extends StatelessWidget {
                   ),
                 ),
                 onPressed: () => Navigator.of(context).pop(false),
-                child: const Text(
-                  'Stay & Keep Drawing',
+                child: Text(
+                  TKeys.stayAndKeepDrawing.tr,
                   style: TextStyle(fontWeight: FontWeight.w600),
                 ),
               ),
@@ -214,7 +214,7 @@ class _ExitConfirmScreen extends StatelessWidget {
               TextButton(
                 onPressed: () => Navigator.of(context).pop(true),
                 child: Text(
-                  'Leave',
+                  TKeys.leave.tr,
                   style: AppTypography.body.copyWith(color: AppColors.inkMuted),
                 ),
               ),
@@ -233,7 +233,7 @@ class _Header extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'AR DRAWING APP',
+          TKeys.arDrawingApp.tr,
           style: AppTypography.bodySmall.copyWith(
             color: AppColors.inkMuted,
             letterSpacing: 1.2,
@@ -241,7 +241,7 @@ class _Header extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 4),
-        Text('Hello, Artist!', style: AppTypography.h1),
+        Text(	TKeys.helloArtist.tr, style: AppTypography.h1),
       ],
     );
   }
@@ -265,7 +265,7 @@ class _StartDrawingHero extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'START A DRAWING',
+            TKeys.startADrawing.tr,
             style: AppTypography.bodySmall.copyWith(
               color: Colors.white.withValues(alpha: 0.75),
               letterSpacing: 1.2,
@@ -274,7 +274,7 @@ class _StartDrawingHero extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Trace any photo from gallery or camera in AR or on paper.',
+            TKeys.traceAnyPhoto.tr,
             style: AppTypography.h2.copyWith(color: Colors.white, height: 1.25),
           ),
           const SizedBox(height: AppSpace.lg),
@@ -283,7 +283,7 @@ class _StartDrawingHero extends StatelessWidget {
               Expanded(
                 child: _HeroButton(
                   icon: Icons.view_in_ar_outlined,
-                  label: 'AR camera',
+                  label: TKeys.arCamera.tr,
                   onTap: onTapAr,
                 ),
               ),
@@ -291,7 +291,7 @@ class _StartDrawingHero extends StatelessWidget {
               Expanded(
                 child: _HeroButton(
                   icon: Icons.crop_portrait,
-                  label: 'On paper',
+                  label: TKeys.onPaper.tr,
                   onTap: onTapPaper,
                 ),
               ),
@@ -360,7 +360,7 @@ class _SectionHeaderRow extends StatelessWidget {
           GestureDetector(
             onTap: onSeeAll,
             child: Text(
-              'See all',
+              TKeys.seeAll.tr,
               style: AppTypography.bodySmall.copyWith(
                 color: AppColors.accent,
                 fontWeight: FontWeight.w600,

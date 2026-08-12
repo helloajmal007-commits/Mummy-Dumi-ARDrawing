@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/sketches/controllers/sketches_controller.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
@@ -36,7 +37,7 @@ class SketchesView extends GetView<SketchesController> {
                         onTap: () => Get.back(),
                       ),
                       const SizedBox(width: AppSpace.md),
-                      Text('Sketches', style: AppTypography.h2),
+                      Text(TKeys.sketchesTitle.tr, style: AppTypography.h2),
                     ],
                   ),
                   Material(
@@ -45,7 +46,7 @@ class SketchesView extends GetView<SketchesController> {
                     child: InkWell(
                       borderRadius: BorderRadius.circular(AppRadius.pill),
                       onTap: controller.createNewSketch,
-                      child: const Padding(
+                      child: Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: AppSpace.md,
                           vertical: 10,
@@ -56,7 +57,7 @@ class SketchesView extends GetView<SketchesController> {
                             Icon(Icons.add, size: 18, color: Colors.white),
                             SizedBox(width: 6),
                             Text(
-                              'New sketch',
+                              TKeys.newSketch.tr,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w600,
@@ -118,10 +119,10 @@ class _EmptyState extends StatelessWidget {
           children: [
             Icon(Icons.edit_outlined, size: 48, color: AppColors.inkFaint),
             const SizedBox(height: AppSpace.md),
-            Text('Start your first sketch', style: AppTypography.h3),
+            Text(TKeys.startYourFirstSketch.tr, style: AppTypography.h3),
             const SizedBox(height: AppSpace.xs),
             Text(
-              'Drawings you make with the sketch tool show up here.',
+              TKeys.sketchesEmptyDesc.tr,
               textAlign: TextAlign.center,
               style: AppTypography.bodySmall.copyWith(
                 color: AppColors.inkMuted,
@@ -130,7 +131,7 @@ class _EmptyState extends StatelessWidget {
             const SizedBox(height: AppSpace.lg),
             ElevatedButton(
               onPressed: onCreate,
-              child: const Text('New sketch'),
+              child: Text(TKeys.newSketch.tr),
             ),
           ],
         ),

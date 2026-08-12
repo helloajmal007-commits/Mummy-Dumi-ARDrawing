@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/export/controllers/export_controller.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
@@ -33,7 +34,7 @@ class ExportView extends GetView<ExportController> {
                     size: 36,
                     onTap: () => Get.back(),
                   ),
-                  Text('Export', style: AppTypography.h3),
+                  Text(TKeys.exportTitle.tr, style: AppTypography.h3),
                   const SizedBox(width: 36),
                 ],
               ),
@@ -67,7 +68,7 @@ class ExportView extends GetView<ExportController> {
                       ),
                     ),
                     const SizedBox(height: AppSpace.xl),
-                    const SectionHeader(title: 'FORMAT'),
+                    SectionHeader(title: TKeys.sectionFormat.tr),
                     const SizedBox(height: AppSpace.sm),
                     Obx(
                       () => Wrap(
@@ -87,7 +88,7 @@ class ExportView extends GetView<ExportController> {
                       ),
                     ),
                     const SizedBox(height: AppSpace.xl),
-                    const SectionHeader(title: 'RESOLUTION'),
+                    SectionHeader(title: TKeys.sectionResolution.tr),
                     const SizedBox(height: AppSpace.sm),
                     Obx(
                       () => Column(
@@ -114,11 +115,11 @@ class ExportView extends GetView<ExportController> {
                             ? null
                             : controller.toggleFlatten,
                         title: Text(
-                          'Flatten layers',
+                          TKeys.flattenLayers.tr,
                           style: AppTypography.body,
                         ),
                         subtitle: Text(
-                          'Combine all visible layers into one image',
+                          TKeys.flattenLayersSub.tr,
                           style: AppTypography.caption,
                         ),
                       ),
@@ -155,8 +156,8 @@ class ExportView extends GetView<ExportController> {
                           )
                         : Text(
                             controller.exportComplete.value
-                                ? 'Exported ✓'
-                                : 'Export sketch',
+                                ? TKeys.exportedCheck.tr
+                                : TKeys.exportSketch.tr,
                           ),
                   ),
                 ),
