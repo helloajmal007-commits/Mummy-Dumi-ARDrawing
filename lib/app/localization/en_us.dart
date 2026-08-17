@@ -350,4 +350,6 @@ const Map<String, String> enUS = {
   TKeys.navSettings: 'Settings',
 
   TKeys.languageSetting: 'Language',
+
+  TKeys.preparingYourExperience: 'Just a moment...',
 };

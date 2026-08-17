@@ -24,3 +24,19 @@ plugins {
 }
 
 include(":app")
+
+// --- Needed for google_mobile_ads NativeAdFactory ---
+val flutterProjectRoot = rootDir.parentFile.toPath()
+val depsFile = File(flutterProjectRoot.toFile(), ".flutter-plugins-dependencies")
+if (depsFile.exists()) {
+    val json = groovy.json.JsonSlurper().parseText(depsFile.readText()) as Map<*, *>
+    val pluginsMap = json["plugins"] as Map<*, *>
+    val androidPlugins = pluginsMap["android"] as List<Map<*, *>>
+    androidPlugins.forEach { plugin ->
+        val name = plugin["name"] as String
+        val path = plugin["path"] as String
+        val pluginDirectory = File(path, "android")
+        include(":$name")
+        project(":$name").projectDir = pluginDirectory
+    }
+}

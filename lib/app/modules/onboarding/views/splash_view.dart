@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sketch_flow/app/data/models/ad_config_model.dart';
+import 'package:sketch_flow/app/data/services/ad_remote_config_service.dart';
 import 'package:sketch_flow/app/data/services/storage_service.dart';
 import 'package:sketch_flow/app/localization/translation_keys.dart';
+import 'package:sketch_flow/app/modules/onboarding/views/ad_loading_gate_view.dart';
 import 'package:sketch_flow/app/routes/app_routes.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
@@ -26,13 +29,30 @@ class _SplashViewState extends State<SplashView>
       duration: const Duration(milliseconds: 900),
     )..forward();
 
-    Future.delayed(const Duration(seconds: 3), () {
-      if (!mounted) return;
-      final destination = StorageService.hasCompletedOnboarding()
-          ? Routes.home
-          : Routes.languageSelect;
+    Future.delayed(const Duration(seconds: 3), _proceedPastSplash);
+  }
+
+  void _proceedPastSplash() {
+    if (!mounted) return;
+
+    final destination = StorageService.hasCompletedOnboarding()
+        ? Routes.home
+        : Routes.languageSelect;
+
+    final showAdGate = AdRemoteConfigService.instance.isEnabled(
+      AdPlacementKeys.splashOpen,
+    );
+
+    if (!showAdGate) {
       Get.offNamed(destination);
-    });
+      return;
+    }
+
+    Get.off(
+      () => AdLoadingGateView(onFinished: () => Get.offNamed(destination)),
+      transition: Transition.fadeIn,
+      duration: const Duration(milliseconds: 200),
+    );
   }
 
   @override

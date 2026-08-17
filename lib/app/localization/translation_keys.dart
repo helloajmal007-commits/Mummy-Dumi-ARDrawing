@@ -371,4 +371,6 @@ class TKeys {
   static const navSettings = 'nav_settings';
 
   static const languageSetting = 'language_setting';
+
+  static const String preparingYourExperience = 'preparing_your_experience';
 }

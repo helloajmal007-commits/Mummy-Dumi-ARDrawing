@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show SystemNavigator;
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:sketch_flow/app/data/models/ad_config_model.dart';
 import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/home/controllers/home_controller.dart';
 import 'package:sketch_flow/app/routes/app_routes.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
 import 'package:sketch_flow/app/theme/app_typography.dart';
+import 'package:sketch_flow/app/widgets/ads/banner_ad_widget.dart';
+import 'package:sketch_flow/app/widgets/ads/native_ad_widget.dart';
 import 'package:sketch_flow/app/widgets/app_bottom_nav.dart';
 import 'package:sketch_flow/app/widgets/asset_image_grid_view.dart';
 import 'package:sketch_flow/app/widgets/image_source_sheet.dart';
@@ -61,6 +64,18 @@ class _HomeViewState extends State<HomeView> {
               children: [
                 _Header(),
                 const SizedBox(height: AppSpace.lg),
+                Container(
+                  color: Colors.blue.withValues(alpha: 0.3),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: const BannerAdWidget(
+                        placementKey: AdPlacementKeys.bannerHome,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: AppSpace.lg),
                 _StartDrawingHero(
                   onTapAr: () => Get.toNamed(Routes.arTrace),
                   onTapPaper: () => Get.toNamed(Routes.paperTrace),
@@ -74,6 +89,10 @@ class _HomeViewState extends State<HomeView> {
                   cardBg: AppColors.amberSoft,
                   title: TKeys.sketch.tr,
                   onTap: () => Get.toNamed(Routes.sketches),
+                ),
+                const SizedBox(height: AppSpace.md),
+                const NativeAdWidget(
+                  placementKey: AdPlacementKeys.nativeHomeSketch,
                 ),
                 const SizedBox(height: AppSpace.md),
                 Row(
@@ -150,8 +169,20 @@ class _HomeViewState extends State<HomeView> {
           onPressed: () => showImageSourceSheet(context),
           child: const Icon(Icons.add, color: Colors.white),
         ),
-        bottomNavigationBar: const AppBottomNav(current: AppTab.home),
+        bottomNavigationBar: const _HomeBottomBar(),
       ),
+    );
+  }
+}
+
+class _HomeBottomBar extends StatelessWidget {
+  const _HomeBottomBar();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [const AppBottomNav(current: AppTab.home)],
     );
   }
 }
@@ -241,7 +272,7 @@ class _Header extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 4),
-        Text(	TKeys.helloArtist.tr, style: AppTypography.h1),
+        Text(TKeys.helloArtist.tr, style: AppTypography.h1),
       ],
     );
   }
