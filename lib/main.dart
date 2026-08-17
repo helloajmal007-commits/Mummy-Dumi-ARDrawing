@@ -30,7 +30,7 @@ Future main() async {
   await GetStorage.init();
   Get.put(SettingsController(), permanent: true);
   Get.put(LocaleController(), permanent: true);
-  
+
   await AdRemoteConfigService.instance.initialize();
   await MobileAds.instance.initialize();
   unawaited(_bootstrapAdsConsentAndPreload());
