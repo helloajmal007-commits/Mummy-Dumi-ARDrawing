@@ -39,8 +39,6 @@ Future main() async {
 }
 
 Future<void> _bootstrapAdsConsentAndPreload() async {
-  // Run in parallel: consent gathering (may block on user interaction)
-  // and ad preloading (no need to wait for consent to start the request).
   await Future.wait([
     AdConsentService.instance.requestConsentIfNeeded(),
     AppOpenAdManager.instance.preload(),
