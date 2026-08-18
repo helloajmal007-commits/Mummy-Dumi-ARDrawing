@@ -23,9 +23,10 @@ class AdCacheManager {
   final Map<String, DateTime> _lastNativeRequestAt = {};
 
   Future<BannerAd?> checkoutBanner(
-    String placementKey, {
-    AdSize adSize = AdSize.banner,
-  }) {
+      String placementKey, {
+        AdSize adSize = AdSize.banner,
+        String? collapsiblePlacement,
+      }) {
     final cached = _banners[placementKey];
     final alreadyCheckedOut = _bannerCheckedOut[placementKey] ?? false;
 
@@ -41,7 +42,7 @@ class AdCacheManager {
       return Future.value(null);
     }
 
-    final future = _loadBanner(placementKey, adSize);
+    final future = _loadBanner(placementKey, adSize, collapsiblePlacement);
     _bannerLoadsInFlight[placementKey] = future;
     return future;
   }
@@ -50,7 +51,11 @@ class AdCacheManager {
     _bannerCheckedOut[placementKey] = false;
   }
 
-  Future<BannerAd?> _loadBanner(String placementKey, AdSize adSize) async {
+  Future<BannerAd?> _loadBanner(
+      String placementKey,
+      AdSize adSize,
+      String? collapsiblePlacement,
+      ) async {
     try {
       if (!AdRemoteConfigService.instance.isEnabled(placementKey)) return null;
 
@@ -58,13 +63,19 @@ class AdCacheManager {
       if (!canRequest) return null;
 
       _lastBannerRequestAt[placementKey] = DateTime.now();
-      final adUnitId = await AdUnitIds.banner;
+      final adUnitId = collapsiblePlacement != null
+          ? await AdUnitIds.collapsibleBannerHomeBottom
+          : await AdUnitIds.banner;
       final completer = Completer<BannerAd?>();
+
+      final request = collapsiblePlacement != null
+          ? AdRequest(extras: {'collapsible': collapsiblePlacement})
+          : const AdRequest();
 
       final banner = BannerAd(
         adUnitId: adUnitId,
         size: adSize,
-        request: const AdRequest(),
+        request: request,
         listener: BannerAdListener(
           onAdLoaded: (ad) {
             _banners[placementKey]?.dispose();
@@ -90,9 +101,9 @@ class AdCacheManager {
   }
 
   Future<NativeAd?> checkoutNative(
-    String placementKey, {
-    required String factoryId,
-  }) {
+      String placementKey, {
+        required String factoryId,
+      }) {
     final cached = _natives[placementKey];
     final alreadyCheckedOut = _nativeCheckedOut[placementKey] ?? false;
 

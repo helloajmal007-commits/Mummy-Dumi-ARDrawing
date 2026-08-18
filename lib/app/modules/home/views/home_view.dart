@@ -10,7 +10,6 @@ import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
 import 'package:sketch_flow/app/theme/app_typography.dart';
 import 'package:sketch_flow/app/widgets/ads/banner_ad_widget.dart';
-import 'package:sketch_flow/app/widgets/ads/native_ad_widget.dart';
 import 'package:sketch_flow/app/widgets/app_bottom_nav.dart';
 import 'package:sketch_flow/app/widgets/asset_image_grid_view.dart';
 import 'package:sketch_flow/app/widgets/image_source_sheet.dart';
@@ -52,108 +51,113 @@ class _HomeViewState extends State<HomeView> {
         backgroundColor: AppColors.background,
         body: SafeArea(
           bottom: false,
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(
-              AppSpace.lg,
-              AppSpace.md,
-              AppSpace.lg,
-              AppSpace.xxxl,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _Header(),
-                const SizedBox(height: AppSpace.lg),
-                const Center(
-                  child: BannerAdWidget(
-                    placementKey: AdPlacementKeys.bannerHome,
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpace.lg,
+                    AppSpace.md,
+                    AppSpace.lg,
+                    AppSpace.lg,
                   ),
-                ),
-                const SizedBox(height: AppSpace.lg),
-                _StartDrawingHero(
-                  onTapAr: () => Get.toNamed(Routes.arTrace),
-                  onTapPaper: () => Get.toNamed(Routes.paperTrace),
-                ),
-                const SizedBox(height: AppSpace.xl),
-                _SectionHeaderRow(title: TKeys.exploreFeatures.tr),
-                const SizedBox(height: AppSpace.md),
-                _FeatureCard(
-                  icon: Icons.edit_outlined,
-                  iconColor: AppColors.amber,
-                  cardBg: AppColors.amberSoft,
-                  title: TKeys.sketch.tr,
-                  onTap: () => Get.toNamed(Routes.sketches),
-                ),
-                const SizedBox(height: AppSpace.md),
-                const NativeAdWidget(
-                  placementKey: AdPlacementKeys.nativeHomeSketch,
-                ),
-                const SizedBox(height: AppSpace.md),
-                Row(
-                  children: [
-                    Expanded(
-                      child: _FeatureCard(
-                        icon: Icons.grid_view_sharp,
-                        iconColor: AppColors.accent,
-                        cardBg: AppColors.accentSoft,
-                        title: TKeys.categories.tr,
-                        onTap: () => Get.toNamed(Routes.categories),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _Header(),
+                      const SizedBox(height: AppSpace.lg),
+                      _StartDrawingHero(
+                        onTapAr: () => Get.toNamed(Routes.arTrace),
+                        onTapPaper: () => Get.toNamed(Routes.paperTrace),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: AppSpace.md),
-                Row(
-                  children: [
-                    Expanded(
-                      child: _FeatureCard(
-                        icon: Icons.photo_library_outlined,
-                        iconColor: AppColors.lavender,
-                        cardBg: AppColors.lavenderSoft,
-                        title: TKeys.gallery.tr,
-                        onTap: () => Get.toNamed(Routes.gallery),
+                      const SizedBox(height: AppSpace.xl),
+                      _SectionHeaderRow(title: TKeys.exploreFeatures.tr),
+                      const SizedBox(height: AppSpace.md),
+                      _FeatureCard(
+                        icon: Icons.edit_outlined,
+                        iconColor: AppColors.amber,
+                        cardBg: AppColors.amberSoft,
+                        title: TKeys.sketch.tr,
+                        onTap: () => Get.toNamed(Routes.sketches),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: AppSpace.xl),
-                _SectionHeaderRow(
-                  title: TKeys.categories.tr,
-                  onSeeAll: () => Get.toNamed(Routes.categories),
-                ),
-                const SizedBox(height: AppSpace.md),
-                Obx(
-                      () => GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: controller.categories.length,
-                    gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4,
-                      mainAxisSpacing: AppSpace.sm,
-                      crossAxisSpacing: AppSpace.md,
-                      childAspectRatio: 0.72,
-                    ),
-                    itemBuilder: (_, i) {
-                      final category = controller.categories[i];
-                      return _CategoryChip(
-                        category: category,
-                        onTap: () => Get.toNamed(
-                          Routes.assetGrid,
-                          arguments: AssetGridArgs(
-                            title: category.name,
-                            subtitle: TKeys.pickImageToTrace.tr,
-                            folderPath: category.assetFolder,
-                            accent: category.color,
-                            emptyIcon: category.icon,
+                      const SizedBox(height: AppSpace.md),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _FeatureCard(
+                              icon: Icons.grid_view_sharp,
+                              iconColor: AppColors.accent,
+                              cardBg: AppColors.accentSoft,
+                              title: TKeys.categories.tr,
+                              onTap: () => Get.toNamed(Routes.categories),
+                            ),
                           ),
+                        ],
+                      ),
+                      const SizedBox(height: AppSpace.md),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _FeatureCard(
+                              icon: Icons.photo_library_outlined,
+                              iconColor: AppColors.lavender,
+                              cardBg: AppColors.lavenderSoft,
+                              title: TKeys.gallery.tr,
+                              onTap: () => Get.toNamed(Routes.gallery),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: AppSpace.xl),
+                      _SectionHeaderRow(
+                        title: TKeys.categories.tr,
+                        onSeeAll: () => Get.toNamed(Routes.categories),
+                      ),
+                      const SizedBox(height: AppSpace.md),
+                      Obx(
+                            () => GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: controller.categories.length,
+                          gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 4,
+                            mainAxisSpacing: AppSpace.sm,
+                            crossAxisSpacing: AppSpace.md,
+                            childAspectRatio: 0.72,
+                          ),
+                          itemBuilder: (_, i) {
+                            final category = controller.categories[i];
+                            return _CategoryChip(
+                              category: category,
+                              onTap: () => Get.toNamed(
+                                Routes.assetGrid,
+                                arguments: AssetGridArgs(
+                                  title: category.name,
+                                  subtitle: TKeys.pickImageToTrace.tr,
+                                  folderPath: category.assetFolder,
+                                  accent: category.color,
+                                  emptyIcon: category.icon,
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 40.0),
+                child: const Center(
+                  child: BannerAdWidget(
+                    placementKey: AdPlacementKeys.collapsableBannerHomeBottom,
+                    collapsiblePlacement: 'bottom',
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -163,20 +167,8 @@ class _HomeViewState extends State<HomeView> {
           onPressed: () => showImageSourceSheet(context),
           child: const Icon(Icons.add, color: Colors.white),
         ),
-        bottomNavigationBar: const _HomeBottomBar(),
+        bottomNavigationBar: const AppBottomNav(current: AppTab.home),
       ),
-    );
-  }
-}
-
-class _HomeBottomBar extends StatelessWidget {
-  const _HomeBottomBar();
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [const AppBottomNav(current: AppTab.home)],
     );
   }
 }
@@ -232,7 +224,7 @@ class _ExitConfirmScreen extends StatelessWidget {
                 onPressed: () => Navigator.of(context).pop(false),
                 child: Text(
                   TKeys.stayAndKeepDrawing.tr,
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                  style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
               ),
               const SizedBox(height: AppSpace.sm),

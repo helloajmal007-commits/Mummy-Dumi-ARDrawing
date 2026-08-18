@@ -33,6 +33,9 @@ class SmallNativeAdFactory(private val context: Context) : NativeAdFactory {
         }
         adView.bodyView = bodyView
 
+        // Intentionally no MediaView here — compact single-row layout,
+        // and registering a sub-120dp MediaView triggers AdMob's
+        // "MediaView too small for video" validator warning.
         if (nativeAd.icon != null) {
             iconView.setImageDrawable(nativeAd.icon?.drawable)
             iconView.visibility = View.VISIBLE

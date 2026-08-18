@@ -22,8 +22,10 @@ class MainActivity : FlutterActivity() {
                     val value = when (key) {
                         "APP_OPEN_AD_UNIT_ID" -> BuildConfig.APP_OPEN_AD_UNIT_ID
                         "BANNER_AD_UNIT_ID" -> BuildConfig.BANNER_AD_UNIT_ID
+                        "COLLAPSIBLE_BANNER_HOME_BOTTOM_AD_UNIT_ID" -> BuildConfig.COLLAPSIBLE_BANNER_HOME_BOTTOM_AD_UNIT_ID
                         "NATIVE_AD_UNIT_ID" -> BuildConfig.NATIVE_AD_UNIT_ID
                         "INTERSTITIAL_AD_UNIT_ID" -> BuildConfig.INTERSTITIAL_AD_UNIT_ID
+                        "NATIVE_LEARN_AD_UNIT_ID" -> BuildConfig.NATIVE_LEARN_AD_UNIT_ID
                         else -> null
                     }
                     result.success(value)

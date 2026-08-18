@@ -56,8 +56,10 @@ android {
             // MethodChannel -> BuildConfig fields.
             buildConfigField("String", "APP_OPEN_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/9257395921\"")
             buildConfigField("String", "BANNER_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/6300978111\"")
+            buildConfigField("String", "COLLAPSIBLE_BANNER_HOME_BOTTOM_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/6300978111\"")
             buildConfigField("String", "NATIVE_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/2247696110\"")
             buildConfigField("String", "INTERSTITIAL_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/1033173712\"")
+            buildConfigField("String", "NATIVE_LEARN_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/2247696110\"")
 
             // ---- AdMob App ID ----
             // Google's public sample App ID, so debug builds never crash
@@ -76,22 +78,18 @@ android {
             // set per build type (not in defaultConfig), it is
             // structurally impossible for a debug build to request real
             // ads, or a release build to accidentally serve test ads.
-            buildConfigField("String", "APP_OPEN_AD_UNIT_ID", "\"ca-app-pub-REPLACE_ME/APP_OPEN\"")
+            buildConfigField("String", "APP_OPEN_AD_UNIT_ID", "\"ca-app-pub-2940059973343828/4089894566\"")
             buildConfigField("String", "BANNER_AD_UNIT_ID", "\"ca-app-pub-REPLACE_ME/BANNER\"")
+            buildConfigField("String", "COLLAPSIBLE_BANNER_HOME_BOTTOM_AD_UNIT_ID", "\"ca-app-pub-2940059973343828/2060140364\"")
             buildConfigField("String", "NATIVE_AD_UNIT_ID", "\"ca-app-pub-REPLACE_ME/NATIVE\"")
             buildConfigField("String", "INTERSTITIAL_AD_UNIT_ID", "\"ca-app-pub-REPLACE_ME/INTERSTITIAL\"")
+            buildConfigField("String", "NATIVE_LEARN_AD_UNIT_ID", "\"ca-app-pub-2940059973343828/5319215758\"")
 
-            // ---- AdMob App ID ----
-            // TODO: replace with your real AdMob App ID before shipping.
             manifestPlaceholders["admobAppId"] = "ca-app-pub-2940059973343828~1823201176"
         }
     }
 
     buildFeatures {
-        // Required for BuildConfig.APP_OPEN_AD_UNIT_ID / BANNER_AD_UNIT_ID
-        // / NATIVE_AD_UNIT_ID / INTERSTITIAL_AD_UNIT_ID to be generated at
-        // all. Without this, MainActivity.kt fails to compile (this is
-        // almost certainly the cause of the 27 errors you're seeing).
         buildConfig = true
     }
 }

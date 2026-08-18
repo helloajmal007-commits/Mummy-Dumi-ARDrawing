@@ -19,6 +19,11 @@
             android:layout_height="44dp"
             android:background="@drawable/native_ad_icon_bg">
 
+            <com.google.android.gms.ads.nativead.MediaView
+                android:id="@+id/ad_media"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
             <ImageView
                 android:id="@+id/ad_icon"
                 android:layout_width="26dp"

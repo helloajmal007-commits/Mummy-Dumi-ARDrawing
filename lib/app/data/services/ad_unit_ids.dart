@@ -42,5 +42,11 @@ class AdUnitIds {
             : _googleTestInterstitialIOS);
   }
 
+  static Future<String> get collapsibleBannerHomeBottom async {
+    final native = await AdNativeBridge.get('COLLAPSIBLE_BANNER_HOME_BOTTOM_AD_UNIT_ID');
+    return native ??
+        (Platform.isAndroid ? _googleTestBannerAndroid : _googleTestBannerIOS);
+  }
+
   static bool get isLikelyTestBuild => kDebugMode;
 }

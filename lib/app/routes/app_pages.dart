@@ -18,7 +18,6 @@ import 'package:sketch_flow/app/modules/layers/bindings/layers_binding.dart';
 import 'package:sketch_flow/app/modules/layers/views/layers_view.dart';
 import 'package:sketch_flow/app/modules/learn/bindings/learn_binding.dart';
 import 'package:sketch_flow/app/modules/learn/views/learn_view.dart';
-import 'package:sketch_flow/app/modules/learn/views/tutorial_steps_view.dart';
 import 'package:sketch_flow/app/modules/onboarding/bindings/onboarding_binding.dart';
 import 'package:sketch_flow/app/modules/onboarding/views/onboarding_view.dart';
 import 'package:sketch_flow/app/modules/onboarding/views/splash_view.dart';
@@ -104,10 +103,6 @@ class AppPages {
       binding: LearnBinding(),
     ),
     GetPage(
-      name: Routes.tutorialSteps,
-      page: () => const TutorialStepsView(),
-    ),
-    GetPage(
       name: Routes.assetGrid,
       page: () => const AssetImageGridView(),
     ),
@@ -115,10 +110,6 @@ class AppPages {
       name: Routes.learn,
       page: () => const LearnView(),
       binding: LearnBinding(),
-    ),
-    GetPage(
-      name: Routes.tutorialSteps,
-      page: () => const TutorialStepsView(),
     ),
     GetPage(
       name: Routes.splash,

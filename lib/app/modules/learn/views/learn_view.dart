@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sketch_flow/app/data/models/ad_config_model.dart';
 import 'package:sketch_flow/app/data/models/tutorial_model.dart';
 import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/learn/controllers/learn_controller.dart';
@@ -7,9 +8,12 @@ import 'package:sketch_flow/app/routes/app_routes.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
 import 'package:sketch_flow/app/theme/app_typography.dart';
+import 'package:sketch_flow/app/widgets/ads/native_ad_widget.dart';
 import 'package:sketch_flow/app/widgets/app_bottom_nav.dart';
 import 'package:sketch_flow/app/widgets/image_source_sheet.dart';
 import 'package:sketch_flow/app/widgets/locale_rebuilder.dart';
+
+const int _kNativeAdInsertIndex = 3;
 
 class LearnView extends GetView<LearnController> {
   const LearnView({super.key});
@@ -43,14 +47,25 @@ class LearnView extends GetView<LearnController> {
                 ),
               ),
               Expanded(
-                child: Obx(
-                  () => ListView.separated(
+                child: Obx(() {
+                  final tutorials = controller.tutorials;
+                  final showAdTile = tutorials.length > _kNativeAdInsertIndex;
+                  final itemCount = tutorials.length + (showAdTile ? 1 : 0);
+
+                  return ListView.separated(
                     padding: const EdgeInsets.all(AppSpace.lg),
-                    itemCount: controller.tutorials.length,
+                    itemCount: itemCount,
                     separatorBuilder: (_, _) =>
                         const SizedBox(height: AppSpace.md),
                     itemBuilder: (_, i) {
-                      final tutorial = controller.tutorials[i];
+                      if (showAdTile && i == _kNativeAdInsertIndex) {
+                        return const NativeAdWidget(
+                          placementKey: AdPlacementKeys.nativeLearnTutorials,
+                        );
+                      }
+                      final tutorialIndex =
+                          showAdTile && i > _kNativeAdInsertIndex ? i - 1 : i;
+                      final tutorial = tutorials[tutorialIndex];
                       return _TutorialCard(
                         tutorial: tutorial,
                         onTap: () => showModalBottomSheet(
@@ -61,8 +76,8 @@ class LearnView extends GetView<LearnController> {
                         ),
                       );
                     },
-                  ),
-                ),
+                  );
+                }),
               ),
             ],
           ),

@@ -7,10 +7,15 @@ class BannerAdWidget extends StatefulWidget {
   final String placementKey;
   final AdSize adSize;
 
+  /// Pass `'top'` or `'bottom'` to request a collapsible banner anchored
+  /// to that edge. Leave null for a standard, non-collapsible banner.
+  final String? collapsiblePlacement;
+
   const BannerAdWidget({
     super.key,
-    this.placementKey = AdPlacementKeys.bannerHome,
+    this.placementKey = AdPlacementKeys.collapsableBannerHomeBottom,
     this.adSize = AdSize.banner,
+    this.collapsiblePlacement,
   });
 
   @override
@@ -29,12 +34,16 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
 
   void _attach() {
     AdCacheManager.instance
-        .checkoutBanner(widget.placementKey, adSize: widget.adSize)
+        .checkoutBanner(
+      widget.placementKey,
+      adSize: widget.adSize,
+      collapsiblePlacement: widget.collapsiblePlacement,
+    )
         .then((ad) {
-          if (!mounted || ad == null) return;
-          _checkedOut = true;
-          setState(() => _bannerAd = ad);
-        });
+      if (!mounted || ad == null) return;
+      _checkedOut = true;
+      setState(() => _bannerAd = ad);
+    });
   }
 
   @override
