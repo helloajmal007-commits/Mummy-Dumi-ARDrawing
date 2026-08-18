@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:sketch_flow/app/data/models/ad_config_model.dart';
-import 'package:sketch_flow/app/data/services/ad_consent_service.dart';
-import 'package:sketch_flow/app/data/services/ad_remote_config_service.dart';
-import 'package:sketch_flow/app/data/services/ad_unit_ids.dart';
+import 'package:sketch_flow/app/data/services/ad_cache_manager.dart';
+import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
 
 const String kNativeAdFactoryId = 'smallNativeAd';
@@ -15,7 +14,7 @@ class NativeAdWidget extends StatefulWidget {
   const NativeAdWidget({
     super.key,
     this.placementKey = AdPlacementKeys.nativeHomeSketch,
-    this.height = 330,
+    this.height = 88,
   });
 
   @override
@@ -24,72 +23,47 @@ class NativeAdWidget extends StatefulWidget {
 
 class _NativeAdWidgetState extends State<NativeAdWidget> {
   NativeAd? _nativeAd;
-  bool _isLoaded = false;
+  bool _checkedOut = false;
 
   @override
   void initState() {
     super.initState();
-    _maybeLoad();
+    _attach();
   }
 
-  Future<void> _maybeLoad() async {
-    if (!AdRemoteConfigService.instance.isEnabled(widget.placementKey)) return;
-
-    final canRequest = await AdConsentService.instance.canRequestAds();
-    if (!canRequest) return;
-    if (!mounted) return;
-
-    final adUnitId = await AdUnitIds.native;
-    if (!mounted) return;
-
-    final ad = NativeAd(
-      adUnitId: adUnitId,
-      factoryId: kNativeAdFactoryId,
-      request: const AdRequest(),
-      listener: NativeAdListener(
-        onAdLoaded: (ad) {
-          if (!mounted) {
-            ad.dispose();
-            return;
-          }
-          setState(() {
-            _nativeAd = ad as NativeAd;
-            _isLoaded = true;
-          });
-        },
-        onAdFailedToLoad: (ad, error) {
-          debugPrint(
-            'NativeAdWidget[${widget.placementKey}]: failed to load. $error',
-          );
-          ad.dispose();
-        },
-      ),
-    );
-
-    ad.load();
+  void _attach() {
+    AdCacheManager.instance
+        .checkoutNative(widget.placementKey, factoryId: kNativeAdFactoryId)
+        .then((ad) {
+          if (!mounted || ad == null) return;
+          _checkedOut = true;
+          setState(() => _nativeAd = ad);
+        });
   }
 
   @override
   void dispose() {
-    _nativeAd?.dispose();
+    if (_checkedOut) {
+      AdCacheManager.instance.releaseNative(widget.placementKey);
+    }
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!_isLoaded || _nativeAd == null) {
+    final ad = _nativeAd;
+    if (ad == null) {
       return const SizedBox.shrink();
     }
     return Container(
       height: widget.height,
       margin: const EdgeInsets.symmetric(vertical: AppSpace.sm),
       decoration: BoxDecoration(
-        color: Colors.blue.withValues(alpha: 0.3),
+        color: AppColors.accentSoft.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: BoxBorder.all(color: Colors.blue),
       ),
       clipBehavior: Clip.antiAlias,
-      child: AdWidget(ad: _nativeAd!),
+      child: AdWidget(ad: ad),
     );
   }
 }

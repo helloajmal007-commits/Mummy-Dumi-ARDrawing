@@ -64,15 +64,9 @@ class _HomeViewState extends State<HomeView> {
               children: [
                 _Header(),
                 const SizedBox(height: AppSpace.lg),
-                Container(
-                  color: Colors.blue.withValues(alpha: 0.3),
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: const BannerAdWidget(
-                        placementKey: AdPlacementKeys.bannerHome,
-                      ),
-                    ),
+                const Center(
+                  child: BannerAdWidget(
+                    placementKey: AdPlacementKeys.bannerHome,
                   ),
                 ),
                 const SizedBox(height: AppSpace.lg),
@@ -129,17 +123,17 @@ class _HomeViewState extends State<HomeView> {
                 ),
                 const SizedBox(height: AppSpace.md),
                 Obx(
-                  () => GridView.builder(
+                      () => GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: controller.categories.length,
                     gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 4,
-                          mainAxisSpacing: AppSpace.sm,
-                          crossAxisSpacing: AppSpace.md,
-                          childAspectRatio: 0.72,
-                        ),
+                    const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4,
+                      mainAxisSpacing: AppSpace.sm,
+                      crossAxisSpacing: AppSpace.md,
+                      childAspectRatio: 0.72,
+                    ),
                     itemBuilder: (_, i) {
                       final category = controller.categories[i];
                       return _CategoryChip(

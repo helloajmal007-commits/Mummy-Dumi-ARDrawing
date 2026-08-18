@@ -1,6 +1,6 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:sketch_flow/app/data/services/ad_consent_service.dart';
 import 'package:sketch_flow/app/data/services/app_open_ad_manager.dart';
 import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
@@ -16,8 +16,7 @@ class AdLoadingGateView extends StatefulWidget {
 }
 
 class _AdLoadingGateViewState extends State<AdLoadingGateView> {
-  static const _minimumDisplay = Duration(seconds: 1);
-  static const _hardTimeout = Duration(seconds: 8);
+  static const _displayDuration = Duration(seconds: 1);
 
   bool _finished = false;
 
@@ -28,20 +27,13 @@ class _AdLoadingGateViewState extends State<AdLoadingGateView> {
   }
 
   Future<void> _run() async {
-    final started = DateTime.now();
-
-    final ready = await AppOpenAdManager.instance.waitUntilReadyOrTimeout(
-      _hardTimeout,
-    );
-
-    final elapsed = DateTime.now().difference(started);
-    if (elapsed < _minimumDisplay) {
-      await Future.delayed(_minimumDisplay - elapsed);
-    }
-
+    await Future.delayed(_displayDuration);
     if (!mounted) return;
 
-    if (ready) {
+    final canRequest = await AdConsentService.instance.canRequestAds();
+    if (!mounted) return;
+
+    if (canRequest && AppOpenAdManager.instance.isAdAvailable) {
       AppOpenAdManager.instance.show(onComplete: _finish);
     } else {
       _finish();

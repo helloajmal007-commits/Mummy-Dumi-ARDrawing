@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sketch_flow/app/data/models/ad_config_model.dart';
 import 'package:sketch_flow/app/data/services/ad_remote_config_service.dart';
+import 'package:sketch_flow/app/data/services/app_open_ad_manager.dart';
 import 'package:sketch_flow/app/data/services/storage_service.dart';
 import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/onboarding/views/ad_loading_gate_view.dart';
@@ -21,6 +22,11 @@ class _SplashViewState extends State<SplashView>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
 
+  static const _adReadyTimeout = Duration(seconds: 30);
+  static const _splashMinimumDisplay = Duration(seconds: 3);
+
+  static const _hardCeiling = Duration(seconds: 20);
+
   @override
   void initState() {
     super.initState();
@@ -29,21 +35,39 @@ class _SplashViewState extends State<SplashView>
       duration: const Duration(milliseconds: 900),
     )..forward();
 
-    Future.delayed(const Duration(seconds: 3), _proceedPastSplash);
+    _run();
   }
 
-  void _proceedPastSplash() {
-    if (!mounted) return;
-
-    final destination = StorageService.hasCompletedOnboarding()
-        ? Routes.home
-        : Routes.languageSelect;
-
+  Future<void> _run() async {
     final showAdGate = AdRemoteConfigService.instance.isEnabled(
       AdPlacementKeys.splashOpen,
     );
 
-    if (!showAdGate) {
+    final splashMinimumWait = Future.delayed(_splashMinimumDisplay);
+    final adReadyWait = showAdGate
+        ? AppOpenAdManager.instance.waitUntilReadyOrTimeout(_adReadyTimeout)
+        : Future.value(false);
+
+    final results =
+        await Future.wait([
+          splashMinimumWait.then((_) => true),
+          adReadyWait,
+        ]).timeout(
+          _hardCeiling,
+          onTimeout: () => [true, AppOpenAdManager.instance.isAdAvailable],
+        );
+    final adIsReady = results[1];
+
+    if (!mounted) return;
+    _proceedPastSplash(adIsReady: adIsReady);
+  }
+
+  void _proceedPastSplash({required bool adIsReady}) {
+    final destination = StorageService.hasCompletedOnboarding()
+        ? Routes.home
+        : Routes.languageSelect;
+
+    if (!adIsReady) {
       Get.offNamed(destination);
       return;
     }

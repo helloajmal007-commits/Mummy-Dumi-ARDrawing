@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:sketch_flow/app/data/models/ad_config_model.dart';
-import 'package:sketch_flow/app/data/services/ad_consent_service.dart';
-import 'package:sketch_flow/app/data/services/ad_remote_config_service.dart';
-import 'package:sketch_flow/app/data/services/ad_unit_ids.dart';
+import 'package:sketch_flow/app/data/services/ad_cache_manager.dart';
 
 class BannerAdWidget extends StatefulWidget {
   final String placementKey;
@@ -21,67 +19,43 @@ class BannerAdWidget extends StatefulWidget {
 
 class _BannerAdWidgetState extends State<BannerAdWidget> {
   BannerAd? _bannerAd;
-  bool _isLoaded = false;
+  bool _checkedOut = false;
 
   @override
   void initState() {
     super.initState();
-    _maybeLoad();
+    _attach();
   }
 
-  Future<void> _maybeLoad() async {
-    if (!AdRemoteConfigService.instance.isEnabled(widget.placementKey)) return;
-
-    final canRequest = await AdConsentService.instance.canRequestAds();
-    if (!canRequest) return;
-    if (!mounted) return;
-
-    final adUnitId = await AdUnitIds.banner;
-    if (!mounted) return;
-
-    final banner = BannerAd(
-      adUnitId: adUnitId,
-      size: widget.adSize,
-      request: const AdRequest(),
-      listener: BannerAdListener(
-        onAdLoaded: (ad) {
-          if (!mounted) {
-            ad.dispose();
-            return;
-          }
-          setState(() {
-            _bannerAd = ad as BannerAd;
-            _isLoaded = true;
-          });
-        },
-        onAdFailedToLoad: (ad, error) {
-          debugPrint(
-            'BannerAdWidget[${widget.placementKey}]: failed to load. $error',
-          );
-          ad.dispose();
-        },
-      ),
-    );
-
-    banner.load();
+  void _attach() {
+    AdCacheManager.instance
+        .checkoutBanner(widget.placementKey, adSize: widget.adSize)
+        .then((ad) {
+          if (!mounted || ad == null) return;
+          _checkedOut = true;
+          setState(() => _bannerAd = ad);
+        });
   }
 
   @override
   void dispose() {
-    _bannerAd?.dispose();
+    if (_checkedOut) {
+      AdCacheManager.instance.releaseBanner(widget.placementKey);
+    }
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!_isLoaded || _bannerAd == null) {
+    final ad = _bannerAd;
+    if (ad == null) {
       return const SizedBox.shrink();
     }
     return Container(
       alignment: Alignment.center,
-      width: _bannerAd!.size.width.toDouble(),
-      height: _bannerAd!.size.height.toDouble(),
-      child: AdWidget(ad: _bannerAd!),
+      width: ad.size.width.toDouble(),
+      height: ad.size.height.toDouble(),
+      child: AdWidget(ad: ad),
     );
   }
 }

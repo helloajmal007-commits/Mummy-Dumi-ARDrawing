@@ -25,20 +25,19 @@ class AppOpenAdManager {
     return DateTime.now().difference(_loadedAt!) > _maxCacheAge;
   }
 
+  /// Loads the ad as soon as remote config allows it.
+  /// Does NOT wait for consent — the SDK is initialized with default
+  /// (non-personalized-capable) settings and it's fine to issue the
+  /// ad request in parallel with consent gathering.
   Future<void> preload() async {
     if (_isLoading || isAdAvailable) return;
 
     final remoteConfig = AdRemoteConfigService.instance;
-    if (!remoteConfig.isInitialized) {
-      return;
-    }
+    if (!remoteConfig.isInitialized) return;
     if (!remoteConfig.isEnabled(AdPlacementKeys.appOpenInterstitial) &&
         !remoteConfig.isEnabled(AdPlacementKeys.splashOpen)) {
       return;
     }
-
-    final canRequest = await AdConsentService.instance.canRequestAds();
-    if (!canRequest) return;
 
     _isLoading = true;
     final adUnitId = await AdUnitIds.appOpen;
@@ -61,6 +60,8 @@ class AppOpenAdManager {
     );
   }
 
+  /// Waits until the ad is loaded AND consent has resolved to a
+  /// state where we're allowed to show it.
   Future<bool> waitUntilReadyOrTimeout(Duration timeout) async {
     final remoteConfig = AdRemoteConfigService.instance;
     if (!remoteConfig.isEnabled(AdPlacementKeys.appOpenInterstitial) &&
@@ -68,17 +69,23 @@ class AppOpenAdManager {
       return false;
     }
 
-    final canRequest = await AdConsentService.instance.canRequestAds();
-    if (!canRequest) return false;
-
     final deadline = DateTime.now().add(timeout);
     while (DateTime.now().isBefore(deadline)) {
-      if (isAdAvailable) return true;
+      if (isAdAvailable) {
+        final canRequest = await AdConsentService.instance.canRequestAds();
+        if (canRequest) return true;
+      }
       await Future.delayed(const Duration(milliseconds: 150));
     }
-    return isAdAvailable;
+
+    // Final check at deadline
+    if (isAdAvailable) {
+      return AdConsentService.instance.canRequestAds();
+    }
+    return false;
   }
 
+  /// Only call this once consent has been confirmed resolved.
   void show({required VoidCallback onComplete}) {
     if (!isAdAvailable) {
       onComplete();
