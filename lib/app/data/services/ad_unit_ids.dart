@@ -20,10 +20,7 @@ class AdUnitIds {
 
   static Future<String> get appOpen async {
     final native = await AdNativeBridge.get('APP_OPEN_AD_UNIT_ID');
-    return native ??
-        (Platform.isAndroid
-            ? _googleTestAppOpenAndroid
-            : _googleTestAppOpenIOS);
+    return native ?? (Platform.isAndroid ? _googleTestAppOpenAndroid : _googleTestAppOpenIOS);
   }
 
   static Future<String> get banner async {
