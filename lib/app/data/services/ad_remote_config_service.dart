@@ -47,6 +47,12 @@ class AdRemoteConfigService {
     _initialized = true;
   }
 
+  AdClickInterstitialConfig _clickInterstitialConfig =
+      AdClickInterstitialConfig.disabled();
+
+  AdClickInterstitialConfig get clickInterstitialConfig =>
+      _clickInterstitialConfig;
+
   void _parseActiveConfig() {
     final raw = _rc?.getString(_activeKey) ?? _defaultJson;
     try {
@@ -55,6 +61,10 @@ class AdRemoteConfigService {
         (key, value) =>
             MapEntry(key, AdUnitConfig.fromJson(value as Map<String, dynamic>)),
       );
+      final clickRaw = decoded[AdPlacementKeys.appClickInterstitial];
+      _clickInterstitialConfig = clickRaw != null
+          ? AdClickInterstitialConfig.fromJson(clickRaw as Map<String, dynamic>)
+          : AdClickInterstitialConfig.disabled();
     } catch (e) {
       debugPrint(
         'AdRemoteConfigService: failed to parse "$_activeKey" JSON. $e',

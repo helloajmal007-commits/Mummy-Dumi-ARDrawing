@@ -49,21 +49,25 @@ android {
 
     buildTypes {
         debug {
-            // ---- Ad unit IDs: DEBUG (Google public test IDs) ----
-            // Safe to keep in source control — these are Google's shared
-            // test ad units and never affect real revenue or policy
-            // standing. Read from Dart via the "sketch_flow/ad_config"
-            // MethodChannel -> BuildConfig fields.
             buildConfigField("String", "APP_OPEN_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/9257395921\"")
-            buildConfigField("String", "BANNER_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/6300978111\"")
+            buildConfigField("String", "APP_RESUME_OPEN_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/9257395921\"")
+
             buildConfigField("String", "COLLAPSIBLE_BANNER_HOME_BOTTOM_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/6300978111\"")
-            buildConfigField("String", "NATIVE_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/2247696110\"")
-            buildConfigField("String", "INTERSTITIAL_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/1033173712\"")
             buildConfigField("String", "NATIVE_LEARN_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/2247696110\"")
 
-            // ---- AdMob App ID ----
-            // Google's public sample App ID, so debug builds never crash
-            // from a missing/invalid App ID during development.
+            buildConfigField("String", "NATIVE_CATEGORIES_GRID_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/2247696110\"")
+            buildConfigField("String", "NATIVE_CATEGORY_IMAGELIST_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/2247696110\"")
+            buildConfigField("String", "COLLAPSIBLE_BANNER_CATEGORIES_BOTTOM_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/6300978111\"")
+
+            buildConfigField("String", "BANNER_SKETCH_SCREEN_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/6300978111\"")
+            buildConfigField("String", "INTERSTITIAL_SKETCH_PLUS_BUTTON_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/1033173712\"")
+            buildConfigField("String", "COLLAPSIBLE_BANNER_CANVAS_BOTTOM_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/6300978111\"")
+
+            buildConfigField("String", "BANNER_SETTINGS_TOP_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/6300978111\"")
+            buildConfigField("String", "APP_CLICK_INTERSTITIAL_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/1033173712\"")
+
+            buildConfigField("String", "WELCOME_SCREEN_INTERSTITIAL_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/1033173712\"")
+
             manifestPlaceholders["admobAppId"] = "ca-app-pub-3940256099942544~3347511713"
         }
 
@@ -72,18 +76,24 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
 
-            // ---- Ad unit IDs: RELEASE (your real AdMob ad units) ----
-            // Replace every REPLACE_ME below with the real ad unit IDs
-            // from your AdMob console before shipping. Because this is
-            // set per build type (not in defaultConfig), it is
-            // structurally impossible for a debug build to request real
-            // ads, or a release build to accidentally serve test ads.
             buildConfigField("String", "APP_OPEN_AD_UNIT_ID", "\"ca-app-pub-2940059973343828/4089894566\"")
-            buildConfigField("String", "BANNER_AD_UNIT_ID", "\"ca-app-pub-REPLACE_ME/BANNER\"")
+            buildConfigField("String", "APP_RESUME_OPEN_AD_UNIT_ID", "\"ca-app-pub-2940059973343828/4089894566\"")
+
             buildConfigField("String", "COLLAPSIBLE_BANNER_HOME_BOTTOM_AD_UNIT_ID", "\"ca-app-pub-2940059973343828/2060140364\"")
-            buildConfigField("String", "NATIVE_AD_UNIT_ID", "\"ca-app-pub-REPLACE_ME/NATIVE\"")
-            buildConfigField("String", "INTERSTITIAL_AD_UNIT_ID", "\"ca-app-pub-REPLACE_ME/INTERSTITIAL\"")
             buildConfigField("String", "NATIVE_LEARN_AD_UNIT_ID", "\"ca-app-pub-2940059973343828/5319215758\"")
+
+            buildConfigField("String", "NATIVE_CATEGORIES_GRID_AD_UNIT_ID", "\"ca-app-pub-REPLACE_ME/NATIVE_CATEGORIES_GRID\"")
+            buildConfigField("String", "NATIVE_CATEGORY_IMAGELIST_AD_UNIT_ID", "\"ca-app-pub-REPLACE_ME/NATIVE_CATEGORY_IMAGELIST\"")
+            buildConfigField("String", "COLLAPSIBLE_BANNER_CATEGORIES_BOTTOM_AD_UNIT_ID", "\"ca-app-pub-REPLACE_ME/COLLAPSIBLE_BANNER_CATEGORIES_BOTTOM\"")
+
+            buildConfigField("String", "BANNER_SKETCH_SCREEN_AD_UNIT_ID", "\"ca-app-pub-REPLACE_ME/BANNER_SKETCH_SCREEN\"")
+            buildConfigField("String", "INTERSTITIAL_SKETCH_PLUS_BUTTON_AD_UNIT_ID", "\"ca-app-pub-REPLACE_ME/INTERSTITIAL_SKETCH_PLUS_BUTTON\"")
+            buildConfigField("String", "COLLAPSIBLE_BANNER_CANVAS_BOTTOM_AD_UNIT_ID", "\"ca-app-pub-REPLACE_ME/COLLAPSIBLE_BANNER_CANVAS_BOTTOM\"")
+
+            buildConfigField("String", "BANNER_SETTINGS_TOP_AD_UNIT_ID", "\"ca-app-pub-REPLACE_ME/BANNER_SETTINGS_TOP\"")
+            buildConfigField("String", "APP_CLICK_INTERSTITIAL_AD_UNIT_ID", "\"ca-app-pub-REPLACE_ME/APP_CLICK_INTERSTITIAL\"")
+
+            buildConfigField("String", "WELCOME_SCREEN_INTERSTITIAL_AD_UNIT_ID", "\"ca-app-pub-REPLACE_ME/APP_CLICK_INTERSTITIAL\"")
 
             manifestPlaceholders["admobAppId"] = "ca-app-pub-2940059973343828~1823201176"
         }

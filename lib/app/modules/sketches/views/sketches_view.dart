@@ -1,15 +1,72 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sketch_flow/app/data/models/ad_config_model.dart';
+import 'package:sketch_flow/app/data/services/ad_unit_ids.dart';
+import 'package:sketch_flow/app/data/services/app_click_interstitial_manager.dart';
+import 'package:sketch_flow/app/data/services/interstitial_ad_manager.dart';
 import 'package:sketch_flow/app/localization/translation_keys.dart';
+import 'package:sketch_flow/app/modules/onboarding/views/ad_loading_gate_view.dart';
 import 'package:sketch_flow/app/modules/sketches/controllers/sketches_controller.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
 import 'package:sketch_flow/app/theme/app_typography.dart';
+import 'package:sketch_flow/app/widgets/ads/banner_ad_widget.dart';
 import 'package:sketch_flow/app/widgets/chrome_icon_button.dart';
 import 'package:sketch_flow/app/widgets/project_tile.dart';
 
-class SketchesView extends GetView<SketchesController> {
+class SketchesView extends StatefulWidget {
   const SketchesView({super.key});
+
+  @override
+  State<SketchesView> createState() => _SketchesViewState();
+}
+
+class _SketchesViewState extends State<SketchesView> {
+  final SketchesController controller = Get.find<SketchesController>();
+
+  @override
+  void initState() {
+    super.initState();
+    InterstitialAdManager.instance.preload(
+      AdPlacementKeys.interstitialSketchPlusButton,
+      AdUnitIds.interstitialSketchPlusButton,
+    );
+  }
+
+  void _onPlusButtonTapped() {
+    AppClickInterstitialManager.instance.suppressNextCount();
+
+    final placementKey = AdPlacementKeys.interstitialSketchPlusButton;
+
+    if (!InterstitialAdManager.instance.isReady(placementKey)) {
+      controller.createNewSketch();
+      InterstitialAdManager.instance.preload(
+        placementKey,
+        AdUnitIds.interstitialSketchPlusButton,
+      );
+      return;
+    }
+
+    Get.to(
+      () => AdLoadingGateView(
+        isReady: () => InterstitialAdManager.instance.isReady(placementKey),
+        showAd: (onComplete) => InterstitialAdManager.instance.showThenProceed(
+          placementKey,
+          adUnitIdFuture: () => AdUnitIds.interstitialSketchPlusButton,
+          onProceed: onComplete,
+        ),
+        onFinished: () {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Get.back();
+            controller.createNewSketch();
+            AppClickInterstitialManager.instance.resetCount();
+          });
+        },
+      ),
+      transition: Transition.fadeIn,
+      duration: const Duration(milliseconds: 200),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +102,7 @@ class SketchesView extends GetView<SketchesController> {
                     borderRadius: BorderRadius.circular(AppRadius.pill),
                     child: InkWell(
                       borderRadius: BorderRadius.circular(AppRadius.pill),
-                      onTap: controller.createNewSketch,
+                      onTap: _onPlusButtonTapped,
                       child: Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: AppSpace.md,
@@ -72,6 +129,13 @@ class SketchesView extends GetView<SketchesController> {
                 ],
               ),
             ),
+            const SizedBox(height: AppSpace.sm),
+            Center(
+              child: BannerAdWidget(
+                placementKey: AdPlacementKeys.bannerSketchScreen,
+                adUnitIdOverride: AdUnitIds.bannerSketchScreen,
+              ),
+            ),
             Expanded(
               child: Obx(
                 () => controller.isEmpty
@@ -90,7 +154,7 @@ class SketchesView extends GetView<SketchesController> {
                           final sketch = controller.sketches[i];
                           return ProjectTile(
                             project: sketch,
-                            onTap: () => controller.openSketch(sketch),
+                            onTap: () => _onPlusButtonTapped,
                             onChanged: () {},
                           );
                         },

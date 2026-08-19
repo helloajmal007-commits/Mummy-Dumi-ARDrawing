@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:sketch_flow/app/data/services/ad_consent_service.dart';
-import 'package:sketch_flow/app/data/services/app_open_ad_manager.dart';
 import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_typography.dart';
 
 class AdLoadingGateView extends StatefulWidget {
+  final bool Function() isReady;
+  final void Function(VoidCallback onComplete) showAd;
   final VoidCallback onFinished;
 
-  const AdLoadingGateView({super.key, required this.onFinished});
+  const AdLoadingGateView({
+    super.key,
+    required this.isReady,
+    required this.showAd,
+    required this.onFinished,
+  });
 
   @override
   State<AdLoadingGateView> createState() => _AdLoadingGateViewState();
@@ -33,8 +39,8 @@ class _AdLoadingGateViewState extends State<AdLoadingGateView> {
     final canRequest = await AdConsentService.instance.canRequestAds();
     if (!mounted) return;
 
-    if (canRequest && AppOpenAdManager.instance.isAdAvailable) {
-      AppOpenAdManager.instance.show(onComplete: _finish);
+    if (canRequest && widget.isReady()) {
+      widget.showAd(_finish);
     } else {
       _finish();
     }

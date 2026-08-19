@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sketch_flow/app/data/models/ad_config_model.dart';
 import 'package:sketch_flow/app/data/models/tutorial_model.dart';
+import 'package:sketch_flow/app/data/services/ad_unit_ids.dart';
 import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/learn/controllers/learn_controller.dart';
 import 'package:sketch_flow/app/routes/app_routes.dart';
@@ -59,8 +60,9 @@ class LearnView extends GetView<LearnController> {
                         const SizedBox(height: AppSpace.md),
                     itemBuilder: (_, i) {
                       if (showAdTile && i == _kNativeAdInsertIndex) {
-                        return const NativeAdWidget(
+                        return NativeAdWidget(
                           placementKey: AdPlacementKeys.nativeLearnTutorials,
+                          adUnitIdOverride: AdUnitIds.nativeLearn,
                         );
                       }
                       final tutorialIndex =

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sketch_flow/app/data/models/ad_config_model.dart';
+import 'package:sketch_flow/app/data/services/ad_unit_ids.dart';
 import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/categories/controllers/categories_controller.dart';
 import 'package:sketch_flow/app/routes/app_routes.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
 import 'package:sketch_flow/app/theme/app_typography.dart';
+import 'package:sketch_flow/app/widgets/ads/banner_ad_widget.dart';
+import 'package:sketch_flow/app/widgets/ads/grid_native_ad_widget.dart';
 import 'package:sketch_flow/app/widgets/app_bottom_nav.dart';
 import 'package:sketch_flow/app/widgets/asset_image_grid_view.dart';
 import 'package:sketch_flow/app/widgets/image_source_sheet.dart';
@@ -25,66 +29,101 @@ class CategoriesView extends GetView<CategoriesController> {
         backgroundColor: AppColors.background,
         body: SafeArea(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  AppSpace.lg,
-                  AppSpace.md,
-                  AppSpace.lg,
-                  0,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        AppSpace.lg,
+                        AppSpace.md,
+                        AppSpace.lg,
+                        0,
+                      ),
+                      child: Text(
+                        TKeys.categoriesTitle.tr,
+                        style: AppTypography.h2,
+                      ),
+                    ),
+                    const SizedBox(height: AppSpace.sm),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpace.lg,
+                      ),
+                      child: Text(
+                        TKeys.categoriesSubtitle.tr,
+                        style: AppTypography.bodySmall.copyWith(
+                          color: AppColors.inkMuted,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Obx(() {
+                        debugPrint(
+                          'GRID OBX REBUILD: previewImages = ${controller.previewImages}',
+                        );
+                        const adInsertIndex = 2;
+                        final categories = controller.categories;
+                        final showAdTile = categories.length > adInsertIndex;
+                        final itemCount =
+                            categories.length + (showAdTile ? 1 : 0);
+
+                        return GridView.builder(
+                          padding: const EdgeInsets.all(AppSpace.lg),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: AppSpace.lg,
+                                crossAxisSpacing: AppSpace.lg,
+                                childAspectRatio: 1.1,
+                              ),
+                          itemCount: itemCount,
+                          itemBuilder: (_, i) {
+                            if (showAdTile && i == adInsertIndex) {
+                              return GridNativeAdWidget(
+                                placementKey:
+                                    AdPlacementKeys.nativeCategoriesGrid,
+                                adUnitIdOverride:
+                                    AdUnitIds.nativeCategoriesGrid,
+                              );
+                            }
+                            final categoryIndex =
+                                showAdTile && i > adInsertIndex ? i - 1 : i;
+                            final category = categories[categoryIndex];
+                            final previewPath =
+                                controller.previewImages[category.key];
+                            return _CategoryCard(
+                              category: category,
+                              previewPath: previewPath,
+                              onTap: () => Get.toNamed(
+                                Routes.assetGrid,
+                                arguments: AssetGridArgs(
+                                  title: category.name,
+                                  subtitle: TKeys.pickImageToTraceArOrPaper.tr,
+                                  folderPath: category.assetFolder,
+                                  accent: category.color,
+                                  emptyIcon: category.icon,
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      }),
+                    ),
+                  ],
                 ),
-                child: Text(TKeys.categoriesTitle.tr, style: AppTypography.h2),
               ),
-              const SizedBox(height: AppSpace.sm),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpace.lg),
-                child: Text(
-                  TKeys.categoriesSubtitle.tr,
-                  style: AppTypography.bodySmall.copyWith(
-                    color: AppColors.inkMuted,
+                padding: const EdgeInsets.only(bottom: 40.0),
+                child: Center(
+                  child: BannerAdWidget(
+                    placementKey: AdPlacementKeys.bannerCategoriesBottom,
+                    collapsiblePlacement: 'bottom',
+                    adUnitIdOverride:
+                        AdUnitIds.collapsibleBannerCategoriesBottom,
                   ),
                 ),
-              ),
-              Expanded(
-                child: Obx(() {
-                  debugPrint(
-                    'GRID OBX REBUILD: previewImages = ${controller.previewImages}',
-                  );
-                  return GridView.builder(
-                    padding: const EdgeInsets.all(AppSpace.lg),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: AppSpace.lg,
-                          crossAxisSpacing: AppSpace.lg,
-                          childAspectRatio: 1.1,
-                        ),
-                    itemCount: controller.categories.length,
-                    itemBuilder: (_, i) {
-                      final category = controller.categories[i];
-                      final previewPath =
-                          controller.previewImages[category.key];
-                      debugPrint(
-                        'CARD BUILD [$i] ${category.name}: previewPath = $previewPath',
-                      );
-                      return _CategoryCard(
-                        category: category,
-                        previewPath: previewPath,
-                        onTap: () => Get.toNamed(
-                          Routes.assetGrid,
-                          arguments: AssetGridArgs(
-                            title: category.name,
-                            subtitle: TKeys.pickImageToTraceArOrPaper.tr,
-                            folderPath: category.assetFolder,
-                            accent: category.color,
-                            emptyIcon: category.icon,
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                }),
               ),
             ],
           ),

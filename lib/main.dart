@@ -8,10 +8,12 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:sketch_flow/app/data/services/ad_consent_service.dart';
 import 'package:sketch_flow/app/data/services/ad_remote_config_service.dart';
+import 'package:sketch_flow/app/data/services/app_click_interstitial_manager.dart';
 import 'package:sketch_flow/app/data/services/app_open_ad_manager.dart';
 import 'package:sketch_flow/app/localization/app_translations.dart';
 import 'package:sketch_flow/app/localization/locale_controller.dart';
 import 'package:sketch_flow/app/modules/settings/controllers/settings_controller.dart';
+import 'package:sketch_flow/app/routes/app_nav_click_observer.dart';
 import 'app/routes/app_pages.dart';
 import 'app/routes/app_routes.dart';
 import 'app/theme/app_theme.dart';
@@ -43,6 +45,7 @@ Future<void> _bootstrapAdsConsentAndPreload() async {
     AdConsentService.instance.requestConsentIfNeeded(),
     AppOpenAdManager.instance.preload(),
   ]);
+  AppClickInterstitialManager.instance.preload();
 }
 
 class SketchFlowApp extends StatefulWidget {
@@ -79,6 +82,7 @@ class _SketchFlowAppState extends State<SketchFlowApp> {
       fallbackLocale: const Locale('en', 'US'),
       initialRoute: Routes.splash,
       getPages: AppPages.routes,
+      navigatorObservers: [AppNavClickObserver()],
       defaultTransition: Transition.cupertino,
     );
   }

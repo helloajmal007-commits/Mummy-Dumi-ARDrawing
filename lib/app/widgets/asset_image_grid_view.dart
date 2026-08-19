@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sketch_flow/app/data/models/ad_config_model.dart';
+import 'package:sketch_flow/app/data/services/ad_unit_ids.dart';
 import 'package:sketch_flow/app/data/services/asset_discovery.dart';
 import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/routes/app_routes.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
 import 'package:sketch_flow/app/theme/app_typography.dart';
+import 'package:sketch_flow/app/widgets/ads/grid_native_ad_widget.dart';
 import 'package:sketch_flow/app/widgets/chrome_icon_button.dart';
 
 class AssetGridArgs {
@@ -116,22 +119,42 @@ class _AssetImageGridViewState extends State<AssetImageGridView> {
                   ? const Center(child: CircularProgressIndicator())
                   : _images!.isEmpty
                   ? _EmptyState(args: args)
-                  : GridView.builder(
-                      padding: const EdgeInsets.all(AppSpace.lg),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: AppSpace.md,
-                            crossAxisSpacing: AppSpace.md,
-                            childAspectRatio: 0.85,
-                          ),
-                      itemCount: _images!.length,
-                      itemBuilder: (_, i) {
-                        final path = _images![i];
-                        return _ImageTile(
-                          assetPath: path,
-                          accent: args.accent,
-                          onTap: () => _openModeSheet(context, path),
+                  : Builder(
+                      builder: (context) {
+                        const adInsertIndex = 2;
+                        final images = _images!;
+                        final showAdTile = images.length > adInsertIndex;
+                        final itemCount = images.length + (showAdTile ? 1 : 0);
+
+                        return GridView.builder(
+                          padding: const EdgeInsets.all(AppSpace.lg),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: AppSpace.md,
+                                crossAxisSpacing: AppSpace.md,
+                                childAspectRatio: 0.85,
+                              ),
+                          itemCount: itemCount,
+                          itemBuilder: (_, i) {
+                            if (showAdTile && i == adInsertIndex) {
+                              return GridNativeAdWidget(
+                                placementKey:
+                                    AdPlacementKeys.nativeCategoryImageList,
+                                adUnitIdOverride:
+                                    AdUnitIds.nativeCategoryImageList,
+                              );
+                            }
+                            final imageIndex = showAdTile && i > adInsertIndex
+                                ? i - 1
+                                : i;
+                            final path = images[imageIndex];
+                            return _ImageTile(
+                              assetPath: path,
+                              accent: args.accent,
+                              onTap: () => _openModeSheet(context, path),
+                            );
+                          },
                         );
                       },
                     ),

@@ -23,10 +23,11 @@ class AdCacheManager {
   final Map<String, DateTime> _lastNativeRequestAt = {};
 
   Future<BannerAd?> checkoutBanner(
-      String placementKey, {
-        AdSize adSize = AdSize.banner,
-        String? collapsiblePlacement,
-      }) {
+    String placementKey, {
+    AdSize adSize = AdSize.banner,
+    String? collapsiblePlacement,
+    Future<String>? adUnitId,
+  }) {
     final cached = _banners[placementKey];
     final alreadyCheckedOut = _bannerCheckedOut[placementKey] ?? false;
 
@@ -42,7 +43,12 @@ class AdCacheManager {
       return Future.value(null);
     }
 
-    final future = _loadBanner(placementKey, adSize, collapsiblePlacement);
+    final future = _loadBanner(
+      placementKey,
+      adSize,
+      collapsiblePlacement,
+      adUnitId,
+    ); // add adUnitId
     _bannerLoadsInFlight[placementKey] = future;
     return future;
   }
@@ -52,10 +58,11 @@ class AdCacheManager {
   }
 
   Future<BannerAd?> _loadBanner(
-      String placementKey,
-      AdSize adSize,
-      String? collapsiblePlacement,
-      ) async {
+    String placementKey,
+    AdSize adSize,
+    String? collapsiblePlacement,
+    Future<String>? adUnitIdOverride,
+  ) async {
     try {
       if (!AdRemoteConfigService.instance.isEnabled(placementKey)) return null;
 
@@ -63,9 +70,11 @@ class AdCacheManager {
       if (!canRequest) return null;
 
       _lastBannerRequestAt[placementKey] = DateTime.now();
-      final adUnitId = collapsiblePlacement != null
-          ? await AdUnitIds.collapsibleBannerHomeBottom
-          : await AdUnitIds.banner;
+      final adUnitId =
+          await (adUnitIdOverride ??
+              (collapsiblePlacement != null
+                  ? AdUnitIds.collapsibleBannerHomeBottom
+                  : AdUnitIds.banner));
       final completer = Completer<BannerAd?>();
 
       final request = collapsiblePlacement != null
@@ -101,9 +110,10 @@ class AdCacheManager {
   }
 
   Future<NativeAd?> checkoutNative(
-      String placementKey, {
-        required String factoryId,
-      }) {
+    String placementKey, {
+    required String factoryId,
+    Future<String>? adUnitId,
+  }) {
     final cached = _natives[placementKey];
     final alreadyCheckedOut = _nativeCheckedOut[placementKey] ?? false;
 
@@ -119,7 +129,11 @@ class AdCacheManager {
       return Future.value(null);
     }
 
-    final future = _loadNative(placementKey, factoryId);
+    final future = _loadNative(
+      placementKey,
+      factoryId,
+      adUnitId ?? AdUnitIds.native,
+    );
     _nativeLoadsInFlight[placementKey] = future;
     return future;
   }
@@ -128,7 +142,11 @@ class AdCacheManager {
     _nativeCheckedOut[placementKey] = false;
   }
 
-  Future<NativeAd?> _loadNative(String placementKey, String factoryId) async {
+  Future<NativeAd?> _loadNative(
+    String placementKey,
+    String factoryId,
+    Future<String> adUnitIdFuture,
+  ) async {
     try {
       if (!AdRemoteConfigService.instance.isEnabled(placementKey)) return null;
 
@@ -136,7 +154,7 @@ class AdCacheManager {
       if (!canRequest) return null;
 
       _lastNativeRequestAt[placementKey] = DateTime.now();
-      final adUnitId = await AdUnitIds.native;
+      final adUnitId = await adUnitIdFuture;
       final completer = Completer<NativeAd?>();
 
       final ad = NativeAd(

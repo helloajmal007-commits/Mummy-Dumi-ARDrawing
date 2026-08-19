@@ -7,15 +7,15 @@ class BannerAdWidget extends StatefulWidget {
   final String placementKey;
   final AdSize adSize;
 
-  /// Pass `'top'` or `'bottom'` to request a collapsible banner anchored
-  /// to that edge. Leave null for a standard, non-collapsible banner.
   final String? collapsiblePlacement;
+  final Future<String>? adUnitIdOverride;
 
   const BannerAdWidget({
     super.key,
     this.placementKey = AdPlacementKeys.collapsableBannerHomeBottom,
     this.adSize = AdSize.banner,
     this.collapsiblePlacement,
+    this.adUnitIdOverride,
   });
 
   @override
@@ -38,6 +38,7 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
       widget.placementKey,
       adSize: widget.adSize,
       collapsiblePlacement: widget.collapsiblePlacement,
+      adUnitId: widget.adUnitIdOverride,
     )
         .then((ad) {
       if (!mounted || ad == null) return;

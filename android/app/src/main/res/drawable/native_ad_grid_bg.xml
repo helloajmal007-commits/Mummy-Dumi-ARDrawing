@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Rounded card background for grid-cell native ads, matching the
+     rounded corners used by category/image grid cards. Neutral light
+     grey so it reads as a card among real content cards without
+     needing to match any one category's accent color. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#F2F2F2" />
+    <corners android:radius="16dp" />
+</shape>

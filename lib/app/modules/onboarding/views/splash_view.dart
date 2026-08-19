@@ -22,7 +22,7 @@ class _SplashViewState extends State<SplashView>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
 
-  static const _adReadyTimeout = Duration(seconds: 30);
+  static const _adReadyTimeout = Duration(seconds: 8);
   static const _splashMinimumDisplay = Duration(seconds: 3);
 
   static const _hardCeiling = Duration(seconds: 20);
@@ -73,7 +73,12 @@ class _SplashViewState extends State<SplashView>
     }
 
     Get.off(
-      () => AdLoadingGateView(onFinished: () => Get.offNamed(destination)),
+      () => AdLoadingGateView(
+        isReady: () => AppOpenAdManager.instance.isAdAvailable,
+        showAd: (onComplete) =>
+            AppOpenAdManager.instance.show(onComplete: onComplete),
+        onFinished: () => Get.offNamed(destination),
+      ),
       transition: Transition.fadeIn,
       duration: const Duration(milliseconds: 200),
     );

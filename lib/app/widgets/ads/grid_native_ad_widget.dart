@@ -1,29 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:sketch_flow/app/data/models/ad_config_model.dart';
 import 'package:sketch_flow/app/data/services/ad_cache_manager.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
 
-const String kNativeAdFactoryId = 'smallNativeAd';
+const String kGridNativeAdFactoryId = 'gridNativeAd';
 
-class NativeAdWidget extends StatefulWidget {
+class GridNativeAdWidget extends StatefulWidget {
   final String placementKey;
-  final double height;
   final Future<String>? adUnitIdOverride;
 
-  const NativeAdWidget({
+  const GridNativeAdWidget({
     super.key,
-    this.placementKey = AdPlacementKeys.nativeHomeSketch,
-    this.height = 88,
+    required this.placementKey,
     this.adUnitIdOverride,
   });
 
   @override
-  State<NativeAdWidget> createState() => _NativeAdWidgetState();
+  State<GridNativeAdWidget> createState() => _GridNativeAdWidgetState();
 }
 
-class _NativeAdWidgetState extends State<NativeAdWidget> {
+class _GridNativeAdWidgetState extends State<GridNativeAdWidget> {
   NativeAd? _nativeAd;
   bool _checkedOut = false;
 
@@ -37,7 +34,7 @@ class _NativeAdWidgetState extends State<NativeAdWidget> {
     AdCacheManager.instance
         .checkoutNative(
           widget.placementKey,
-          factoryId: kNativeAdFactoryId,
+          factoryId: kGridNativeAdFactoryId,
           adUnitId: widget.adUnitIdOverride,
         )
         .then((ad) {
@@ -61,15 +58,12 @@ class _NativeAdWidgetState extends State<NativeAdWidget> {
     if (ad == null) {
       return const SizedBox.shrink();
     }
-    return Container(
-      height: widget.height,
-      margin: const EdgeInsets.symmetric(vertical: AppSpace.sm),
-      decoration: BoxDecoration(
-        color: AppColors.accentSoft.withValues(alpha: 0.2),
-        borderRadius: BorderRadius.circular(AppRadius.lg),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(AppRadius.lg),
+      child: Container(
+        color: AppColors.surface,
+        child: AdWidget(ad: ad),
       ),
-      clipBehavior: Clip.antiAlias,
-      child: AdWidget(ad: ad),
     );
   }
 }

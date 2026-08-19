@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sketch_flow/app/data/models/ad_config_model.dart';
 import 'package:sketch_flow/app/data/models/tool_model.dart';
+import 'package:sketch_flow/app/data/services/ad_unit_ids.dart';
 import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/canvas/controllers/canvas_controller.dart';
 import 'package:sketch_flow/app/modules/canvas/views/color_picker_view.dart';
@@ -11,6 +13,7 @@ import 'package:sketch_flow/app/routes/app_routes.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
 import 'package:sketch_flow/app/theme/app_typography.dart';
+import 'package:sketch_flow/app/widgets/ads/banner_ad_widget.dart';
 import 'package:sketch_flow/app/widgets/chrome_icon_button.dart';
 import 'package:sketch_flow/app/widgets/color_swatch_button.dart';
 
@@ -152,12 +155,20 @@ class CanvasView extends GetView<CanvasController> {
               ),
             ),
             const SizedBox(height: AppSpace.lg),
+            const SizedBox(height: AppSpace.lg),
             Padding(
               padding: const EdgeInsets.only(bottom: AppSpace.lg),
               child: ToolDock(
                 controller: controller,
                 onOpenTools: () => Get.toNamed(Routes.tools),
                 onOpenLayers: () => Get.toNamed(Routes.layers),
+              ),
+            ),
+            Center(
+              child: BannerAdWidget(
+                placementKey: AdPlacementKeys.collapsibleBannerCanvasBottom,
+                collapsiblePlacement: 'bottom',
+                adUnitIdOverride: AdUnitIds.collapsibleBannerCanvasBottom,
               ),
             ),
           ],

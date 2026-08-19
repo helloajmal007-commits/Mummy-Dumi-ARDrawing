@@ -2,12 +2,15 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:sketch_flow/app/data/models/ad_config_model.dart';
+import 'package:sketch_flow/app/data/services/ad_unit_ids.dart';
 import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/settings/controllers/settings_controller.dart';
 import 'package:sketch_flow/app/routes/app_routes.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
 import 'package:sketch_flow/app/theme/app_typography.dart';
+import 'package:sketch_flow/app/widgets/ads/banner_ad_widget.dart';
 import 'package:sketch_flow/app/widgets/app_bottom_nav.dart';
 import 'package:sketch_flow/app/widgets/image_source_sheet.dart';
 import 'package:sketch_flow/app/widgets/section_header.dart';
@@ -93,6 +96,13 @@ class SettingsView extends GetView<SettingsController> {
             AppSpace.xxxl,
           ),
           children: [
+            Center(
+              child: BannerAdWidget(
+                placementKey: AdPlacementKeys.bannerSettingsTop,
+                adUnitIdOverride: AdUnitIds.bannerSettingsTop,
+              ),
+            ),
+            const SizedBox(height: AppSpace.sm),
             SectionHeader(title: TKeys.sectionDrawing.tr),
             const SizedBox(height: AppSpace.sm),
             _SettingsCard(

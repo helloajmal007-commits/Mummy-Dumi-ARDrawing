@@ -26,4 +26,38 @@ class AdPlacementKeys {
 
   static const String nativeHomeSketch = 'native_home_sketch';
   static const String nativeLearnTutorials = 'native_learn_tutorials';
+
+  static const String nativeCategoriesGrid = 'native_categories_grid';
+  static const String bannerCategoriesBottom = 'banner_categories_bottom';
+  static const String nativeCategoryImageList = 'native_category_imagelist';
+
+  static const String bannerSketchScreen = 'banner_sketch_screen';
+  static const String interstitialSketchPlusButton = 'interstitial_sketch_plus_button';
+  static const String collapsibleBannerCanvasBottom = 'collapsible_banner_canvas_bottom';
+
+  static const String bannerSettingsTop = 'banner_settings_top';
+  static const String appClickInterstitial = 'app_click_Inters';
+
+  static const String appResumeOpenAd = 'on_resume_ad _app_open';
+  static const String welcomeScreenInterstitial = 'welcome_screen_interstitial';
+}
+
+class AdClickInterstitialConfig {
+  final bool show;
+  final int clickThreshold;
+
+  const AdClickInterstitialConfig({
+    required this.show,
+    required this.clickThreshold,
+  });
+
+  factory AdClickInterstitialConfig.fromJson(Map<String, dynamic> json) {
+    return AdClickInterstitialConfig(
+      show: json['show'] as bool? ?? false,
+      clickThreshold: (json['clickThreshold'] as num?)?.toInt() ?? 3,
+    );
+  }
+
+  factory AdClickInterstitialConfig.disabled() =>
+      const AdClickInterstitialConfig(show: false, clickThreshold: 3);
 }
