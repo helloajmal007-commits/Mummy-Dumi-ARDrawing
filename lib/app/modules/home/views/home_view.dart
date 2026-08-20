@@ -3,6 +3,7 @@ import 'package:flutter/services.dart' show SystemNavigator;
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:sketch_flow/app/data/models/ad_config_model.dart';
+import 'package:sketch_flow/app/data/services/app_open_ad_manager.dart';
 import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/home/controllers/home_controller.dart';
 import 'package:sketch_flow/app/routes/app_routes.dart';
@@ -22,6 +23,12 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  @override
+  void initState() {
+    super.initState();
+    AppResumeOpenAdManager.instance.preload();
+  }
+
   Future<void> _handleBack(BuildContext context) async {
     final shouldLeave = await Navigator.of(context).push<bool>(
       PageRouteBuilder(

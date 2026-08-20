@@ -22,10 +22,10 @@ class _SplashViewState extends State<SplashView>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
 
-  static const _adReadyTimeout = Duration(seconds: 8);
+  static const _adReadyTimeout = Duration(seconds: 10);
   static const _splashMinimumDisplay = Duration(seconds: 3);
 
-  static const _hardCeiling = Duration(seconds: 20);
+  static const _hardCeiling = Duration(seconds: 40);
 
   @override
   void initState() {

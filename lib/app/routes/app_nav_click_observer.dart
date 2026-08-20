@@ -11,6 +11,7 @@ const Set<String> _excludedFromClickCount = {
   Routes.onboarding,
   Routes.languageSelect,
   Routes.languageConfirm,
+  '/AdLoadingGateView',
 };
 
 class AppNavClickObserver extends GetObserver {

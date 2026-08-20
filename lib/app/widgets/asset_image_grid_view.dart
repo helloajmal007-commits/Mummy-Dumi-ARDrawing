@@ -37,11 +37,12 @@ class AssetImageGridView extends StatefulWidget {
 class _AssetImageGridViewState extends State<AssetImageGridView> {
   List<String>? _images;
   String? _error;
+  late final AssetGridArgs args;
 
   @override
   void initState() {
     super.initState();
-    final args = Get.arguments as AssetGridArgs;
+    args = Get.arguments as AssetGridArgs;
     AssetDiscovery.imagesInFolder(args.folderPath)
         .then((found) {
           if (mounted) setState(() => _images = found);
@@ -58,8 +59,6 @@ class _AssetImageGridViewState extends State<AssetImageGridView> {
 
   @override
   Widget build(BuildContext context) {
-    final args = Get.arguments as AssetGridArgs;
-
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(

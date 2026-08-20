@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sketch_flow/app/data/models/ad_config_model.dart';
 import 'package:sketch_flow/app/data/models/onboarding_model.dart';
+import 'package:sketch_flow/app/data/services/ad_unit_ids.dart';
 import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/onboarding/controllers/onboarding_controller.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
 import 'package:sketch_flow/app/theme/app_typography.dart';
+import 'package:sketch_flow/app/widgets/ads/full_native_ad_widget.dart';
+import 'package:sketch_flow/app/widgets/ads/native_ad_widget.dart';
 
 class OnboardingView extends GetView<OnboardingController> {
   const OnboardingView({super.key});
@@ -14,11 +18,12 @@ class OnboardingView extends GetView<OnboardingController> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(() {
-        final slide = controller.slides[controller.currentPage.value];
+        final page = controller.pages[controller.currentPage.value];
+        final backgroundColor = page.slide?.background ?? AppColors.accentSoft;
         return AnimatedContainer(
           duration: const Duration(milliseconds: 450),
           curve: Curves.easeOut,
-          color: slide.background,
+          color: backgroundColor,
           child: SafeArea(
             child: Column(
               children: [
@@ -49,14 +54,26 @@ class OnboardingView extends GetView<OnboardingController> {
                   child: PageView.builder(
                     controller: controller.pageController,
                     onPageChanged: controller.onPageChanged,
-                    itemCount: controller.slides.length,
+                    itemCount: controller.pages.length,
                     itemBuilder: (_, i) {
-                      return _OnboardingSlideView(slide: controller.slides[i]);
+                      final p = controller.pages[i];
+                      if (p.type == OnboardingPageType.slide) {
+                        return _OnboardingSlideView(
+                          slide: p.slide!,
+                          showScreen2Native: i == 2,
+                        );
+                      }
+                      return _OnboardingAdPageView(
+                        pageIndex: i,
+                        placementKey: p.adPlacementKey!,
+                        adUnitIdOverride: p.adUnitIdOverride!,
+                        onLoadResult: (_) => controller.reportAdResolved(i),
+                      );
                     },
                   ),
                 ),
                 _DotIndicator(
-                  count: controller.slides.length,
+                  count: controller.pages.length,
                   activeIndex: controller.currentPage.value,
                 ),
                 Padding(
@@ -71,10 +88,13 @@ class OnboardingView extends GetView<OnboardingController> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
+                        disabledBackgroundColor: Colors.blue.withValues(
+                          alpha: 0.35,
+                        ),
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         elevation: 0,
                       ),
-                      onPressed: controller.next,
+                      onPressed: controller.canProceed ? controller.next : null,
                       child: AnimatedSwitcher(
                         duration: const Duration(milliseconds: 250),
                         child: Text(
@@ -83,7 +103,7 @@ class OnboardingView extends GetView<OnboardingController> {
                               : TKeys.next.tr,
                           key: ValueKey(controller.isLastPage),
                           style: AppTypography.button.copyWith(
-                            color: slide.background,
+                            color: backgroundColor,
                             fontSize: 16,
                           ),
                         ),
@@ -100,10 +120,46 @@ class OnboardingView extends GetView<OnboardingController> {
   }
 }
 
+class _OnboardingAdPageView extends StatelessWidget {
+  final int pageIndex;
+  final String placementKey;
+  final Future<String> adUnitIdOverride;
+  final ValueChanged<bool> onLoadResult;
+
+  const _OnboardingAdPageView({
+    required this.pageIndex,
+    required this.placementKey,
+    required this.adUnitIdOverride,
+    required this.onLoadResult,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpace.lg,
+        vertical: AppSpace.md,
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(AppRadius.lg),
+        child: FullNativeAdWidget(
+          placementKey: placementKey,
+          adUnitIdOverride: adUnitIdOverride,
+          onLoadResult: onLoadResult,
+        ),
+      ),
+    );
+  }
+}
+
 class _OnboardingSlideView extends StatefulWidget {
   final OnboardingSlide slide;
+  final bool showScreen2Native;
 
-  const _OnboardingSlideView({required this.slide});
+  const _OnboardingSlideView({
+    required this.slide,
+    this.showScreen2Native = false,
+  });
 
   @override
   State<_OnboardingSlideView> createState() => _OnboardingSlideViewState();
@@ -206,6 +262,13 @@ class _OnboardingSlideViewState extends State<_OnboardingSlideView>
               ],
             ),
           ),
+          if (widget.showScreen2Native) ...[
+            const SizedBox(height: AppSpace.md),
+            NativeAdWidget(
+              placementKey: AdPlacementKeys.nativeOnboardingScreen2Native,
+              adUnitIdOverride: AdUnitIds.nativeOnboardingScreen2Native,
+            ),
+          ],
           const SizedBox(height: AppSpace.lg),
         ],
       ),

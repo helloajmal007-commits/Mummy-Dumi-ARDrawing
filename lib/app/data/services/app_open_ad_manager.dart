@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:sketch_flow/app/data/services/ad_consent_service.dart';
+import 'package:sketch_flow/app/data/services/ad_presentation_state.dart';
 import 'package:sketch_flow/app/data/services/ad_remote_config_service.dart';
 import 'package:sketch_flow/app/data/services/ad_unit_ids.dart';
 import 'package:sketch_flow/app/data/models/ad_config_model.dart';
@@ -89,6 +90,13 @@ class AppOpenAdManager {
       onComplete();
       return;
     }
+    if (AdPresentationState.instance.isPresenting) {
+      debugPrint('AppOpenAdManager.show: another ad is presenting, skipping show.');
+      onComplete();
+      return;
+    }
+
+    AdPresentationState.instance.markPresenting();
 
     final ad = _ad!;
     ad.fullScreenContentCallback = FullScreenContentCallback(
@@ -97,6 +105,7 @@ class AppOpenAdManager {
       },
       onAdDismissedFullScreenContent: (ad) {
         _isShowingAd = false;
+        AdPresentationState.instance.markIdle();
         ad.dispose();
         _ad = null;
         onComplete();
@@ -104,6 +113,7 @@ class AppOpenAdManager {
       },
       onAdFailedToShowFullScreenContent: (ad, error) {
         _isShowingAd = false;
+        AdPresentationState.instance.markIdle();
         ad.dispose();
         _ad = null;
         onComplete();
@@ -207,6 +217,10 @@ class AppLifecycleAdReporter extends WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (AdPresentationState.instance.isPresenting || _isPresentingResumeGate) {
+      return;
+    }
+
     if (state == AppLifecycleState.paused) {
       _backgroundedAt = DateTime.now();
     } else if (state == AppLifecycleState.resumed) {
@@ -220,6 +234,7 @@ class AppLifecycleAdReporter extends WidgetsBindingObserver {
       return;
     }
     if (_isPresentingResumeGate) return;
+    if (AdPresentationState.instance.isPresenting) return;
 
     final backgroundedAt = _backgroundedAt;
     if (backgroundedAt == null) return;
@@ -234,13 +249,18 @@ class AppLifecycleAdReporter extends WidgetsBindingObserver {
     final canRequest = await AdConsentService.instance.canRequestAds();
     if (!canRequest) return;
 
+    if (AdPresentationState.instance.isPresenting) return;
+
+    _backgroundedAt = null;
+
     _isPresentingResumeGate = true;
-    _showResumeGate();
+    AdPresentationState.instance.markPresenting();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _showResumeGate());
   }
 
   void _showResumeGate() {
     Get.to(
-      () => AdLoadingGateView(
+          () => AdLoadingGateView(
         isReady: () => AppResumeOpenAdManager.instance.isAdAvailable,
         showAd: (onComplete) =>
             AppResumeOpenAdManager.instance.show(onComplete: onComplete),
@@ -248,6 +268,7 @@ class AppLifecycleAdReporter extends WidgetsBindingObserver {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             Get.back();
             _isPresentingResumeGate = false;
+            AdPresentationState.instance.markIdle();
           });
         },
       ),

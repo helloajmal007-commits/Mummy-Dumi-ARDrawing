@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sketch_flow/app/data/models/ad_config_model.dart';
 import 'package:sketch_flow/app/data/models/language_model.dart';
+import 'package:sketch_flow/app/data/services/ad_unit_ids.dart';
 import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/language/controllers/language_controller.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
 import 'package:sketch_flow/app/theme/app_typography.dart';
+import 'package:sketch_flow/app/widgets/ads/native_ad_widget.dart';
 
 class LanguageSelectView extends GetView<LanguageController> {
   const LanguageSelectView({super.key});
@@ -65,6 +68,19 @@ class LanguageSelectView extends GetView<LanguageController> {
                     ],
                   ),
                 ),
+              if (!isSettingsMode)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpace.lg,
+                    AppSpace.md,
+                    AppSpace.lg,
+                    0,
+                  ),
+                  child: NativeAdWidget(
+                    placementKey: AdPlacementKeys.arLanguageScreenNative,
+                    adUnitIdOverride: AdUnitIds.arLanguageScreenNative,
+                  ),
+                ),
               const SizedBox(height: AppSpace.lg),
               Expanded(
                 child: ListView.separated(
@@ -76,7 +92,7 @@ class LanguageSelectView extends GetView<LanguageController> {
                     final language = kSupportedLanguages[i];
                     return Obx(() {
                       final isSelected =
-                          controller.selected.value.code == language.code;
+                          controller.selected.value?.code == language.code;
                       return _LanguageTile(
                         language: language,
                         isSelected: isSelected,
@@ -86,24 +102,47 @@ class LanguageSelectView extends GetView<LanguageController> {
                   },
                 ),
               ),
+              if (!isSettingsMode)
+                Obx(() {
+                  if (!controller.hasSelection) return const SizedBox.shrink();
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(
+                      AppSpace.lg,
+                      0,
+                      AppSpace.lg,
+                      AppSpace.sm,
+                    ),
+                    child: NativeAdWidget(
+                      placementKey: AdPlacementKeys.arLanguageScreen2ndNative,
+                      adUnitIdOverride: AdUnitIds.arLanguageScreen2ndNative,
+                    ),
+                  );
+                }),
               Padding(
                 padding: const EdgeInsets.all(AppSpace.lg),
                 child: SizedBox(
                   width: double.infinity,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      elevation: 0,
-                    ),
-                    onPressed: isSettingsMode
-                        ? controller.saveAndGoBack
-                        : controller.goToConfirm,
-                    child: Text(
-                      isSettingsMode ? TKeys.save.tr : TKeys.continueBtn.tr,
-                      style: AppTypography.button.copyWith(
-                        color: Colors.white,
-                        fontSize: 16,
+                  child: Obx(
+                    () => ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        disabledBackgroundColor: Colors.blue.withValues(
+                          alpha: 0.35,
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        elevation: 0,
+                      ),
+                      onPressed: !controller.hasSelection
+                          ? null
+                          : (isSettingsMode
+                                ? controller.saveAndGoBack
+                                : controller.goToConfirm),
+                      child: Text(
+                        isSettingsMode ? TKeys.save.tr : TKeys.continueBtn.tr,
+                        style: AppTypography.button.copyWith(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
                       ),
                     ),
                   ),

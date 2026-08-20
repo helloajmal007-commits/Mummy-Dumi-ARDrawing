@@ -5,10 +5,12 @@ import 'package:sketch_flow/app/localization/locale_controller.dart';
 import 'package:sketch_flow/app/routes/app_routes.dart';
 
 class LanguageController extends GetxController {
-  final Rx<AppLanguage> selected = kSupportedLanguages.first.obs;
+  final Rx<AppLanguage?> selected = Rx<AppLanguage?>(null);
 
   bool isSettingsMode = false;
-  late AppLanguage _previousLanguage;
+  AppLanguage? _previousLanguage;
+
+  bool get hasSelection => selected.value != null;
 
   @override
   void onInit() {
@@ -21,7 +23,7 @@ class LanguageController extends GetxController {
       final match = kSupportedLanguages.firstWhereOrNull(
         (l) => l.code == savedCode,
       );
-      if (match != null) selected.value = match;
+      if (match != null && isSettingsMode) selected.value = match;
     }
 
     _previousLanguage = selected.value;
@@ -32,25 +34,35 @@ class LanguageController extends GetxController {
     Get.find<LocaleController>().changeLocale(language.englishName);
   }
 
-  void goToConfirm() => Get.toNamed(Routes.languageConfirm);
+  void goToConfirm() {
+    if (!hasSelection) return;
+    Get.toNamed(Routes.languageConfirm);
+  }
 
   void confirmAndContinue() {
-    StorageService.saveLanguageCode(selected.value.code);
-    Get.find<LocaleController>().changeLocale(selected.value.englishName);
+    final language = selected.value;
+    if (language == null) return;
+    StorageService.saveLanguageCode(language.code);
+    Get.find<LocaleController>().changeLocale(language.englishName);
     Get.offAllNamed(Routes.onboarding);
   }
 
   void goToLanguageSelect() => Get.back();
 
   void saveAndGoBack() {
-    StorageService.saveLanguageCode(selected.value.code);
-    Get.find<LocaleController>().changeLocale(selected.value.englishName);
+    final language = selected.value;
+    if (language == null) return;
+    StorageService.saveLanguageCode(language.code);
+    Get.find<LocaleController>().changeLocale(language.englishName);
     Get.back();
   }
 
   void revertAndGoBack() {
-    Get.find<LocaleController>().changeLocale(_previousLanguage.englishName);
-    selected.value = _previousLanguage;
+    final previous = _previousLanguage;
+    if (previous != null) {
+      Get.find<LocaleController>().changeLocale(previous.englishName);
+    }
+    selected.value = previous;
     Get.back();
   }
 }

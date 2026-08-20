@@ -2,6 +2,7 @@ package com.artsketch.trace2sketch.ar.drawing
 
 import ads.GridNativeAdFactory
 import ads.SmallNativeAdFactory
+import ads.FullNativeAdFactory
 import com.google.android.gms.ads.nativead.NativeAdView
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -12,8 +13,9 @@ class MainActivity : FlutterActivity() {
 
     private val adConfigChannel = "sketch_flow/ad_config"
     private val nativeAdFactoryId = "smallNativeAd"
-
     private val gridNativeAdFactoryId = "gridNativeAd"
+
+    private val fullNativeAdFactoryId = "fullNativeAd"
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -40,6 +42,13 @@ class MainActivity : FlutterActivity() {
 
                         "APP_RESUME_OPEN_AD_UNIT_ID" -> BuildConfig.APP_RESUME_OPEN_AD_UNIT_ID
                         "WELCOME_SCREEN_INTERSTITIAL_AD_UNIT_ID" -> BuildConfig.WELCOME_SCREEN_INTERSTITIAL_AD_UNIT_ID
+
+                        "AR_LANGUAGE_SCREEN_NATIVE_AD_UNIT_ID" -> BuildConfig.AR_LANGUAGE_SCREEN_NATIVE_AD_UNIT_ID
+                        "AR_LANGUAGE_SCREEN_2ND_NATIVE_AD_UNIT_ID" -> BuildConfig.AR_LANGUAGE_SCREEN_2ND_NATIVE_AD_UNIT_ID
+                        "AR_LANGUAGE_SCREEN_3RD_NATIVE_AD_UNIT_ID" -> BuildConfig.AR_LANGUAGE_SCREEN_3RD_NATIVE_AD_UNIT_ID
+                        "FULL_NATIVE_ONBOARDING_SLIDE_1TO2_AD_UNIT_ID" -> BuildConfig.FULL_NATIVE_ONBOARDING_SLIDE_1TO2_AD_UNIT_ID
+                        "FULL_NATIVE_ONBOARDING_SLIDE_2TO3_AD_UNIT_ID" -> BuildConfig.FULL_NATIVE_ONBOARDING_SLIDE_2TO3_AD_UNIT_ID
+                        "NATIVE_ONBOARDING_SCREEN2_NATIVE_AD_UNIT_ID" -> BuildConfig.NATIVE_ONBOARDING_SCREEN2_NATIVE_AD_UNIT_ID
                         else -> null
                     }
                     result.success(value)
@@ -59,11 +68,18 @@ class MainActivity : FlutterActivity() {
             gridNativeAdFactoryId,
             GridNativeAdFactory(this)
         )
+
+        GoogleMobileAdsPlugin.registerNativeAdFactory(
+            flutterEngine,
+            fullNativeAdFactoryId,
+            FullNativeAdFactory(this)
+        )
     }
 
     override fun cleanUpFlutterEngine(flutterEngine: FlutterEngine) {
         super.cleanUpFlutterEngine(flutterEngine)
         GoogleMobileAdsPlugin.unregisterNativeAdFactory(flutterEngine, nativeAdFactoryId)
         GoogleMobileAdsPlugin.unregisterNativeAdFactory(flutterEngine, gridNativeAdFactoryId)
+        GoogleMobileAdsPlugin.unregisterNativeAdFactory(flutterEngine, fullNativeAdFactoryId)
     }
 }

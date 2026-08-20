@@ -40,6 +40,13 @@ class AdPlacementKeys {
 
   static const String appResumeOpenAd = 'on_resume_ad _app_open';
   static const String welcomeScreenInterstitial = 'welcome_screen_interstitial';
+
+  static const String arLanguageScreenNative = 'ar_language_screen_native';
+  static const String arLanguageScreen2ndNative = 'ar_language_screen_2nd_native';
+  static const String arLanguageScreen3rdNative = 'ar_language_screen_3rd_native';
+  static const String fullNativeOnboardingSlide1to2 = 'full_native_onboarding_slide_1to2';
+  static const String fullNativeOnboardingSlide2to3 = 'full_native_onboarding_slide_2to3';
+  static const String nativeOnboardingScreen2Native = 'native_onboarding_screen2_native';
 }
 
 class AdClickInterstitialConfig {

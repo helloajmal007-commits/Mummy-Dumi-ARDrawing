@@ -10,11 +10,31 @@ import 'package:sketch_flow/app/modules/onboarding/views/ad_loading_gate_view.da
 import 'package:sketch_flow/app/routes/app_routes.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 
+enum OnboardingPageType { slide, fullNativeAd }
+
+class OnboardingPage {
+  final OnboardingPageType type;
+  final OnboardingSlide? slide;
+  final String? adPlacementKey;
+  final Future<String>? adUnitIdOverride;
+
+  const OnboardingPage.slide(this.slide)
+    : type = OnboardingPageType.slide,
+      adPlacementKey = null,
+      adUnitIdOverride = null;
+
+  const OnboardingPage.fullNativeAd(this.adPlacementKey, this.adUnitIdOverride)
+    : type = OnboardingPageType.fullNativeAd,
+      slide = null;
+}
+
 class OnboardingController extends GetxController {
   final PageController pageController = PageController();
   final RxInt currentPage = 0.obs;
 
-  List<OnboardingSlide> get slides => [
+  final RxSet<int> _adPagesResolved = <int>{}.obs;
+
+  List<OnboardingSlide> get _slides => [
     OnboardingSlide(
       title: TKeys.onboardSlide1Title.tr,
       description: TKeys.onboardSlide1Desc.tr,
@@ -41,9 +61,35 @@ class OnboardingController extends GetxController {
     ),
   ];
 
-  bool get isLastPage => currentPage.value == slides.length - 1;
+  late final List<OnboardingPage> pages = [
+    OnboardingPage.slide(_slides[0]),
+    OnboardingPage.fullNativeAd(
+      AdPlacementKeys.fullNativeOnboardingSlide1to2,
+      AdUnitIds.fullNativeOnboardingSlide1to2,
+    ),
+    OnboardingPage.slide(_slides[1]),
+    OnboardingPage.fullNativeAd(
+      AdPlacementKeys.fullNativeOnboardingSlide2to3,
+      AdUnitIds.fullNativeOnboardingSlide2to3,
+    ),
+    OnboardingPage.slide(_slides[2]),
+  ];
+
+  bool get isLastPage => currentPage.value == pages.length - 1;
+
+  OnboardingPage get currentPageData => pages[currentPage.value];
+
+  bool get canProceed {
+    final page = currentPageData;
+    if (page.type == OnboardingPageType.slide) return true;
+    return _adPagesResolved.contains(currentPage.value);
+  }
 
   void onPageChanged(int index) => currentPage.value = index;
+
+  void reportAdResolved(int pageIndex) {
+    _adPagesResolved.add(pageIndex);
+  }
 
   @override
   void onInit() {
@@ -55,6 +101,7 @@ class OnboardingController extends GetxController {
   }
 
   void next() {
+    if (!canProceed) return;
     if (isLastPage) {
       _finishOnboarding();
       return;
@@ -81,6 +128,7 @@ class OnboardingController extends GetxController {
           placementKey,
           adUnitIdFuture: () => AdUnitIds.welcomeScreenInterstitial,
           onProceed: onComplete,
+          reloadAfterShow: false,
         ),
         onFinished: () {
           StorageService.setHasCompletedOnboarding(true);

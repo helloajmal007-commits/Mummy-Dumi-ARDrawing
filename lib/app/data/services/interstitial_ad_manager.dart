@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:sketch_flow/app/data/services/ad_consent_service.dart';
+import 'package:sketch_flow/app/data/services/ad_presentation_state.dart';
 import 'package:sketch_flow/app/data/services/ad_remote_config_service.dart';
 
 class InterstitialAdManager {
@@ -76,17 +77,25 @@ class InterstitialAdManager {
     String placementKey, {
     required Future<String> Function() adUnitIdFuture,
     required VoidCallback onProceed,
+    bool reloadAfterShow = true,
   }) {
     final ad = _ads[placementKey];
 
     if (ad == null || _isShowing[placementKey] == true) {
-      debugPrint(
-        'InterstitialAdManager.showThenProceed[$placementKey]: not ready, proceeding directly.',
-      );
       onProceed();
-      preload(placementKey, adUnitIdFuture());
+      if (reloadAfterShow) preload(placementKey, adUnitIdFuture());
       return;
     }
+
+    if (AdPresentationState.instance.isPresenting) {
+      debugPrint(
+        'InterstitialAdManager.showThenProceed[$placementKey]: another ad is presenting, skipping show.',
+      );
+      onProceed();
+      return;
+    }
+
+    AdPresentationState.instance.markPresenting();
 
     ad.fullScreenContentCallback = FullScreenContentCallback(
       onAdShowedFullScreenContent: (ad) {
@@ -94,20 +103,19 @@ class InterstitialAdManager {
       },
       onAdDismissedFullScreenContent: (ad) {
         _isShowing[placementKey] = false;
+        AdPresentationState.instance.markIdle();
         ad.dispose();
         _ads.remove(placementKey);
         onProceed();
-        preload(placementKey, adUnitIdFuture());
+        if (reloadAfterShow) preload(placementKey, adUnitIdFuture());
       },
       onAdFailedToShowFullScreenContent: (ad, error) {
-        debugPrint(
-          'InterstitialAdManager.showThenProceed[$placementKey]: failed to show. $error',
-        );
         _isShowing[placementKey] = false;
+        AdPresentationState.instance.markIdle();
         ad.dispose();
         _ads.remove(placementKey);
         onProceed();
-        preload(placementKey, adUnitIdFuture());
+        if (reloadAfterShow) preload(placementKey, adUnitIdFuture());
       },
     );
 

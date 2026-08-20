@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sketch_flow/app/data/models/ad_config_model.dart';
+import 'package:sketch_flow/app/data/services/ad_unit_ids.dart';
 import 'package:sketch_flow/app/localization/translation_keys.dart';
 import 'package:sketch_flow/app/modules/language/controllers/language_controller.dart';
 import 'package:sketch_flow/app/theme/app_colors.dart';
 import 'package:sketch_flow/app/theme/app_dimens.dart';
 import 'package:sketch_flow/app/theme/app_typography.dart';
+import 'package:sketch_flow/app/widgets/ads/native_ad_widget.dart';
 
 class LanguageConfirmView extends GetView<LanguageController> {
   const LanguageConfirmView({super.key});
@@ -28,7 +31,7 @@ class LanguageConfirmView extends GetView<LanguageController> {
               const Spacer(flex: 3),
               Center(
                 child: Obx(() {
-                  final language = controller.selected.value;
+                  final language = controller.selected.value!;
                   return TweenAnimationBuilder<double>(
                     key: ValueKey(language.code),
                     tween: Tween(begin: 0.85, end: 1.0),
@@ -124,6 +127,11 @@ class LanguageConfirmView extends GetView<LanguageController> {
                     ),
                   ),
                 ),
+              ),
+              const SizedBox(height: AppSpace.md),
+              NativeAdWidget(
+                placementKey: AdPlacementKeys.arLanguageScreen3rdNative,
+                adUnitIdOverride: AdUnitIds.arLanguageScreen3rdNative,
               ),
               const Spacer(flex: 4),
               SizedBox(

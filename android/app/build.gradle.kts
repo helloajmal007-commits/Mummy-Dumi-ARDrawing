@@ -68,6 +68,13 @@ android {
 
             buildConfigField("String", "WELCOME_SCREEN_INTERSTITIAL_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/1033173712\"")
 
+            buildConfigField("String", "AR_LANGUAGE_SCREEN_NATIVE_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/2247696110\"")
+            buildConfigField("String", "AR_LANGUAGE_SCREEN_2ND_NATIVE_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/2247696110\"")
+            buildConfigField("String", "AR_LANGUAGE_SCREEN_3RD_NATIVE_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/2247696110\"")
+            buildConfigField("String", "FULL_NATIVE_ONBOARDING_SLIDE_1TO2_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/2247696110\"")
+            buildConfigField("String", "FULL_NATIVE_ONBOARDING_SLIDE_2TO3_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/2247696110\"")
+            buildConfigField("String", "NATIVE_ONBOARDING_SCREEN2_NATIVE_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/2247696110\"")
+
             manifestPlaceholders["admobAppId"] = "ca-app-pub-3940256099942544~3347511713"
         }
 
@@ -82,18 +89,25 @@ android {
             buildConfigField("String", "COLLAPSIBLE_BANNER_HOME_BOTTOM_AD_UNIT_ID", "\"ca-app-pub-2940059973343828/2060140364\"")
             buildConfigField("String", "NATIVE_LEARN_AD_UNIT_ID", "\"ca-app-pub-2940059973343828/5319215758\"")
 
-            buildConfigField("String", "NATIVE_CATEGORIES_GRID_AD_UNIT_ID", "\"ca-app-pub-REPLACE_ME/NATIVE_CATEGORIES_GRID\"")
-            buildConfigField("String", "NATIVE_CATEGORY_IMAGELIST_AD_UNIT_ID", "\"ca-app-pub-REPLACE_ME/NATIVE_CATEGORY_IMAGELIST\"")
-            buildConfigField("String", "COLLAPSIBLE_BANNER_CATEGORIES_BOTTOM_AD_UNIT_ID", "\"ca-app-pub-REPLACE_ME/COLLAPSIBLE_BANNER_CATEGORIES_BOTTOM\"")
+            buildConfigField("String", "NATIVE_CATEGORIES_GRID_AD_UNIT_ID", "\"ca-app-pub-2940059973343828/9747058699\"")
+            buildConfigField("String", "NATIVE_CATEGORY_IMAGELIST_AD_UNIT_ID", "\"ca-app-pub-2940059973343828/8266456066\"")
+            buildConfigField("String", "COLLAPSIBLE_BANNER_CATEGORIES_BOTTOM_AD_UNIT_ID", "\"ca-app-pub-2940059973343828/4988827087\"")
 
-            buildConfigField("String", "BANNER_SKETCH_SCREEN_AD_UNIT_ID", "\"ca-app-pub-REPLACE_ME/BANNER_SKETCH_SCREEN\"")
-            buildConfigField("String", "INTERSTITIAL_SKETCH_PLUS_BUTTON_AD_UNIT_ID", "\"ca-app-pub-REPLACE_ME/INTERSTITIAL_SKETCH_PLUS_BUTTON\"")
-            buildConfigField("String", "COLLAPSIBLE_BANNER_CANVAS_BOTTOM_AD_UNIT_ID", "\"ca-app-pub-REPLACE_ME/COLLAPSIBLE_BANNER_CANVAS_BOTTOM\"")
+            buildConfigField("String", "BANNER_SKETCH_SCREEN_AD_UNIT_ID", "\"ca-app-pub-2940059973343828/9858010387\"")
+            buildConfigField("String", "INTERSTITIAL_SKETCH_PLUS_BUTTON_AD_UNIT_ID", "\"ca-app-pub-2940059973343828/2988565883\"")
+            buildConfigField("String", "COLLAPSIBLE_BANNER_CANVAS_BOTTOM_AD_UNIT_ID", "\"ca-app-pub-2940059973343828/7945379090\"")
 
-            buildConfigField("String", "BANNER_SETTINGS_TOP_AD_UNIT_ID", "\"ca-app-pub-REPLACE_ME/BANNER_SETTINGS_TOP\"")
-            buildConfigField("String", "APP_CLICK_INTERSTITIAL_AD_UNIT_ID", "\"ca-app-pub-REPLACE_ME/APP_CLICK_INTERSTITIAL\"")
+            buildConfigField("String", "BANNER_SETTINGS_TOP_AD_UNIT_ID", "\"ca-app-pub-2940059973343828/4054235544\"")
+            buildConfigField("String", "APP_CLICK_INTERSTITIAL_AD_UNIT_ID", "\"ca-app-pub-2940059973343828/7220238753\"")
 
-            buildConfigField("String", "WELCOME_SCREEN_INTERSTITIAL_AD_UNIT_ID", "\"ca-app-pub-REPLACE_ME/APP_CLICK_INTERSTITIAL\"")
+            buildConfigField("String", "WELCOME_SCREEN_INTERSTITIAL_AD_UNIT_ID", "\"ca-app-pub-2940059973343828/1080587840\"")
+
+            buildConfigField("String", "AR_LANGUAGE_SCREEN_NATIVE_AD_UNIT_ID", "\"ca-app-pub-2940059973343828/2649604203\"")
+            buildConfigField("String", "AR_LANGUAGE_SCREEN_2ND_NATIVE_AD_UNIT_ID", "\"ca-app-pub-2940059973343828/1321773762\"")
+            buildConfigField("String", "AR_LANGUAGE_SCREEN_3RD_NATIVE_AD_UNIT_ID", "\"ca-app-pub-2940059973343828/5155564228\"")
+            buildConfigField("String", "FULL_NATIVE_ONBOARDING_SLIDE_1TO2_AD_UNIT_ID", "\"ca-app-pub-2940059973343828/8959077866\"")
+            buildConfigField("String", "FULL_NATIVE_ONBOARDING_SLIDE_2TO3_AD_UNIT_ID", "\"ca-app-pub-2940059973343828/4138779843\"")
+            buildConfigField("String", "NATIVE_ONBOARDING_SCREEN2_NATIVE_AD_UNIT_ID", "\"ca-app-pub-2940059973343828/5180398773\"")
 
             manifestPlaceholders["admobAppId"] = "ca-app-pub-2940059973343828~1823201176"
         }

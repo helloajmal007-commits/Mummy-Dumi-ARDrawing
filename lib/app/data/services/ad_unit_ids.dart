@@ -98,5 +98,35 @@ class AdUnitIds {
     return native ?? (Platform.isAndroid ? _googleTestInterstitialAndroid : _googleTestInterstitialIOS);
   }
 
+  static Future<String> get arLanguageScreenNative async {
+    final native = await AdNativeBridge.get('AR_LANGUAGE_SCREEN_NATIVE_AD_UNIT_ID');
+    return native ?? (Platform.isAndroid ? _googleTestNativeAndroid : _googleTestNativeIOS);
+  }
+
+  static Future<String> get arLanguageScreen2ndNative async {
+    final native = await AdNativeBridge.get('AR_LANGUAGE_SCREEN_2ND_NATIVE_AD_UNIT_ID');
+    return native ?? (Platform.isAndroid ? _googleTestNativeAndroid : _googleTestNativeIOS);
+  }
+
+  static Future<String> get arLanguageScreen3rdNative async {
+    final native = await AdNativeBridge.get('AR_LANGUAGE_SCREEN_3RD_NATIVE_AD_UNIT_ID');
+    return native ?? (Platform.isAndroid ? _googleTestNativeAndroid : _googleTestNativeIOS);
+  }
+
+  static Future<String> get fullNativeOnboardingSlide1to2 async {
+    final native = await AdNativeBridge.get('FULL_NATIVE_ONBOARDING_SLIDE_1TO2_AD_UNIT_ID');
+    return native ?? (Platform.isAndroid ? _googleTestNativeAndroid : _googleTestNativeIOS);
+  }
+
+  static Future<String> get fullNativeOnboardingSlide2to3 async {
+    final native = await AdNativeBridge.get('FULL_NATIVE_ONBOARDING_SLIDE_2TO3_AD_UNIT_ID');
+    return native ?? (Platform.isAndroid ? _googleTestNativeAndroid : _googleTestNativeIOS);
+  }
+
+  static Future<String> get nativeOnboardingScreen2Native async {
+    final native = await AdNativeBridge.get('NATIVE_ONBOARDING_SCREEN2_NATIVE_AD_UNIT_ID');
+    return native ?? (Platform.isAndroid ? _googleTestNativeAndroid : _googleTestNativeIOS);
+  }
+
   static bool get isLikelyTestBuild => kDebugMode;
 }
