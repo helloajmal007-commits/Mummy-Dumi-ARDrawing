@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/services.dart' show rootBundle, PlatformException;
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -145,18 +145,43 @@ class ArTraceController extends GetxController {
   }
 
   Future<void> pickFromGallery() async {
-    final picked = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (picked != null) {
-      overlayImage.value = File(picked.path);
-      _resetTransform();
+    try {
+      final picked = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (picked != null) {
+        overlayImage.value = File(picked.path);
+        _resetTransform();
+      }
+    } on PlatformException catch (e) {
+      errorMessage.value = _messageForPickerException(e);
+    } catch (e) {
+      errorMessage.value = TKeys.errImageLoadFailed.trParams({'error': '$e'});
     }
   }
 
   Future<void> captureWithCamera() async {
-    final picked = await ImagePicker().pickImage(source: ImageSource.camera);
-    if (picked != null) {
-      overlayImage.value = File(picked.path);
-      _resetTransform();
+    try {
+      final picked = await ImagePicker().pickImage(source: ImageSource.camera);
+      if (picked != null) {
+        overlayImage.value = File(picked.path);
+        _resetTransform();
+      }
+    } on PlatformException catch (e) {
+      errorMessage.value = _messageForPickerException(e);
+    } catch (e) {
+      errorMessage.value = TKeys.errImageLoadFailed.trParams({'error': '$e'});
+    }
+  }
+
+  String _messageForPickerException(PlatformException e) {
+    switch (e.code) {
+      case 'camera_access_denied':
+        return TKeys.errCameraPermissionDenied.tr;
+      case 'photo_access_denied':
+        return TKeys.errGalleryPermissionDenied.tr;
+      default:
+        return TKeys.errImageLoadFailed.trParams({
+          'error': e.message ?? e.code,
+        });
     }
   }
 

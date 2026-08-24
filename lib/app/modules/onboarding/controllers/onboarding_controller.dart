@@ -34,6 +34,8 @@ class OnboardingController extends GetxController {
 
   final RxSet<int> _adPagesResolved = <int>{}.obs;
 
+  final Set<int> _adPagesFailed = <int>{};
+
   List<OnboardingSlide> get _slides => [
     OnboardingSlide(
       title: TKeys.onboardSlide1Title.tr,
@@ -85,10 +87,30 @@ class OnboardingController extends GetxController {
     return _adPagesResolved.contains(currentPage.value);
   }
 
-  void onPageChanged(int index) => currentPage.value = index;
+  void onPageChanged(int index) {
+    currentPage.value = index;
+    if (_adPagesFailed.contains(index)) {
+      _skipFailedAdPage(index);
+    }
+  }
 
-  void reportAdResolved(int pageIndex) {
+  void reportAdResolved(int pageIndex, {bool success = true}) {
     _adPagesResolved.add(pageIndex);
+    if (!success) {
+      _adPagesFailed.add(pageIndex);
+      _skipFailedAdPage(pageIndex);
+    }
+  }
+
+  void _skipFailedAdPage(int pageIndex) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (currentPage.value != pageIndex) return;
+      if (isLastPage) return;
+      pageController.nextPage(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOutCubic,
+      );
+    });
   }
 
   @override
@@ -138,11 +160,6 @@ class OnboardingController extends GetxController {
       transition: Transition.fadeIn,
       duration: const Duration(milliseconds: 200),
     );
-  }
-
-  void skip() {
-    StorageService.setHasCompletedOnboarding(true);
-    Get.offAllNamed(Routes.home);
   }
 
   @override

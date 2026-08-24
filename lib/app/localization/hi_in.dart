@@ -353,4 +353,8 @@ const Map<String, String> hiIN = {
   TKeys.navSettings: 'सेटिंग्स',
 
   TKeys.languageSetting: 'भाषा',
+
+  TKeys.preparingYourExperience: 'बस एक पल...',
+  TKeys.errCameraPermissionDenied: 'कैमरा की अनुमति नहीं दी गई',
+  TKeys.errGalleryPermissionDenied: 'गैलरी की अनुमति अस्वीकार कर दी गई',
 };

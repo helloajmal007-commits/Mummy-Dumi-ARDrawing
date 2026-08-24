@@ -350,4 +350,8 @@ const Map<String, String> zhCN = {
   TKeys.navSettings: '设置',
 
   TKeys.languageSetting: '语言',
+
+  TKeys.preparingYourExperience: '一会儿...',
+  TKeys.errCameraPermissionDenied: '相机权限被拒绝',
+  TKeys.errGalleryPermissionDenied: '相册权限被拒绝',
 };

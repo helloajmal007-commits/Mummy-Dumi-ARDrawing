@@ -373,4 +373,6 @@ class TKeys {
   static const languageSetting = 'language_setting';
 
   static const String preparingYourExperience = 'preparing_your_experience';
+  static const String errCameraPermissionDenied = 'camera_permission_denied';
+  static const String errGalleryPermissionDenied = 'gallery_permission_denied';
 }

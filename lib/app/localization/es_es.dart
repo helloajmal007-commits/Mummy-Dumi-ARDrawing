@@ -353,4 +353,8 @@ const Map<String, String> esES = {
   TKeys.navSettings: 'Ajustes',
 
   TKeys.languageSetting: 'Idioma',
+
+  TKeys.preparingYourExperience: 'Un momento...',
+  TKeys.errCameraPermissionDenied: 'Permiso de cámara denegado',
+  TKeys.errGalleryPermissionDenied: 'Permiso de galería denegado',
 };

@@ -352,4 +352,6 @@ const Map<String, String> enUS = {
   TKeys.languageSetting: 'Language',
 
   TKeys.preparingYourExperience: 'Just a moment...',
+  TKeys.errCameraPermissionDenied: 'Camera permission denied',
+  TKeys.errGalleryPermissionDenied: 'Gallery permission denied',
 };

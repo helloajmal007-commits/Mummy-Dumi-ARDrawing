@@ -353,4 +353,8 @@ const Map<String, String> frFR = {
   TKeys.navSettings: 'Paramètres',
 
   TKeys.languageSetting: 'Langue',
+
+  TKeys.preparingYourExperience: 'Un instant...',
+  TKeys.errCameraPermissionDenied: 'Autorisation d\'accès à la caméra refusée',
+  TKeys.errGalleryPermissionDenied: 'Autorisation d\'accès à la galerie refusée',
 };

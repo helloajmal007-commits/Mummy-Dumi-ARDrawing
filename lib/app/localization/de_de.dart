@@ -353,4 +353,8 @@ const Map<String, String> deDE = {
   TKeys.navSettings: 'Einstellungen',
 
   TKeys.languageSetting: 'Sprache',
+
+  TKeys.preparingYourExperience: 'Einen Augenblick...',
+  TKeys.errCameraPermissionDenied: 'Kamerazugriff verweigert',
+  TKeys.errGalleryPermissionDenied: 'Zugriff auf die Galerie verweigert',
 };

@@ -27,29 +27,6 @@ class OnboardingView extends GetView<OnboardingController> {
           child: SafeArea(
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    AppSpace.lg,
-                    AppSpace.sm,
-                    AppSpace.lg,
-                    0,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                        onPressed: controller.skip,
-                        child: Text(
-                          TKeys.skip.tr,
-                          style: AppTypography.body.copyWith(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
                 Expanded(
                   child: PageView.builder(
                     controller: controller.pageController,
