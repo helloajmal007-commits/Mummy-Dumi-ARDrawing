@@ -357,4 +357,8 @@ const Map<String, String> frFR = {
   TKeys.preparingYourExperience: 'Un instant...',
   TKeys.errCameraPermissionDenied: 'Autorisation d\'accès à la caméra refusée',
   TKeys.errGalleryPermissionDenied: 'Autorisation d\'accès à la galerie refusée',
+
+  TKeys.notifications: 'Notifications',
+  TKeys.notificationsEnabledSub: 'Vous recevrez des mises à jour et des rappels.',
+  TKeys.notificationsDisabledSub: 'Appuyez pour activer dans les paramètres système',
 };

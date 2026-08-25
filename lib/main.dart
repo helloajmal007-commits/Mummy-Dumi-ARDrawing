@@ -13,6 +13,7 @@ import 'package:sketch_flow/app/data/services/ad_remote_config_service.dart';
 import 'package:sketch_flow/app/data/services/ad_unit_ids.dart';
 import 'package:sketch_flow/app/data/services/app_click_interstitial_manager.dart';
 import 'package:sketch_flow/app/data/services/app_open_ad_manager.dart';
+import 'package:sketch_flow/app/data/services/push_notification_service.dart';
 import 'package:sketch_flow/app/localization/app_translations.dart';
 import 'package:sketch_flow/app/localization/locale_controller.dart';
 import 'package:sketch_flow/app/modules/settings/controllers/settings_controller.dart';
@@ -37,6 +38,8 @@ Future main() async {
   await GetStorage.init();
   Get.put(SettingsController(), permanent: true);
   Get.put(LocaleController(), permanent: true);
+
+  await PushNotificationService.instance.initialize();
 
   await AdRemoteConfigService.instance.initialize();
   await MobileAds.instance.initialize();

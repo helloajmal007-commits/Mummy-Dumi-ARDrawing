@@ -354,4 +354,8 @@ const Map<String, String> enUS = {
   TKeys.preparingYourExperience: 'Just a moment...',
   TKeys.errCameraPermissionDenied: 'Camera permission denied',
   TKeys.errGalleryPermissionDenied: 'Gallery permission denied',
+
+  TKeys.notifications: 'Notifications',
+  TKeys.notificationsEnabledSub: 'You will receive updates and reminders',
+  TKeys.notificationsDisabledSub: 'Tap to enable in system settings',
 };

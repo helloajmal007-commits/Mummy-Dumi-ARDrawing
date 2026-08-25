@@ -170,6 +170,24 @@ class SettingsView extends GetView<SettingsController> {
                   () => SwitchListTile(
                     contentPadding: EdgeInsets.zero,
                     title: Text(
+                      TKeys.notifications.tr,
+                      style: AppTypography.body,
+                    ),
+                    subtitle: Text(
+                      controller.notificationsEnabled.value
+                          ? TKeys.notificationsEnabledSub.tr
+                          : TKeys.notificationsDisabledSub.tr,
+                      style: AppTypography.caption,
+                    ),
+                    value: controller.notificationsEnabled.value,
+                    onChanged: controller.toggleNotifications,
+                  ),
+                ),
+                const Divider(),
+                Obx(
+                  () => SwitchListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(
                       TKeys.hapticFeedback.tr,
                       style: AppTypography.body,
                     ),

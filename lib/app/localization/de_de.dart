@@ -357,4 +357,8 @@ const Map<String, String> deDE = {
   TKeys.preparingYourExperience: 'Einen Augenblick...',
   TKeys.errCameraPermissionDenied: 'Kamerazugriff verweigert',
   TKeys.errGalleryPermissionDenied: 'Zugriff auf die Galerie verweigert',
+
+  TKeys.notifications: 'Benachrichtigungen',
+  TKeys.notificationsEnabledSub: 'Sie erhalten Updates und Erinnerungen.',
+  TKeys.notificationsDisabledSub: 'Tippen, um in den Systemeinstellungen zu aktivieren',
 };

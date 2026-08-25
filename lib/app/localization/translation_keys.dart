@@ -375,4 +375,8 @@ class TKeys {
   static const String preparingYourExperience = 'preparing_your_experience';
   static const String errCameraPermissionDenied = 'camera_permission_denied';
   static const String errGalleryPermissionDenied = 'gallery_permission_denied';
+
+  static const String notifications = 'notifications';
+  static const String notificationsEnabledSub = 'notificationsEnabledSub';
+  static const String notificationsDisabledSub = 'notificationsDisabledSub';
 }

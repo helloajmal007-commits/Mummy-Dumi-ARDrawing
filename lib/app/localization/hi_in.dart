@@ -357,4 +357,8 @@ const Map<String, String> hiIN = {
   TKeys.preparingYourExperience: 'बस एक पल...',
   TKeys.errCameraPermissionDenied: 'कैमरा की अनुमति नहीं दी गई',
   TKeys.errGalleryPermissionDenied: 'गैलरी की अनुमति अस्वीकार कर दी गई',
+
+  TKeys.notifications: 'नोटिफ़िकेशन',
+  TKeys.notificationsEnabledSub: 'आपको अपडेट और रिमाइंडर मिलेंगे।',
+  TKeys.notificationsDisabledSub: 'सिस्टम सेटिंग्स में चालू करने के लिए टैप करें',
 };

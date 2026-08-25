@@ -354,4 +354,8 @@ const Map<String, String> zhCN = {
   TKeys.preparingYourExperience: '一会儿...',
   TKeys.errCameraPermissionDenied: '相机权限被拒绝',
   TKeys.errGalleryPermissionDenied: '相册权限被拒绝',
+
+  TKeys.notifications: '通知',
+  TKeys.notificationsEnabledSub: '您将收到更新和提醒。',
+  TKeys.notificationsDisabledSub: '轻点以在系统设置中启用',
 };
