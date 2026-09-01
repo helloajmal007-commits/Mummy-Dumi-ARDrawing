@@ -63,77 +63,57 @@ Future<void> _bootstrapAdsConsentAndPreload() async {
 }
 
 void _preloadOnboardingAndLanguageNatives() {
-  AdCacheManager.instance
-      .checkoutNative(
-        AdPlacementKeys.arLanguageScreenNative,
-        factoryId: kNativeAdFactoryId,
-        adUnitId: AdUnitIds.arLanguageScreenNative,
-      )
-      .then(
-        (_) => AdCacheManager.instance.releaseNative(
-          AdPlacementKeys.arLanguageScreenNative,
-        ),
-      );
+  void prewarm(String placementKey, String factoryId, Future<String> adUnitId) {
+    AdCacheManager.instance
+        .checkoutNativeWithToken(
+          placementKey,
+          factoryId: factoryId,
+          adUnitId: adUnitId,
+        )
+        .then((checkout) {
+          if (checkout.ad == null) return;
+          AdCacheManager.instance.releaseNativeGeneration(
+            placementKey,
+            checkout.generation,
+          );
+        });
+  }
 
-  AdCacheManager.instance
-      .checkoutNative(
-        AdPlacementKeys.arLanguageScreen2ndNative,
-        factoryId: kNativeAdFactoryId,
-        adUnitId: AdUnitIds.arLanguageScreen2ndNative,
-      )
-      .then(
-        (_) => AdCacheManager.instance.releaseNative(
-          AdPlacementKeys.arLanguageScreen2ndNative,
-        ),
-      );
+  prewarm(
+    AdPlacementKeys.arLanguageScreenNative,
+    kNativeAdFactoryId,
+    AdUnitIds.arLanguageScreenNative,
+  );
 
-  AdCacheManager.instance
-      .checkoutNative(
-        AdPlacementKeys.arLanguageScreen3rdNative,
-        factoryId: kNativeAdFactoryId,
-        adUnitId: AdUnitIds.arLanguageScreen3rdNative,
-      )
-      .then(
-        (_) => AdCacheManager.instance.releaseNative(
-          AdPlacementKeys.arLanguageScreen3rdNative,
-        ),
-      );
+  prewarm(
+    AdPlacementKeys.arLanguageScreen2ndNative,
+    kNativeAdFactoryId,
+    AdUnitIds.arLanguageScreen2ndNative,
+  );
 
-  AdCacheManager.instance
-      .checkoutNative(
-        AdPlacementKeys.nativeOnboardingScreen2Native,
-        factoryId: kNativeAdFactoryId,
-        adUnitId: AdUnitIds.nativeOnboardingScreen2Native,
-      )
-      .then(
-        (_) => AdCacheManager.instance.releaseNative(
-          AdPlacementKeys.nativeOnboardingScreen2Native,
-        ),
-      );
+  prewarm(
+    AdPlacementKeys.arLanguageScreen3rdNative,
+    kNativeAdFactoryId,
+    AdUnitIds.arLanguageScreen3rdNative,
+  );
 
-  AdCacheManager.instance
-      .checkoutNative(
-        AdPlacementKeys.fullNativeOnboardingSlide1to2,
-        factoryId: kFullNativeAdFactoryId,
-        adUnitId: AdUnitIds.fullNativeOnboardingSlide1to2,
-      )
-      .then(
-        (_) => AdCacheManager.instance.releaseNative(
-          AdPlacementKeys.fullNativeOnboardingSlide1to2,
-        ),
-      );
+  prewarm(
+    AdPlacementKeys.nativeOnboardingScreen2Native,
+    kNativeAdFactoryId,
+    AdUnitIds.nativeOnboardingScreen2Native,
+  );
 
-  AdCacheManager.instance
-      .checkoutNative(
-        AdPlacementKeys.fullNativeOnboardingSlide2to3,
-        factoryId: kFullNativeAdFactoryId,
-        adUnitId: AdUnitIds.fullNativeOnboardingSlide2to3,
-      )
-      .then(
-        (_) => AdCacheManager.instance.releaseNative(
-          AdPlacementKeys.fullNativeOnboardingSlide2to3,
-        ),
-      );
+  prewarm(
+    AdPlacementKeys.fullNativeOnboardingSlide1to2,
+    kFullNativeAdFactoryId,
+    AdUnitIds.fullNativeOnboardingSlide1to2,
+  );
+
+  prewarm(
+    AdPlacementKeys.fullNativeOnboardingSlide2to3,
+    kFullNativeAdFactoryId,
+    AdUnitIds.fullNativeOnboardingSlide2to3,
+  );
 }
 
 class SketchFlowApp extends StatefulWidget {

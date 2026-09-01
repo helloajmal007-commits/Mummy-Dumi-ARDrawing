@@ -23,7 +23,8 @@ class FullNativeAdWidget extends StatefulWidget {
 
 class _FullNativeAdWidgetState extends State<FullNativeAdWidget> {
   NativeAd? _nativeAd;
-  bool _checkedOut = false;
+  int? _generation;
+  bool _disposed = false;
   bool _resultReported = false;
 
   @override
@@ -34,17 +35,38 @@ class _FullNativeAdWidgetState extends State<FullNativeAdWidget> {
 
   void _attach() {
     AdCacheManager.instance
-        .checkoutNative(
+        .checkoutNativeWithToken(
           widget.placementKey,
           factoryId: kFullNativeAdFactoryId,
           adUnitId: widget.adUnitIdOverride,
         )
-        .then((ad) {
-          if (!mounted) return;
-          if (ad != null) {
-            _checkedOut = true;
-            setState(() => _nativeAd = ad);
+        .then((checkout) {
+          final ad = checkout.ad;
+
+          if (_disposed) {
+            if (ad != null) {
+              AdCacheManager.instance.releaseNativeGeneration(
+                widget.placementKey,
+                checkout.generation,
+              );
+            }
+            return;
           }
+
+          if (ad != null &&
+              AdCacheManager.instance.isCurrentNative(
+                widget.placementKey,
+                checkout.generation,
+              )) {
+            _generation = checkout.generation;
+            setState(() => _nativeAd = ad);
+          } else if (ad != null) {
+            AdCacheManager.instance.releaseNativeGeneration(
+              widget.placementKey,
+              checkout.generation,
+            );
+          }
+
           _reportResult(ad != null);
         });
   }
@@ -57,8 +79,13 @@ class _FullNativeAdWidgetState extends State<FullNativeAdWidget> {
 
   @override
   void dispose() {
-    if (_checkedOut) {
-      AdCacheManager.instance.releaseNative(widget.placementKey);
+    _disposed = true;
+    final generation = _generation;
+    if (generation != null) {
+      AdCacheManager.instance.releaseNativeGeneration(
+        widget.placementKey,
+        generation,
+      );
     }
     super.dispose();
   }
@@ -66,7 +93,13 @@ class _FullNativeAdWidgetState extends State<FullNativeAdWidget> {
   @override
   Widget build(BuildContext context) {
     final ad = _nativeAd;
-    if (ad == null) {
+    final generation = _generation;
+    if (ad == null ||
+        generation == null ||
+        !AdCacheManager.instance.isCurrentNative(
+          widget.placementKey,
+          generation,
+        )) {
       return const SizedBox.expand();
     }
     return SizedBox.expand(child: AdWidget(ad: ad));

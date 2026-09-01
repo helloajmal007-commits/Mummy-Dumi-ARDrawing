@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle, PlatformException;
@@ -233,6 +235,14 @@ class ArTraceController extends GetxController {
       final saved = await File(file.path).copy(
         '${dir.path}/ar_freeze_${DateTime.now().millisecondsSinceEpoch}.jpg',
       );
+
+      final bytes = await _readValidImageBytes(saved);
+      if (bytes == null) {
+        errorMessage.value = TKeys.errFreezeFailed.tr;
+        await saved.delete().catchError((_) => saved);
+        return;
+      }
+
       frozenFrame.value = saved;
       isFrozen.value = true;
     } catch (e) {
@@ -240,6 +250,30 @@ class ArTraceController extends GetxController {
     } finally {
       _isCapturing = false;
     }
+  }
+
+  Future<Uint8List?> _readValidImageBytes(
+    File file, {
+    int maxAttempts = 3,
+    Duration retryDelay = const Duration(milliseconds: 80),
+  }) async {
+    for (var attempt = 1; attempt <= maxAttempts; attempt++) {
+      try {
+        final bytes = await file.readAsBytes();
+        if (bytes.isEmpty) throw const FormatException('empty file');
+
+        final codec = await ui.instantiateImageCodec(bytes);
+        final frame = await codec.getNextFrame();
+        frame.image.dispose();
+        codec.dispose();
+
+        return bytes;
+      } catch (_) {
+        if (attempt == maxAttempts) return null;
+        await Future.delayed(retryDelay);
+      }
+    }
+    return null;
   }
 
   void setOpacity(double value) => opacity.value = value.clamp(0.1, 1.0);

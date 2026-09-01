@@ -22,7 +22,8 @@ class GridNativeAdWidget extends StatefulWidget {
 
 class _GridNativeAdWidgetState extends State<GridNativeAdWidget> {
   NativeAd? _nativeAd;
-  bool _checkedOut = false;
+  int? _generation;
+  bool _disposed = false;
 
   @override
   void initState() {
@@ -32,22 +33,41 @@ class _GridNativeAdWidgetState extends State<GridNativeAdWidget> {
 
   void _attach() {
     AdCacheManager.instance
-        .checkoutNative(
+        .checkoutNativeWithToken(
           widget.placementKey,
           factoryId: kGridNativeAdFactoryId,
           adUnitId: widget.adUnitIdOverride,
         )
-        .then((ad) {
-          if (!mounted || ad == null) return;
-          _checkedOut = true;
+        .then((checkout) {
+          final ad = checkout.ad;
+          if (ad == null) return;
+
+          if (_disposed ||
+              !AdCacheManager.instance.isCurrentNative(
+                widget.placementKey,
+                checkout.generation,
+              )) {
+            AdCacheManager.instance.releaseNativeGeneration(
+              widget.placementKey,
+              checkout.generation,
+            );
+            return;
+          }
+
+          _generation = checkout.generation;
           setState(() => _nativeAd = ad);
         });
   }
 
   @override
   void dispose() {
-    if (_checkedOut) {
-      AdCacheManager.instance.releaseNative(widget.placementKey);
+    _disposed = true;
+    final generation = _generation;
+    if (generation != null) {
+      AdCacheManager.instance.releaseNativeGeneration(
+        widget.placementKey,
+        generation,
+      );
     }
     super.dispose();
   }
@@ -55,7 +75,13 @@ class _GridNativeAdWidgetState extends State<GridNativeAdWidget> {
   @override
   Widget build(BuildContext context) {
     final ad = _nativeAd;
-    if (ad == null) {
+    final generation = _generation;
+    if (ad == null ||
+        generation == null ||
+        !AdCacheManager.instance.isCurrentNative(
+          widget.placementKey,
+          generation,
+        )) {
       return const SizedBox.shrink();
     }
     return ClipRRect(
