@@ -39,7 +39,12 @@ Future main() async {
   Get.put(SettingsController(), permanent: true);
   Get.put(LocaleController(), permanent: true);
 
-  await PushNotificationService.instance.initialize();
+  try {
+    await PushNotificationService.instance.initialize();
+  } catch (e, st) {
+    debugPrint('PushNotificationService.initialize failed: $e');
+    FirebaseCrashlytics.instance.recordError(e, st, fatal: false);
+  }
 
   await AdRemoteConfigService.instance.initialize();
   await MobileAds.instance.initialize();

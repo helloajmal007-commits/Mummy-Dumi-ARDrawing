@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io' show Platform;
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
@@ -40,13 +41,28 @@ class PushNotificationService {
     await _requestPermissionIfNeeded();
     await refreshStatus();
 
-    _fcmToken = await _messaging.getToken();
-    debugPrint('FCM token: $_fcmToken');
+    try {
+      _fcmToken = await _messaging.getToken();
+      debugPrint('FCM token: $_fcmToken');
+    } catch (e, st) {
+      debugPrint('FCM getToken failed: $e');
+      FirebaseCrashlytics.instance.recordError(
+        e,
+        st,
+        reason: 'FCM getToken failed during PushNotificationService.initialize',
+        fatal: false,
+      );
+    }
 
-    _messaging.onTokenRefresh.listen((newToken) {
-      _fcmToken = newToken;
-      debugPrint('FCM token refreshed: $newToken');
-    });
+    _messaging.onTokenRefresh.listen(
+      (newToken) {
+        _fcmToken = newToken;
+        debugPrint('FCM token refreshed: $newToken');
+      },
+      onError: (e, st) {
+        debugPrint('FCM onTokenRefresh error: $e');
+      },
+    );
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       debugPrint('Foreground FCM message: ${message.notification?.title}');
@@ -56,9 +72,20 @@ class PushNotificationService {
       debugPrint('Notification opened app: ${message.data}');
     });
 
-    final initialMessage = await _messaging.getInitialMessage();
-    if (initialMessage != null) {
-      debugPrint('App opened from terminated state via notification');
+    try {
+      final initialMessage = await _messaging.getInitialMessage();
+      if (initialMessage != null) {
+        debugPrint('App opened from terminated state via notification');
+      }
+    } catch (e, st) {
+      debugPrint('FCM getInitialMessage failed: $e');
+      FirebaseCrashlytics.instance.recordError(
+        e,
+        st,
+        reason:
+            'FCM getInitialMessage failed during PushNotificationService.initialize',
+        fatal: false,
+      );
     }
   }
 
